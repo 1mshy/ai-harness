@@ -12,7 +12,10 @@ def main(prompt: str) -> None:
 
     response = client.chat.completions.create(
         model="google/gemini-2.5-flash",
-        messages=[{"role": "user", "content": prompt}],
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant. Answer concisely."},
+            {"role": "user", "content": prompt},
+        ],
     )
 
     print(response.choices[0].message.content)
