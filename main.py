@@ -20,7 +20,7 @@ def main(prompt: str) -> None:
 
     print(response.choices[0].message.content)
 
-
+#test
 if __name__ == "__main__":
     prompt = " ".join(sys.argv[1:]) or "Say hello in one sentence."
     main(prompt)
