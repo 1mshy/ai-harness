@@ -3,6 +3,11 @@
 Load / stress testing for an OpenAI-compatible **LM Studio** endpoint (built for an
 LM Studio server on a DGX Spark, but works against any `/v1` endpoint).
 
+> **Looking for capability tests, not throughput?** See
+> [`sales_eval/`](sales_eval/README.md) — a sales-agent eval suite (tool calling,
+> grounded Q&A, sentiment, long-call summarization, lead qualification, objection
+> handling) run with `python run_evals.py`.
+
 It measures the things that matter for a local inference box:
 
 - **TTFT** (time to first token) — streaming
