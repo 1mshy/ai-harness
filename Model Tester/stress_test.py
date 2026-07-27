@@ -50,7 +50,7 @@ except Exception:  # rich is optional
     HAS_RICH = False
 
 
-DEFAULT_URL = "http://dgx.local:1234/v1"
+DEFAULT_URL = "http://10.150.0.30:1234/v1"
 
 # Varied prompts so concurrent identical requests don't all hit a prompt cache
 # and inflate the numbers. Used when no fixed --prompt is set.
@@ -61,7 +61,7 @@ PROMPTS = [
     "Summarize the plot of Romeo and Juliet in two sentences.",
     "What is the difference between TCP and UDP? Be concise.",
     "Give me a one-paragraph description of the city of Kyoto.",
-    "Describe how a hash map works, briefly.",
+    "Describe how a hash map works",
     "Name three trade-offs of microservices versus a monolith.",
 ]
 
@@ -75,7 +75,7 @@ class Config:
     model: Optional[str] = None
     system: str = "You are a helpful assistant."
     prompt: Optional[str] = None  # None -> rotate through PROMPTS
-    max_tokens: int = 256
+    max_tokens: int = 16000
     temperature: float = 0.7
     timeout: float = 120.0          # per-request timeout for measured runs
     warmup_timeout: float = 300.0   # generous, first request loads the model

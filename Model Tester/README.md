@@ -22,12 +22,12 @@ It measures the things that matter for a local inference box:
 pip install -r requirements.txt
 ```
 
-Default endpoint is `http://dgx.local:1234/v1`. Override with `--url`.
+Default endpoint is `http://10.150.0.30:1234/v1`. Override with `--url`.
 
 > **mDNS note (macOS):** Python can't resolve `.local` names that `curl` can.
-> The tool detects this and auto-resolves `dgx.local` to its IP via the system
+> The tool detects this and auto-resolves `10.150.0.30` to its IP via the system
 > resolver — no action needed. If it ever can't, pass the IP directly:
-> `--url http://10.150.0.154:1234/v1`.
+> `--url http://10.150.0.30:1234/v1`.
 
 ## Interactive mode
 
@@ -63,7 +63,7 @@ Global flags (before the subcommand):
 
 | flag | default | meaning |
 |------|---------|---------|
-| `--url` | `http://dgx.local:1234/v1` | endpoint |
+| `--url` | `http://10.150.0.30:1234/v1` | endpoint |
 | `--model` | first non-embedding model | model id |
 | `--prompt` | rotating varied prompts | fix a single prompt for all requests |
 | `--max-tokens` | 256 | output cap per request |

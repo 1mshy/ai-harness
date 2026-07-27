@@ -17,7 +17,7 @@ from urllib.parse import urlparse, urlunparse
 import httpx
 from openai import AsyncOpenAI
 
-DEFAULT_URL = "http://dgx.local:1234/v1"
+DEFAULT_URL = "http://10.150.0.30:1234/v1"
 
 _IPV4 = r"(\d{1,3}(?:\.\d{1,3}){3})"
 _resolve_cache: dict[str, str] = {}

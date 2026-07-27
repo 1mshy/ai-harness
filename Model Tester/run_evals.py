@@ -12,7 +12,7 @@ qualify a lead, handle an objection.
     python run_evals.py --only sentiment_intent call_summarization run
     python run_evals.py --category tool_use run
     python run_evals.py --model nemotron-3-super --json results.json run
-    python run_evals.py --url http://10.150.0.154:1234/v1 run
+    python run_evals.py --url http://10.150.0.30:1234/v1 run
 
 Global flags: --url, --model, --max-tokens, --timeout, --verbose.
 Run without --model on a terminal to pick the model interactively from /v1/models.

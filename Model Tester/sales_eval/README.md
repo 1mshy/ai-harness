@@ -6,7 +6,7 @@ the job of a sales agent**: call CRM tools, answer from a price sheet, read a
 customer's sentiment, summarize a long phone call, qualify a lead, and handle an
 objection within guardrails.
 
-It talks to the same endpoint (`http://dgx.local:1234/v1` by default, with the
+It talks to the same endpoint (`http://10.150.0.30:1234/v1` by default, with the
 same `.local` mDNS auto-resolution as the stress tester).
 
 ## Run it
@@ -18,7 +18,7 @@ python run_evals.py run                   # run every scenario against the model
 python run_evals.py run --only sentiment_intent call_summarization
 python run_evals.py run --category tool_use
 python run_evals.py run --model deepseek-v4-flash --json results.json
-python run_evals.py run --url http://10.150.0.154:1234/v1
+python run_evals.py run --url http://10.150.0.30:1234/v1
 ```
 
 Run `run` **without `--model`** on a terminal and it fetches `/v1/models` and lets
