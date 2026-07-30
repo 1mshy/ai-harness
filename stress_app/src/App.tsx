@@ -171,6 +171,10 @@ export default function App() {
     [liveCount, completedCount, run.state],
   );
 
+  // Stable identity: SettingsModal keys effects off this prop, and a fresh
+  // closure every render would re-run them mid-edit.
+  const closeSettings = useCallback(() => setSettingsOpen(false), []);
+
   const active = PAGES.find((p) => p.id === page)!;
   const progress =
     run.target && run.target > 0 ? (run.completed + run.failed) / run.target : null;
@@ -206,6 +210,7 @@ export default function App() {
           <div className="rail__foot">
             <div className="row" style={{ gap: "var(--space-2xs)" }}>
               <span
+                aria-hidden="true"
                 className={`dot ${
                   isRunning ? "dot--live" : probe?.reachable ? "dot--ok" : "dot--fail"
                 }`}
@@ -224,12 +229,16 @@ export default function App() {
         </nav>
 
         <main className="main">
-          <header className="topbar">
-            <div className="topbar__left">
-              <h1>{active.label}</h1>
-              <span className="topbar__sub truncate">{active.sub}</span>
+          {/* The whole header bar drags the window; buttons are their own
+              event targets, so they still click through. */}
+          <header className="topbar" data-tauri-drag-region>
+            <div className="topbar__left" data-tauri-drag-region>
+              <h1 data-tauri-drag-region>{active.label}</h1>
+              <span className="topbar__sub truncate" data-tauri-drag-region>
+                {active.sub}
+              </span>
             </div>
-            <div className="topbar__right">
+            <div className="topbar__right" data-tauri-drag-region>
               <button className="btn" onClick={() => setSettingsOpen(true)}>
                 Settings
               </button>
@@ -306,11 +315,7 @@ export default function App() {
         </footer>
       </div>
 
-      <SettingsModal
-        open={settingsOpen}
-        onClose={() => setSettingsOpen(false)}
-        locked={isRunning}
-      />
+      <SettingsModal open={settingsOpen} onClose={closeSettings} locked={isRunning} />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { Difficulty } from "../lib/types";
 
 export function Field({
@@ -67,23 +67,51 @@ export function NumberInput({
   step?: number;
   disabled?: boolean;
 }) {
+  const lo = min ?? Number.NEGATIVE_INFINITY;
+  const hi = max ?? Number.POSITIVE_INFINITY;
+
+  // While a typed value is still out of range it lives here instead of being
+  // clamped on the spot — otherwise the first keystroke of "500" into a
+  // min-200 field snaps to 200 and the rest of the digits land on that.
+  const [draft, setDraft] = useState<string | null>(null);
+
+  const commit = () => {
+    if (draft === null) return;
+    const n = Number(draft);
+    setDraft(null);
+    if (draft.trim() !== "" && Number.isFinite(n)) {
+      const clamped = Math.min(hi, Math.max(lo, n));
+      if (clamped !== value) onChange(clamped);
+    }
+  };
+
   return (
     <input
       className="input num"
       type="number"
-      value={Number.isFinite(value) ? value : 0}
+      value={draft ?? (Number.isFinite(value) ? String(value) : "0")}
       min={min}
       max={max}
       step={step}
       disabled={disabled}
       onChange={(e) => {
-        const n = e.target.valueAsNumber;
-        if (Number.isNaN(n)) return;
-        const clamped = Math.min(
-          max ?? Number.POSITIVE_INFINITY,
-          Math.max(min ?? Number.NEGATIVE_INFINITY, n),
-        );
-        onChange(clamped);
+        const raw = e.target.value;
+        const n = Number(raw);
+        if (raw.trim() !== "" && Number.isFinite(n) && n >= lo && n <= hi) {
+          setDraft(null);
+          onChange(n);
+        } else {
+          setDraft(raw);
+        }
+      }}
+      onBlur={commit}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          commit();
+        } else if (e.key === "Escape") {
+          setDraft(null);
+        }
       }}
     />
   );

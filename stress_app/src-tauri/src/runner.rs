@@ -737,6 +737,65 @@ mod tests {
         assert_eq!(f.completion_tokens, None);
     }
 
+    /// End-to-end against a live server. Ignored by default because it needs
+    /// the box up; run with `cargo test -- --ignored --nocapture`.
+    /// Also pins the camelCase serde contract the frontend relies on.
+    #[tokio::test]
+    #[ignore]
+    async fn streams_from_a_live_server() {
+        let cfg: RunConfig = serde_json::from_value(serde_json::json!({
+            "baseUrl": "http://10.150.0.30:1234/v1",
+            "model": "nvidia/Gemma-4-31B-IT-NVFP4",
+            "maxTokens": 32,
+            "stream": true,
+            "temperature": 0.0
+        }))
+        .expect("partial config must deserialize via serde defaults");
+
+        // Defaults the frontend never sent must still be populated.
+        assert_eq!(cfg.concurrency, 8);
+        assert_eq!(cfg.request_timeout_ms, 120_000);
+        assert!(cfg.min_p <= 0.0, "min_p must default to unset");
+
+        let client = reqwest::Client::new();
+        let (tx, mut rx) = mpsc::unbounded_channel::<Delta>();
+        let cancel = Arc::new(AtomicBool::new(false));
+        let p = PromptItem {
+            id: "live-001".into(),
+            title: "live".into(),
+            category: "test".into(),
+            text: "List the first three prime numbers, comma separated.".into(),
+            difficulty: "easy".into(),
+            target_tokens: 32,
+        };
+
+        let out = execute(&client, &cfg, &p, "live-001", &tx, &cancel).await;
+        drop(tx);
+
+        assert!(out.ok, "request failed: {:?}", out.error);
+        assert!(!out.text.trim().is_empty(), "no text came back");
+        assert!(out.ttft_ms.is_some(), "no first-token timestamp");
+        assert!(out.completion_tokens > 0, "usage was not reported");
+        assert!(out.total_ms >= out.ttft_ms.unwrap());
+
+        let mut deltas = 0;
+        while rx.recv().await.is_some() {
+            deltas += 1;
+        }
+        assert!(deltas > 0, "no streaming deltas reached the channel");
+
+        eprintln!(
+            "live: ttft={:.0}ms total={:.0}ms prompt={} completion={} deltas={} finish={:?}\n{}",
+            out.ttft_ms.unwrap(),
+            out.total_ms,
+            out.prompt_tokens,
+            out.completion_tokens,
+            deltas,
+            out.finish_reason,
+            out.text.trim()
+        );
+    }
+
     #[test]
     fn zero_weight_difficulty_is_never_selected() {
         let pools = Pools::build(vec![

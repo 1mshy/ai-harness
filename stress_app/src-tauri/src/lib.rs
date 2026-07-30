@@ -32,6 +32,9 @@ struct Probe {
     models: Vec<ModelInfo>,
     metrics_available: bool,
     latency_ms: f64,
+    /// True when the engine reports speculative-decoding counters. Such servers
+    /// reject `min_p` and `logit_bias` outright, so the UI disables those.
+    spec_decoding: bool,
 }
 
 fn http() -> Result<reqwest::Client, String> {
@@ -55,6 +58,7 @@ async fn probe_server(base_url: String, api_key: String) -> Probe {
                 version: None,
                 models: vec![],
                 metrics_available: false,
+                spec_decoding: false,
                 latency_ms: 0.0,
             }
         }
@@ -108,14 +112,15 @@ async fn probe_server(base_url: String, api_key: String) -> Probe {
         None => None,
     };
 
-    let metrics_available = telemetry::scrape(&client, &base).await.ok;
+    let snapshot = telemetry::scrape(&client, &base).await;
 
     Probe {
         reachable,
         error,
         version,
         models,
-        metrics_available,
+        metrics_available: snapshot.ok,
+        spec_decoding: snapshot.spec_draft_tokens.unwrap_or(0.0) > 0.0,
         latency_ms: started.elapsed().as_secs_f64() * 1000.0,
     }
 }
@@ -124,21 +129,7 @@ async fn probe_server(base_url: String, api_key: String) -> Probe {
 async fn fetch_metrics(base_url: String) -> ServerMetrics {
     match http() {
         Ok(client) => telemetry::scrape(&client, &base_url).await,
-        Err(e) => ServerMetrics {
-            ok: false,
-            at: telemetry::now_ms(),
-            error: Some(e),
-            num_running: None,
-            num_waiting: None,
-            kv_cache_usage: None,
-            prefix_hit_rate: None,
-            prompt_tokens_total: None,
-            generation_tokens_total: None,
-            preemptions_total: None,
-            requests_success_total: None,
-            gpu_cache_hit_tokens: None,
-            gpu_cache_query_tokens: None,
-        },
+        Err(e) => telemetry::failed(telemetry::now_ms(), e),
     }
 }
 

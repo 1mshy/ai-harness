@@ -126,6 +126,9 @@ export interface ServerMetrics {
   requestsSuccessTotal: number | null;
   gpuCacheHitTokens: number | null;
   gpuCacheQueryTokens: number | null;
+  specDraftTokens: number | null;
+  specAcceptedTokens: number | null;
+  specAcceptanceRate: number | null;
 }
 
 export interface ModelInfo {
@@ -141,6 +144,8 @@ export interface Probe {
   models: ModelInfo[];
   metricsAvailable: boolean;
   latencyMs: number;
+  /** Speculative-decoding servers reject min_p and logit_bias with a 400. */
+  specDecoding: boolean;
 }
 
 // ---- derived, frontend-only ------------------------------------------------

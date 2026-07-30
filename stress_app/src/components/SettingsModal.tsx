@@ -36,16 +36,26 @@ export default function SettingsModal({
   const [testing, setTesting] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
 
+  // Read through a ref so a new onClose identity doesn't re-subscribe.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  });
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") onCloseRef.current();
     };
     window.addEventListener("keydown", onKey);
-    // Move focus into the dialog so Escape and Tab behave.
-    dialogRef.current?.focus();
     return () => window.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
+  }, [open]);
+
+  // Move focus into the dialog so Escape and Tab behave — once per open, not on
+  // every re-render, which was yanking the caret out of the field being edited.
+  useEffect(() => {
+    if (open) dialogRef.current?.focus();
+  }, [open]);
 
   if (!open) return null;
 
@@ -403,13 +413,26 @@ export default function SettingsModal({
                         max={1000}
                       />
                     </Field>
-                    <Field label="Min-p" hint="0 leaves it unset.">
+                    <Field
+                      label="Min-p"
+                      hint={
+                        probe?.specDecoding
+                          ? undefined
+                          : "0 leaves it unset."
+                      }
+                      error={
+                        probe?.specDecoding
+                          ? "Unsupported: this server runs speculative decoding, which rejects min_p with HTTP 400. Locked to 0."
+                          : null
+                      }
+                    >
                       <SliderInput
-                        value={config.minP}
+                        value={probe?.specDecoding ? 0 : config.minP}
                         onChange={(v) => setConfig({ minP: v })}
                         min={0}
                         max={1}
                         step={0.01}
+                        disabled={probe?.specDecoding}
                       />
                     </Field>
                     <Field

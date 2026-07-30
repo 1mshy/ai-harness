@@ -238,4 +238,10 @@ pub struct ServerMetrics {
     pub requests_success_total: Option<f64>,
     pub gpu_cache_hit_tokens: Option<f64>,
     pub gpu_cache_query_tokens: Option<f64>,
+    pub spec_draft_tokens: Option<f64>,
+    pub spec_accepted_tokens: Option<f64>,
+    /// Fraction of drafted tokens the target model accepted. On a
+    /// speculative-decoding server this is the single best explanation for a
+    /// change in decode throughput.
+    pub spec_acceptance_rate: Option<f64>,
 }

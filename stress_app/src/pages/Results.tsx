@@ -215,8 +215,14 @@ export default function Results() {
                   onClick={() => setOpen(open === r.id ? null : r.id)}
                 >
                   <td className="num dim">{r.seq}</td>
-                  <td>
-                    <span className={`dot ${r.ok ? "dot--ok" : "dot--fail"}`} />
+                  <td
+                    style={{
+                      color: r.ok ? "var(--color-ok)" : "var(--color-fail)",
+                    }}
+                  >
+                    {/* Glyph, not colour alone — the hue is reinforcement. */}
+                    <span aria-hidden="true">{r.ok ? "✓" : "✕"}</span>
+                    <span className="sr-only">{r.ok ? "succeeded" : "failed"}</span>
                   </td>
                   <td className="mono dim">{r.promptId}</td>
                   <td className="truncate" style={{ maxWidth: 260 }}>

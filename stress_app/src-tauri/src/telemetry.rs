@@ -75,10 +75,20 @@ pub async fn scrape(client: &reqwest::Client, base_url: &str) -> ServerMetrics {
         _ => None,
     };
 
+    let draft = get(&m, "vllm:spec_decode_num_draft_tokens_total");
+    let accepted = get(&m, "vllm:spec_decode_num_accepted_tokens_total");
+    let acceptance = match (accepted, draft) {
+        (Some(a), Some(d)) if d > 0.0 => Some(a / d),
+        _ => None,
+    };
+
     ServerMetrics {
         ok: true,
         at: now,
         error: None,
+        spec_draft_tokens: draft,
+        spec_accepted_tokens: accepted,
+        spec_acceptance_rate: acceptance,
         num_running: get(&m, "vllm:num_requests_running"),
         num_waiting: get(&m, "vllm:num_requests_waiting"),
         kv_cache_usage: get(&m, "vllm:kv_cache_usage_perc")
@@ -93,7 +103,7 @@ pub async fn scrape(client: &reqwest::Client, base_url: &str) -> ServerMetrics {
     }
 }
 
-fn failed(at: u64, msg: String) -> ServerMetrics {
+pub fn failed(at: u64, msg: String) -> ServerMetrics {
     ServerMetrics {
         ok: false,
         at,
@@ -108,6 +118,9 @@ fn failed(at: u64, msg: String) -> ServerMetrics {
         requests_success_total: None,
         gpu_cache_hit_tokens: None,
         gpu_cache_query_tokens: None,
+        spec_draft_tokens: None,
+        spec_accepted_tokens: None,
+        spec_acceptance_rate: None,
     }
 }
 

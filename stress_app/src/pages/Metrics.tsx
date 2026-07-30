@@ -226,6 +226,14 @@ export default function Metrics() {
               v={num(metrics.generationTokensTotal)}
               sub="lifetime, engine-wide"
             />
+            {metrics.specAcceptanceRate != null ? (
+              <Stat
+                k="Spec-decode accept"
+                v={pct(metrics.specAcceptanceRate, 1)}
+                sub="drafted tokens kept"
+                tone="accent"
+              />
+            ) : null}
           </div>
         ) : (
           <p className="field__hint">

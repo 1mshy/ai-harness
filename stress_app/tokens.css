@@ -18,7 +18,11 @@
   --color-paper-4: oklch(25% 0.011 75);
   --color-rule: oklch(31% 0.010 75);
   --color-rule-soft: oklch(24% 0.009 75);
-  --color-neutral: oklch(52% 0.010 75);
+  /* Neutral carries hints, axis labels, and the status bar — all small text, so
+   * it must clear WCAG 4.5:1 against the *lightest* surface it ever sits on
+   * (paper-4, used on hover). At L 63.5% it measures 4.66:1 there and better
+   * everywhere else; the more obvious L 52% failed all four surfaces. */
+  --color-neutral: oklch(63.5% 0.010 75);
   --color-muted: oklch(70% 0.008 75);
   --color-ink: oklch(93% 0.007 85);
 
@@ -117,14 +121,18 @@
   --dur-base: 180ms;
   --dur-slow: 280ms;
 
-  /* ---- elevation --------------------------------------------------------- */
-  --shadow-card: 0 1px 2px oklch(0% 0 0 / 0.4), 0 8px 24px oklch(0% 0 0 / 0.28);
-  --shadow-modal: 0 24px 64px oklch(0% 0 0 / 0.6), 0 2px 8px oklch(0% 0 0 / 0.4);
-  --glow-accent: 0 0 0 1px var(--color-accent-deep),
-    0 0 18px oklch(80% 0.155 75 / 0.16);
+  /* ---- elevation ---------------------------------------------------------
+   * Shadows carry the anchor's chroma rather than sitting at zero — a neutral
+   * black shadow over warm-tinted paper reads grey and slightly dirty.       */
+  --shadow-tint: oklch(4% 0.006 75);
+  --shadow-card: 0 1px 2px var(--shadow-tint), 0 8px 24px oklch(4% 0.006 75 / 0.5);
+  --shadow-modal: 0 24px 64px oklch(4% 0.006 75 / 0.68),
+    0 2px 8px oklch(4% 0.006 75 / 0.5);
+  --scrim: oklch(8% 0.006 75 / 0.72);
+  --color-accent-hover: oklch(44% 0.09 75);
 
   /* ---- layout ------------------------------------------------------------ */
   --rail-w: 208px;
-  --statusbar-h: 30px;
-  --titlebar-h: 38px;
+  --statusbar-h: 32px;
+  --titlebar-h: 40px;
 }

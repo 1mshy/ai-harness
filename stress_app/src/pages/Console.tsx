@@ -35,6 +35,13 @@ const StreamCard = memo(function StreamCard({ id }: { id: string }) {
           aria-hidden="true"
         />
         <span className="stream__title" title={`${s.promptId} — ${s.title}`}>
+          <span className="sr-only">
+            {status === "live"
+              ? "streaming: "
+              : status === "ok"
+                ? "succeeded: "
+                : "failed: "}
+          </span>
           {s.title}
         </span>
         <span className="row" style={{ gap: "var(--space-2xs)", flexWrap: "nowrap" }}>

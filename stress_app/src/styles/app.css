@@ -374,7 +374,7 @@ body {
 
 .btn--primary:hover,
 .btn--primary.is-hover {
-  background: oklch(44% 0.09 75);
+  background: var(--color-accent-hover);
   border-color: var(--color-accent);
 }
 
@@ -905,9 +905,11 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Two lines of copy is the floor — enough to see tokens land without every
+   idle card claiming a sixth of the viewport. Longer output scrolls in place. */
 .stream__body {
   flex: 1;
-  min-height: 96px;
+  min-height: calc(2 * 1.5em + 2 * var(--space-xs));
   max-height: 260px;
   overflow-y: auto;
   padding: var(--space-xs);
@@ -936,9 +938,15 @@ body {
 }
 
 .stream__err {
+  flex: 1;
+  min-height: calc(2 * 1.5em + 2 * var(--space-xs));
+  max-height: 260px;
+  overflow-y: auto;
   padding: var(--space-xs);
+  margin: 0;
   font-family: var(--font-display);
   font-size: var(--text-2xs);
+  line-height: 1.5;
   color: var(--color-fail);
   overflow-wrap: anywhere;
 }
@@ -1008,7 +1016,7 @@ body {
   display: grid;
   place-items: center;
   padding: var(--space-lg);
-  background: oklch(8% 0.006 75 / 0.72);
+  background: var(--scrim);
   animation: fade-in var(--dur-fast) var(--ease-out) both;
 }
 
@@ -1085,6 +1093,15 @@ body {
 .modal__tab:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: -2px;
+}
+
+.modal__tab:active {
+  background: var(--color-paper-4);
+}
+
+.modal__tab[disabled] {
+  opacity: 0.42;
+  cursor: not-allowed;
 }
 
 .modal__tab[aria-selected="true"] {
@@ -1205,19 +1222,6 @@ body {
   height: 2px;
   border-radius: var(--radius-pill);
   display: inline-block;
-}
-
-.meter {
-  height: 5px;
-  border-radius: var(--radius-pill);
-  background: var(--color-paper-4);
-  overflow: hidden;
-}
-
-.meter__fill {
-  height: 100%;
-  border-radius: var(--radius-pill);
-  transition: width var(--dur-slow) var(--ease-out);
 }
 
 /* --------------------------------------------------------------------------
