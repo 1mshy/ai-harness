@@ -1,0 +1,13 @@
+[
+  {
+    "date": "2026-07-30",
+    "genre": "atmospheric",
+    "macrostructure": "Workbench",
+    "theme": "Terminal",
+    "nav": "N3 side-rail",
+    "footer": "status bar",
+    "enrichment": "none (typography + live data)",
+    "theme_axes": "dark / mono / warm",
+    "brief": "Stress Rig — Tauri desktop app for load-testing a vLLM server (live streams, metrics, prompt corpus)"
+  }
+]

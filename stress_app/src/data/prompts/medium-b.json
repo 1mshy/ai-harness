@@ -1,0 +1,530 @@
+{
+  "difficulty": "medium",
+  "prompts": [
+    {
+      "id": "medium-076",
+      "title": "Postgres vs Mongo for billing",
+      "category": "analysis",
+      "text": "A 12-person engineering team is choosing a primary datastore for a new multi-tenant subscription billing system that must support proration, refunds, dunning retries, and monthly invoice generation across roughly 40,000 tenants. Two finalists remain: PostgreSQL (relational, with JSONB columns available for flexible fields) and MongoDB (document store, with multi-document transactions available since v4.0). Evaluate the two options against these four criteria: (1) correctness guarantees for money-related writes under concurrent updates, (2) ease of evolving the invoice line-item schema as pricing plans change quarterly, (3) the team's ability to write ad-hoc financial reports for finance stakeholders, and (4) operational maturity of backup/restore and point-in-time recovery tooling. For each criterion, give a short assessment of both databases, then end with a single unambiguous recommendation - do not conclude with 'it depends'. Justify the recommendation in 3-4 sentences referencing the specific requirements of a billing system.",
+      "targetTokens": 650
+    },
+    {
+      "id": "medium-077",
+      "title": "Cache stampede postmortem",
+      "category": "analysis",
+      "text": "Write an incident postmortem based on the log excerpt below from a checkout-service on-call rotation. Include sections for Summary, Timeline, Root Cause, Impact, and Action Items (at least 4, each with an owner placeholder and priority). The postmortem must end with a clear severity rating (SEV1/SEV2/SEV3) and a one-sentence verdict on whether the on-call response was adequate.\n\nLog excerpt (all times UTC):\n14:02:11 cache-node-3 WARN key 'product_catalog:v2' TTL expired, eviction scheduled\n14:02:12 cache-node-3 INFO eviction complete, 1 key removed\n14:02:13 api-gateway INFO request rate 340 req/s (baseline 310 req/s)\n14:02:14 checkout-svc ERROR cache miss for 'product_catalog:v2', falling through to DB\n14:02:14 checkout-svc ERROR cache miss for 'product_catalog:v2', falling through to DB\n14:02:14 checkout-svc ERROR cache miss for 'product_catalog:v2', falling through to DB\n(...repeated 8,412 times across 14:02:14-14:02:47)\npostgres-primary WARN connection pool exhausted, 200/200 connections in use\n14:02:51 api-gateway ERROR upstream timeout checkout-svc, 504 returned to client\n14:03:05 api-gateway ERROR error rate 61% over last 30s\n14:03:40 oncall-bot PAGE triggered: checkout-svc error budget burn rate 14.2x\n14:06:12 engineer-jhall ACK page, begins investigation\n14:11:30 engineer-jhall INFO identified missing lock around cache repopulation on miss\n14:12:00 engineer-jhall INFO manually re-warmed 'product_catalog:v2' key\n14:12:40 checkout-svc INFO cache hit rate recovering, now 94%\n14:15:00 api-gateway INFO error rate back to baseline 0.3%\n\nAssume the cache repopulation code had no mutex or single-flight guard, so every concurrent miss issued its own database query.",
+      "targetTokens": 750
+    },
+    {
+      "id": "medium-078",
+      "title": "Kubernetes vs Nomad rollout",
+      "category": "analysis",
+      "text": "A platform team of 6 engineers currently runs 50 nodes across two data centers and is deciding between Kubernetes and HashiCorp Nomad as the long-term orchestration layer, with a hard requirement to support both containerized services and a legacy fleet of non-containerized batch jobs. Assess Kubernetes and Nomad against these criteria: operational complexity for a small team, richness of the ecosystem for observability and service mesh integration, native support for mixed container/non-container workloads, and multi-cloud portability if the company later needs to run in a second cloud provider. Weigh the criteria explicitly - state which criterion matters most for a 6-person team - and finish with a definitive recommendation of one system, not a hedge. Include one specific risk the losing option would have introduced if chosen instead.",
+      "targetTokens": 600
+    },
+    {
+      "id": "medium-079",
+      "title": "Duplicate webhook processing incident",
+      "category": "analysis",
+      "text": "Below is a trimmed log from a payment-processing worker that consumes Stripe webhook events from a queue. Analyze it and produce a postmortem with headings Summary, Root Cause, Blast Radius, and Remediation (short-term fix plus long-term fix), ending with a one-line verdict stating whether customers were financially impacted and whether a customer-facing apology is warranted.\n\n09:14:02 worker-1 INFO received event evt_9f2a charge.succeeded order=ORD-88123\n09:14:02 worker-2 INFO received event evt_9f2a charge.succeeded order=ORD-88123\n09:14:03 worker-1 INFO marking ORD-88123 as paid, incrementing loyalty_points +150\n09:14:03 worker-2 INFO marking ORD-88123 as paid, incrementing loyalty_points +150\n09:14:03 worker-1 INFO dispatching fulfillment email for ORD-88123\n09:14:03 worker-2 INFO dispatching fulfillment email for ORD-88123\n09:14:04 notification-svc INFO sent 2 fulfillment emails for ORD-88123 within 900ms\n09:41:17 support-bot INFO ticket #55210 opened: 'why did I get two order confirmation emails and double loyalty points?'\n10:02:00 engineer-r.diaz INFO queue consumer has no idempotency key check on event.id before processing\n10:03:11 engineer-r.diaz INFO confirms webhook retried by Stripe after a 4-second ack timeout on worker-1, both workers pulled the same event because the queue's visibility timeout was shorter than processing time\n10:04:00 engineer-r.diaz INFO audit shows 37 orders affected over the past 9 days with double loyalty_points credit, 0 orders double-charged since payment capture itself was idempotent at Stripe's end",
+      "targetTokens": 700
+    },
+    {
+      "id": "medium-080",
+      "title": "Monorepo tradeoff for startup",
+      "category": "analysis",
+      "text": "A 12-engineer startup building three products (a web app, a mobile app, and a shared backend API) is debating whether to consolidate three existing separate git repositories into a single monorepo. Evaluate the tradeoff along these axes: build/CI time as the codebase grows, ease of atomic cross-project changes, onboarding friction for new hires, and tooling maturity (given the team currently uses plain npm workspaces, not Bazel or Nx). Give a concrete recommendation for whether this specific team should migrate now, migrate later, or not at all, and justify it with reference to their team size and the fact they ship weekly. Do not simply list pros and cons - commit to an answer.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-081",
+      "title": "gRPC vs REST internally",
+      "category": "analysis",
+      "text": "An internal platform exposes about 30 microservices that currently talk to each other over JSON REST with hand-maintained OpenAPI specs. The team is considering migrating internal (not public-facing) service-to-service calls to gRPC. Compare gRPC and REST/JSON specifically for internal use across these criteria: p99 latency overhead for small payloads (under 2KB), the cost of enforcing contract compatibility as 30 services evolve independently, developer experience for debugging a failing call with curl-like tools, and the learning curve for engineers who have only worked with REST. State a final verdict on whether this specific migration is worth it given the team has no protobuf experience today, and note one concrete condition under which your verdict would flip.",
+      "targetTokens": 600
+    },
+    {
+      "id": "medium-082",
+      "title": "DNS misconfiguration outage review",
+      "category": "analysis",
+      "text": "Produce a postmortem from the log excerpt below covering a regional outage caused by a DNS record change. Structure it as Summary, Detection Timeline, Root Cause, Customer Impact (estimate affected request volume from the numbers given), and three concrete prevention measures. Close with a verdict on whether the change should have required peer review before deployment.\n\n03:11:00 deploy-bot INFO terraform apply started by user 'automation-ci', change set includes dns_record.api_eu_west\n03:11:04 deploy-bot INFO terraform apply complete, api-eu.example.com CNAME updated from lb-eu-old.example.com to lb-eu-new.example.com\n03:11:40 monitoring INFO synthetic check api-eu.example.com latency 890ms (baseline 45ms)\n03:12:15 monitoring WARN synthetic check api-eu.example.com failing, DNS resolution returning NXDOMAIN intermittently\n03:12:15 support-queue INFO 4 new tickets in last 60s referencing 'cannot reach app'\n03:14:00 monitoring ERROR synthetic check api-eu.example.com 100% failure rate\n03:14:30 support-queue INFO ticket volume now 61 in last 3 minutes, mostly EU customers\n03:16:00 oncall-page PAGE triggered: eu-west availability below 50%\n03:19:44 engineer-k.omondi ACK, discovers lb-eu-new.example.com was not yet provisioned, only lb-eu-old existed\n03:21:00 engineer-k.omondi INFO reverting CNAME to lb-eu-old.example.com\n03:23:10 monitoring INFO synthetic check recovering, latency 52ms\n03:26:00 engineer-k.omondi INFO full recovery confirmed, DNS TTL was 300s so propagation delay explains the tail of the incident\n\nAssume EU-west normally serves about 18% of global traffic and the region was fully unreachable for roughly 15 minutes.",
+      "targetTokens": 750
+    },
+    {
+      "id": "medium-083",
+      "title": "Sync vs event-driven fulfillment",
+      "category": "analysis",
+      "text": "An e-commerce order fulfillment system currently makes synchronous calls from the order service to inventory, payment, and shipping-label services in sequence, and is considering a move to an event-driven architecture using a message broker instead. Evaluate this architectural change against: failure isolation when one downstream service is degraded, the operational cost of debugging a multi-step business process that no longer has a single call stack, latency for the customer-facing 'place order' request, and the team's current lack of any existing message broker in production. Give a definitive verdict on whether the migration is worth doing now versus deferring it, and specify what triggering condition (e.g., a scale threshold or a specific recurring failure mode) would change your answer.",
+      "targetTokens": 600
+    },
+    {
+      "id": "medium-084",
+      "title": "Terraform vs Pulumi migration",
+      "category": "analysis",
+      "text": "Two years into using hand-written Terraform HCL across roughly 200 files, a platform team is evaluating a switch to Pulumi, which lets them write infrastructure code in TypeScript instead. Compare the two on: state management maturity and drift-detection tooling, the ergonomics of expressing conditional logic and loops (HCL's limited expressiveness versus a general-purpose language), the risk and cost of migrating 200 existing files, and hiring/onboarding given most infra engineers already know Terraform. Provide one clear recommendation - stay, migrate fully, or adopt a hybrid approach for new modules only - and defend the choice against the specific migration cost mentioned.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-085",
+      "title": "Node.js heap leak diagnosis",
+      "category": "analysis",
+      "text": "Analyze the log/metrics excerpt below from a Node.js order-processing service and write a postmortem-style analysis covering Root Cause, Why It Took 6 Hours To Notice, and a verdict on whether the fix (restarting pods every 4 hours as a stopgap) is an acceptable long-term mitigation or must be replaced with a real fix.\n\n[metrics] 08:00 heap_used=180MB rss=310MB active_handles=42\n[metrics] 10:00 heap_used=410MB rss=540MB active_handles=890\n[metrics] 12:00 heap_used=780MB rss=920MB active_handles=2140\n[metrics] 13:30 heap_used=1180MB rss=1340MB active_handles=3980\n[log] 13:41 GC pause 340ms (previously averaging 12ms)\n[log] 13:52 GC pause 1120ms\n[log] 14:03 process OOM-killed, restarted by orchestrator\n[log] 14:03 engineer note: heap snapshot taken just before OOM shows 3,981 retained EventEmitter listener objects all referencing closed database connections from a connection-pool 'on error' handler that was never removed\n[log] 14:20 engineer note: the pool's error handler is re-registered on every request instead of once at startup, and the old handlers are never detached because the request-scoped connection object stays referenced by the closure\n\nAssume this service handles roughly 40 requests per second at peak.",
+      "targetTokens": 700
+    },
+    {
+      "id": "medium-086",
+      "title": "Build vs buy feature flags",
+      "category": "analysis",
+      "text": "A company with 25 engineers currently has no feature-flagging system and is deciding whether to buy a hosted feature-flag SaaS product or build a minimal in-house flag service backed by their existing Postgres database and Redis cache. Compare the two paths on: time to first flag in production, ongoing maintenance burden on the platform team, cost at their current scale (roughly 2 million flag evaluations per day) versus projected cost at 10x that scale, and the risk of vendor lock-in for a capability that touches every service. Give a firm recommendation for this specific company and identify the one scale threshold at which your recommendation would reverse.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-087",
+      "title": "Kafka vs RabbitMQ for events",
+      "category": "analysis",
+      "text": "An events pipeline needs to carry order-lifecycle events (created, paid, shipped, cancelled) to roughly 8 downstream consumers, some of which need to replay the last 7 days of events for backfills. Compare Kafka and RabbitMQ for this specific pipeline on: native support for long-retention replay, guarantees around per-key ordering, the operational burden of running either system with a 3-person infra team, and throughput headroom if order volume grows 5x. Conclude with an unambiguous choice of one system for this pipeline, explicitly addressing the replay requirement, since that is the requirement most likely to be decisive here.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-088",
+      "title": "Redis eviction storm postmortem",
+      "category": "analysis",
+      "text": "A session-store outage last night traced back to Redis eviction; here is the log. Write a postmortem using headings Summary, Root Cause, Contributing Factors, and Action Items, and end with a verdict on whether the root cause was a capacity-planning failure or a code-level bug (or both), stating which one deserves the higher-priority fix.\n\n21:00 redis-primary INFO used_memory 3.8GB of maxmemory 4GB\n21:15 redis-primary INFO used_memory 3.95GB, evicted_keys counter begins incrementing\n21:16 auth-svc WARN session lookup miss for token a91f..., forcing re-login\n21:16 auth-svc WARN session lookup miss for token c223..., forcing re-login\n21:17 auth-svc WARN 1,204 session lookup misses in last 60s (baseline near 0)\n21:18 support-queue INFO surge of tickets: 'I keep getting logged out'\n21:20 engineer-t.nakamura INFO checks redis INFO, maxmemory-policy is set to allkeys-lru, meaning any key including active sessions can be evicted, not just expired ones\n21:22 engineer-t.nakamura INFO discovers a batch analytics job introduced last week writes 2.1GB of temporary aggregation keys into the same Redis instance with no TTL and no separate namespace\n21:35 engineer-t.nakamura INFO manually flushes the analytics keys, used_memory drops to 1.7GB, eviction stops, session miss rate returns to baseline within 4 minutes",
+      "targetTokens": 700
+    },
+    {
+      "id": "medium-089",
+      "title": "TypeScript vs Python for ETL",
+      "category": "analysis",
+      "text": "A 4-person data platform team is building a new ETL pipeline that will grow from 15 to an expected 80 transformation jobs over the next year, and must choose between TypeScript (with strict mode) and Python (with type hints but no enforced strict mode) as the primary language. Evaluate on: the value of compile-time type checking as job count and contributor count grow, the maturity and breadth of each language's data/ETL ecosystem, ramp-up time for the team's current skill set (all four engineers are stronger in Python today), and long-term maintenance cost as jobs accumulate. Give a definitive recommendation, explicitly stating whether the team's current skill gap should outweigh the type-safety argument, and justify why.",
+      "targetTokens": 600
+    },
+    {
+      "id": "medium-090",
+      "title": "Row-level security vs app checks",
+      "category": "analysis",
+      "text": "A multi-tenant SaaS application currently enforces tenant data isolation entirely in application code via a WHERE tenant_id = ? clause added to every query, and the team is considering moving that guarantee into the database using Postgres row-level security (RLS) policies instead. Compare the two approaches on: the blast radius of a single missed WHERE clause in application code versus a misconfigured RLS policy, query performance overhead RLS policies typically introduce, the ease of writing and testing raw analytical queries against the database directly, and how each approach affects a future migration to a different ORM. End with a clear verdict on which approach this team should adopt as its primary isolation guarantee, while application-layer checks may still remain as defense in depth - state explicitly whether defense in depth is worth the double maintenance cost here.",
+      "targetTokens": 650
+    },
+    {
+      "id": "medium-091",
+      "title": "Tank fill with drain valve",
+      "category": "math-reasoning",
+      "text": "A storage tank has an inlet pipe A that alone fills it in 5 hours, a second inlet pipe B that alone fills it in 8 hours, and a drain valve C that alone empties a full tank in 20 hours. Starting from an empty tank, all three are opened simultaneously. After 3 hours, valve C is closed while A and B keep running. Determine the total time, from the very start, until the tank is completely full. Show every step of your reasoning, including the combined rate calculations before and after the valve closes, and state the final answer as a decimal number of hours rounded to two places.",
+      "targetTokens": 400
+    },
+    {
+      "id": "medium-092",
+      "title": "Conference scheduling combinatorics",
+      "category": "math-reasoning",
+      "text": "A conference has 5 available keynote speakers and 8 available breakout speakers. The organizing committee needs to assign keynote speakers to open each of 3 conference days, where each day gets exactly one keynote speaker, no speaker repeats across days, and the order (which day each speaker gets) matters. Separately, the committee must also choose 4 of the 8 breakout speakers to fill an unordered shared 'unconference' time slot, where the order of selection does not matter. Calculate the total number of distinct overall schedules (keynote assignment combined with breakout selection), showing the permutation and combination formulas you used and the arithmetic that produces the final integer.",
+      "targetTokens": 350
+    },
+    {
+      "id": "medium-093",
+      "title": "Flaky test draw probability",
+      "category": "math-reasoning",
+      "text": "A QA lead has a pool of 15 test cases, 6 of which are known to be flaky and 9 of which are stable. She selects 4 test cases uniformly at random without replacement to run in a smoke-test suite. Compute the exact probability that precisely 2 of the 4 selected test cases are from the flaky set. Show the combinatorial setup using combinations, simplify the fraction as far as possible, and also give the result as a decimal rounded to four places.",
+      "targetTokens": 350
+    },
+    {
+      "id": "medium-094",
+      "title": "Monthly compounding threshold",
+      "category": "math-reasoning",
+      "text": "An engineer deposits $12,000 into a savings account that compounds monthly at a nominal annual interest rate of 6%. Determine the smallest whole number of months after which the account balance first exceeds $15,000. Show the compound interest formula you use, isolate the exponent using logarithms, and state the final integer number of months along with the actual balance at that month, rounded to the nearest cent.",
+      "targetTokens": 400
+    },
+    {
+      "id": "medium-095",
+      "title": "Triangle area and largest angle",
+      "category": "math-reasoning",
+      "text": "A triangular plot of land has side lengths of 7 meters, 8 meters, and 9 meters. First compute the triangle's area using Heron's formula, showing the semi-perimeter calculation and simplifying the square root as far as possible. Then compute the measure of the largest interior angle (the one opposite the longest side) using the Law of Cosines, showing the substitution and giving the angle in degrees rounded to one decimal place.",
+      "targetTokens": 400
+    },
+    {
+      "id": "medium-096",
+      "title": "Acid mixture linear system",
+      "category": "math-reasoning",
+      "text": "A chemistry lab needs to prepare 14 liters of a 40%-acid solution by mixing some amount of a 25%-acid solution with some amount of a 60%-acid solution. Set up a system of two linear equations in two unknowns representing total volume and total acid content, solve the system algebraically (show the substitution or elimination steps), and state exactly how many liters of each source solution are required.",
+      "targetTokens": 350
+    },
+    {
+      "id": "medium-097",
+      "title": "Cyclists meeting with head start",
+      "category": "math-reasoning",
+      "text": "Two cyclists start 63 miles apart and ride toward each other along the same straight road. The first cyclist rides at a constant 14 mph and departs first; the second cyclist rides at a constant 21 mph but departs 15 minutes after the first. Determine, measured from the moment the first cyclist departed, how long it takes until they meet. Show your work for the distance the first cyclist covers alone during the head-start period, the combined closing speed once both are riding, and the final total elapsed time expressed in hours and minutes.",
+      "targetTokens": 400
+    },
+    {
+      "id": "medium-098",
+      "title": "Password type arrangement count",
+      "category": "math-reasoning",
+      "text": "A security policy requires passwords to be exactly 8 characters long, composed of exactly 2 uppercase letters, exactly 2 digits, and exactly 4 lowercase letters, arranged in some order, with the additional constraint that the two digits may never be adjacent to each other. Treating each character only by its type (U, U, D, D, L, L, L, L) rather than its specific value, count how many distinct type-sequences of length 8 satisfy the no-adjacent-digits constraint. Show the total unrestricted arrangement count using the multinomial coefficient, then subtract the arrangements where the two digits are adjacent using the block/gluing method, and give the final integer.",
+      "targetTokens": 400
+    },
+    {
+      "id": "medium-099",
+      "title": "Flaky test binomial probability",
+      "category": "math-reasoning",
+      "text": "An integration test fails independently with probability 0.15 on each run, regardless of prior runs. If the test suite is executed 6 independent times, calculate the probability that it fails at least twice out of the 6 runs. Show the binomial probability mass function you use for exactly 0 failures and exactly 1 failure, compute both values, and subtract their sum from 1 to obtain the final probability, rounded to four decimal places.",
+      "targetTokens": 400
+    },
+    {
+      "id": "medium-100",
+      "title": "Comparing two investments",
+      "category": "math-reasoning",
+      "text": "An investor is comparing two options for a $10,000 deposit held for exactly 6 years. Option X compounds annually at a nominal rate of 5%. Option Y compounds monthly at a nominal annual rate of 4.8%. Compute the final balance for each option separately, showing the compound interest formula and the exponent used in each case, then state which option yields more money at the end of 6 years and by how much, rounded to the nearest cent.",
+      "targetTokens": 400
+    },
+    {
+      "id": "medium-101",
+      "title": "Grain silo volume and fill time",
+      "category": "math-reasoning",
+      "text": "A grain silo is shaped as a vertical cylinder of radius 3 meters and height 10 meters, topped with a cone of the same radius and a height of 4 meters. Compute the total volume of the silo by summing the cylinder's volume and the cone's volume, showing both formulas and leaving intermediate results in terms of pi before giving a final numeric value in cubic meters (use pi = 3.14159). Then, if grain is poured in at a constant rate of 2 cubic meters per minute starting from empty, calculate how many minutes it takes to completely fill the silo, rounded to one decimal place.",
+      "targetTokens": 400
+    },
+    {
+      "id": "medium-102",
+      "title": "Server routing steady state",
+      "category": "math-reasoning",
+      "text": "Requests to a two-region server cluster switch between Region A and Region B each hour according to a Markov transition matrix: from Region A, 90% of requests stay in A and 10% move to B; from Region B, 30% move to A and 70% stay in B. Find the steady-state distribution (piA, piB) such that the distribution no longer changes when multiplied by the transition matrix, and such that piA + piB = 1. Show the two balance equations you derive from the matrix, solve them algebraically, and state the final steady-state proportions as exact fractions and as decimals.",
+      "targetTokens": 400
+    },
+    {
+      "id": "medium-103",
+      "title": "Warehouse crew shift output",
+      "category": "math-reasoning",
+      "text": "A warehouse crew of 6 workers, all packing at the same constant individual rate, can together pack 900 boxes over a 5-hour shift. After exactly 2 hours into the shift, 2 of the 6 workers are reassigned to another task, leaving only 4 workers for the remaining 3 hours, all still working at the same per-worker rate as before. Determine the per-worker hourly packing rate first, then compute how many boxes are packed in the first 2 hours, how many are packed in the final 3 hours, and finally the total number of boxes packed by the end of the full 5-hour shift.",
+      "targetTokens": 350
+    },
+    {
+      "id": "medium-104",
+      "title": "Full house card odds",
+      "category": "math-reasoning",
+      "text": "From a standard 52-card deck, a 5-card hand is dealt at random. Calculate the exact probability that the hand contains exactly 3 kings and exactly 2 queens. Show the combination counts for choosing 3 of the 4 kings and 2 of the 4 queens, the combination count for the total number of possible 5-card hands from 52 cards, and simplify the final probability as a reduced fraction and as a decimal in scientific notation.",
+      "targetTokens": 350
+    },
+    {
+      "id": "medium-105",
+      "title": "Hexagonal helipad measurements",
+      "category": "math-reasoning",
+      "text": "A helipad is built in the shape of a regular hexagon with a side length of 12 meters. First compute the total area of the hexagonal pad, showing the standard formula for a regular hexagon's area in terms of its side length and simplifying any radicals as far as possible. Then compute the apothem (the radius of the largest circle that can be inscribed within the hexagon), showing the relationship between the apothem and the side length for a regular hexagon. Give both final answers, the area in square meters and the apothem in meters, rounded to two decimal places where applicable.",
+      "targetTokens": 400
+    },
+    {
+      "id": "medium-106",
+      "title": "Running revenue per customer",
+      "category": "sql-query",
+      "text": "You are given the following schema for an e-commerce platform:\n\ncustomers(customer_id INT PK, signup_date DATE, region VARCHAR, plan_tier VARCHAR)\norders(order_id INT PK, customer_id INT FK, order_date DATE, status VARCHAR, total_amount DECIMAL)\norder_items(order_item_id INT PK, order_id INT FK, product_id INT FK, quantity INT, unit_price DECIMAL)\nproducts(product_id INT PK, product_name VARCHAR, category VARCHAR)\n\nWrite a single SQL query that, for every customer with at least one order with status = 'completed', lists each completed order's order_date and total_amount alongside a running (cumulative) total of that customer's spend ordered chronologically, using a window function rather than a correlated subquery or self-join. Also include a column showing each order's rank in that customer's order history by date. Return columns: customer_id, order_date, total_amount, running_total, order_rank. Explain briefly which window function clauses you used and why.",
+      "targetTokens": 450
+    },
+    {
+      "id": "medium-107",
+      "title": "Overdue invoice detection query",
+      "category": "sql-query",
+      "text": "Here is a SaaS billing schema:\n\naccounts(account_id INT PK, company_name VARCHAR, created_at DATE, status VARCHAR)\nsubscriptions(subscription_id INT PK, account_id INT FK, plan_name VARCHAR, mrr DECIMAL, started_at DATE, cancelled_at DATE NULL)\ninvoices(invoice_id INT PK, account_id INT FK, invoice_date DATE, due_date DATE, amount DECIMAL, paid_at DATE NULL)\n\nWrite a SQL query using a correlated subquery (not a window function) that returns every account whose most recent invoice (by invoice_date) is unpaid as of today (paid_at IS NULL) and is also past its due_date. For each such account, return account_id, company_name, the invoice_id and due_date of that specific most-recent invoice, and the number of days it is overdue. The correlated subquery must identify 'most recent invoice per account' by comparing invoice_date against all other invoices for the same account_id.",
+      "targetTokens": 450
+    },
+    {
+      "id": "medium-108",
+      "title": "Device uptime gaps and islands",
+      "category": "sql-query",
+      "text": "Given this IoT fleet schema:\n\ndevices(device_id INT PK, device_name VARCHAR, site_id INT FK, installed_at DATE)\nsites(site_id INT PK, site_name VARCHAR, region VARCHAR)\nstatus_pings(ping_id INT PK, device_id INT FK, ping_time TIMESTAMP, status VARCHAR CHECK (status IN ('online','offline')))\n\nEach device sends a status ping every 5 minutes. Write a gaps-and-islands SQL query that, for a given device_id, groups consecutive pings with the same status into contiguous 'episodes', and returns one row per episode with columns: device_id, status, episode_start (first ping_time in the episode), episode_end (last ping_time in the episode), and episode_duration_minutes. Use the standard technique of subtracting a row_number() computed within each status partition from a row_number() computed overall (or an equivalent approach) to identify the island groupings, and explain in one sentence why that subtraction trick produces a constant value within each island.",
+      "targetTokens": 500
+    },
+    {
+      "id": "medium-109",
+      "title": "Streaming cohort retention query",
+      "category": "sql-query",
+      "text": "Consider this video streaming schema:\n\nusers(user_id INT PK, signup_date DATE, country VARCHAR)\nsubscriptions(subscription_id INT PK, user_id INT FK, plan VARCHAR, started_at DATE, cancelled_at DATE NULL)\nwatch_sessions(session_id INT PK, user_id INT FK, watched_at TIMESTAMP, title_id INT FK, minutes_watched INT)\ntitles(title_id INT PK, title_name VARCHAR, genre VARCHAR)\n\nWrite a SQL query that builds a monthly cohort retention table: group users into cohorts by the calendar month of their signup_date, then for each cohort, for each subsequent calendar month (month 0 through month 5 relative to signup month), compute the percentage of that cohort's users who had at least one watch_sessions row in that relative month. Return columns: cohort_month, months_since_signup, active_users, cohort_size, retention_rate. Show how you compute 'months since signup' as an integer difference between two calendar months.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-110",
+      "title": "Warehouse SKU running balance",
+      "category": "sql-query",
+      "text": "The following inventory schema describes a warehouse:\n\nwarehouses(warehouse_id INT PK, warehouse_name VARCHAR, region VARCHAR)\nskus(sku_id INT PK, sku_code VARCHAR, description VARCHAR)\ninventory_movements(movement_id INT PK, warehouse_id INT FK, sku_id INT FK, movement_time TIMESTAMP, movement_type VARCHAR CHECK (movement_type IN ('receipt','shipment','adjustment')), quantity_delta INT)\n\nNote that quantity_delta is positive for receipts and positive adjustments, and negative for shipments and negative adjustments. Write a SQL query that, for a single given sku_id across a single given warehouse_id, lists every movement in chronological order along with a running on-hand quantity balance computed as a window function over quantity_delta, and flags with a boolean column 'went_negative' any row where the running balance dropped below zero, which would indicate a data integrity problem since physical stock cannot be negative.",
+      "targetTokens": 450
+    },
+    {
+      "id": "medium-111",
+      "title": "Unresolved support ticket anti-join",
+      "category": "sql-query",
+      "text": "Here is a customer support schema:\n\ncustomers(customer_id INT PK, company_name VARCHAR, tier VARCHAR)\ntickets(ticket_id INT PK, customer_id INT FK, opened_at TIMESTAMP, subject VARCHAR, severity VARCHAR)\nticket_events(event_id INT PK, ticket_id INT FK, event_time TIMESTAMP, event_type VARCHAR CHECK (event_type IN ('comment','status_change','escalation')), new_status VARCHAR NULL)\nagents(agent_id INT PK, agent_name VARCHAR, team VARCHAR)\n\nWrite an anti-join SQL query (using NOT EXISTS or LEFT JOIN with a NULL check, not NOT IN) that finds every customer who has at least one open ticket (a ticket for which no ticket_events row has event_type = 'status_change' and new_status = 'resolved') and has had no 'comment' event logged on any of their tickets within the last 3 days. Return customer_id, company_name, tier, and the count of such stale open tickets, ordered by tier and then by count descending.",
+      "targetTokens": 500
+    },
+    {
+      "id": "medium-112",
+      "title": "Top students per department",
+      "category": "sql-query",
+      "text": "Given this university schema:\n\nstudents(student_id INT PK, full_name VARCHAR, department_id INT FK, enrollment_year INT)\ndepartments(department_id INT PK, department_name VARCHAR)\ncourses(course_id INT PK, course_name VARCHAR, department_id INT FK, credits INT)\nenrollments(enrollment_id INT PK, student_id INT FK, course_id INT FK, term VARCHAR, grade_points DECIMAL)\n\nWrite a SQL query using a window function (RANK or DENSE_RANK, partitioned appropriately) that computes each student's overall GPA as the credit-weighted average of grade_points across all their enrollments, then returns the top 3 students by GPA within each department. Handle ties explicitly by stating which rank function you chose and why, and return columns: department_name, student_full_name, gpa, department_rank.",
+      "targetTokens": 450
+    },
+    {
+      "id": "medium-113",
+      "title": "Overdue library members query",
+      "category": "sql-query",
+      "text": "Consider this library schema:\n\nmembers(member_id INT PK, full_name VARCHAR, branch_id INT FK, joined_date DATE)\nbranches(branch_id INT PK, branch_name VARCHAR, city VARCHAR)\nbooks(book_id INT PK, title VARCHAR, author VARCHAR)\nloans(loan_id INT PK, member_id INT FK, book_id INT FK, checked_out_at DATE, due_at DATE, returned_at DATE NULL)\n\nDefine a member's 'overdue rate' as the fraction of their completed loans (returned_at IS NOT NULL) where returned_at > due_at. Write a SQL query using a correlated subquery that returns every member whose personal overdue rate is strictly greater than the average overdue rate of all members at their own branch. Return member_id, full_name, branch_name, the member's own overdue rate, and the branch average overdue rate for comparison, with both rates rounded to 3 decimal places.",
+      "targetTokens": 500
+    },
+    {
+      "id": "medium-114",
+      "title": "Longest gym check-in streak",
+      "category": "sql-query",
+      "text": "The following schema models a gym:\n\nmembers(member_id INT PK, full_name VARCHAR, membership_type VARCHAR)\ncheck_ins(check_in_id INT PK, member_id INT FK, check_in_date DATE)\nclasses(class_id INT PK, class_name VARCHAR, instructor VARCHAR)\nclass_attendance(attendance_id INT PK, member_id INT FK, class_id INT FK, attended_date DATE)\n\nAssume a member checks in at most once per day. Write a gaps-and-islands SQL query that finds each member's single longest streak of consecutive calendar days with a check_ins row (no missed days within the streak). Use the technique of subtracting a sequential day number from the actual date to produce a constant 'island' grouping key for consecutive dates, then aggregate by that key to get streak lengths. Return member_id, full_name, streak_start_date, streak_end_date, and streak_length_days for only the single longest streak per member.",
+      "targetTokens": 500
+    },
+    {
+      "id": "medium-115",
+      "title": "Ride-share retention cohorts",
+      "category": "sql-query",
+      "text": "Given this ride-sharing schema:\n\nriders(rider_id INT PK, signup_date DATE, home_city VARCHAR)\ndrivers(driver_id INT PK, city VARCHAR, rating DECIMAL)\ntrips(trip_id INT PK, rider_id INT FK, driver_id INT FK, requested_at TIMESTAMP, fare_amount DECIMAL, trip_status VARCHAR)\npromotions(promo_id INT PK, rider_id INT FK, applied_trip_id INT FK, discount_amount DECIMAL)\n\nWrite a SQL query that produces a monthly signup-cohort retention table for riders: bucket riders by the calendar month of signup_date, then for months 0 through 4 relative to the signup month, compute the count and percentage of each cohort who completed at least one trip (trip_status = 'completed') in that relative month. Return cohort_month, months_since_signup, riders_active, cohort_size, retention_pct, and explain how you compute the relative month index from two dates without relying on a database-specific date-diff function that isn't standard SQL.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-116",
+      "title": "Employee YTD cumulative pay",
+      "category": "sql-query",
+      "text": "Below is a payroll schema:\n\nemployees(employee_id INT PK, full_name VARCHAR, department VARCHAR, hire_date DATE)\npay_periods(pay_period_id INT PK, period_start DATE, period_end DATE)\npaychecks(paycheck_id INT PK, employee_id INT FK, pay_period_id INT FK, gross_pay DECIMAL, tax_withheld DECIMAL, net_pay DECIMAL)\ndepartment_budgets(department VARCHAR PK, annual_budget DECIMAL)\n\nWrite a SQL query using a window function partitioned by employee_id and calendar year, ordered by pay_period_id, that computes each employee's cumulative (year-to-date) net_pay as of each paycheck. Also include, for each row, that employee's department's annual_budget and a column showing the employee's YTD net_pay as a percentage of the department's annual_budget. Return employee_id, full_name, department, period_end, net_pay, ytd_net_pay, pct_of_dept_budget.",
+      "targetTokens": 450
+    },
+    {
+      "id": "medium-117",
+      "title": "Unchecked-in passengers anti-join",
+      "category": "sql-query",
+      "text": "Given this airline schema:\n\npassengers(passenger_id INT PK, full_name VARCHAR, frequent_flyer_tier VARCHAR)\nbookings(booking_id INT PK, passenger_id INT FK, flight_id INT FK, booked_at TIMESTAMP, fare_class VARCHAR)\nflights(flight_id INT PK, flight_number VARCHAR, departure_time TIMESTAMP, origin VARCHAR, destination VARCHAR)\ncheck_ins(check_in_id INT PK, booking_id INT FK, checked_in_at TIMESTAMP, seat_assigned VARCHAR)\n\nWrite an anti-join SQL query (using NOT EXISTS, not NOT IN, to correctly handle any NULLs in the join key) that finds every booking for a flight whose departure_time has already passed where no corresponding check_ins row exists at all. Return passenger_id, full_name, flight_number, departure_time, and fare_class, ordered by departure_time descending, and briefly note why NOT EXISTS is safer than NOT IN if booking_id could ever be NULL in check_ins.",
+      "targetTokens": 450
+    },
+    {
+      "id": "medium-118",
+      "title": "Reservation gaps between bookings",
+      "category": "sql-query",
+      "text": "Consider this restaurant reservation schema:\n\nrestaurants(restaurant_id INT PK, restaurant_name VARCHAR, city VARCHAR)\ntables(table_id INT PK, restaurant_id INT FK, table_name VARCHAR, seats INT)\nreservations(reservation_id INT PK, table_id INT FK, guest_name VARCHAR, reserved_start TIMESTAMP, reserved_end TIMESTAMP)\nguests(guest_id INT PK, full_name VARCHAR, loyalty_member BOOLEAN)\n\nWrite a SQL query using LAG (or LEAD) window functions, partitioned by table_id and ordered by reserved_start, that computes the gap in minutes between each reservation's reserved_start and the immediately preceding reservation's reserved_end on the same table. Return table_id, table_name, reserved_start, previous_reserved_end, gap_minutes, and flag with a boolean column 'needs_buffer_review' any gap under 15 minutes, since that would not give staff enough time to reset the table.",
+      "targetTokens": 450
+    },
+    {
+      "id": "medium-119",
+      "title": "Hospital readmission detector query",
+      "category": "sql-query",
+      "text": "Here is a hospital schema:\n\npatients(patient_id INT PK, full_name VARCHAR, date_of_birth DATE)\nadmissions(admission_id INT PK, patient_id INT FK, admitted_at TIMESTAMP, discharged_at TIMESTAMP NULL, admitting_diagnosis VARCHAR)\ndepartments(department_id INT PK, department_name VARCHAR)\nadmission_departments(admission_id INT FK, department_id INT FK, transferred_at TIMESTAMP)\n\nWrite a SQL query using a correlated subquery that identifies every admission that counts as a 30-day readmission - meaning there exists an earlier admission for the same patient_id whose discharged_at falls within the 30 days immediately before this admission's admitted_at. Return patient_id, full_name, the current admission_id and admitted_at, the prior admission_id and discharged_at that triggered the readmission flag, and the number of days between the two events. Only match against the most recent qualifying prior discharge if a patient has multiple prior admissions in that window.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-120",
+      "title": "Merging telecom call sessions",
+      "category": "sql-query",
+      "text": "The following telecom schema is provided:\n\nsubscribers(subscriber_id INT PK, phone_number VARCHAR, plan_type VARCHAR)\ncall_records(call_id INT PK, subscriber_id INT FK, call_start TIMESTAMP, call_end TIMESTAMP, direction VARCHAR CHECK (direction IN ('inbound','outbound')), tower_id INT FK)\ntowers(tower_id INT PK, tower_location VARCHAR, region VARCHAR)\nbilling_adjustments(adjustment_id INT PK, subscriber_id INT FK, adjustment_amount DECIMAL, reason VARCHAR)\n\nDue to a known billing-system quirk, a single continuous phone call is sometimes logged as two or more separate call_records rows if the connection briefly drops and reconnects within 60 seconds. Write a gaps-and-islands SQL query that, for a given subscriber_id, merges consecutive call_records into a single logical session whenever the gap between one record's call_end and the next record's call_start (ordered chronologically) is 60 seconds or less, and returns one row per merged session with session_start, session_end, total_duration_seconds, and the count of raw call_records rows merged into it.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-121",
+      "title": "Callback pyramid signup flow",
+      "category": "refactoring",
+      "text": "Here is a Node.js signup function that chains three callback-based async operations - creating the user record, provisioning a billing account, and sending a welcome email. It works correctly today but is deeply nested and hard to modify.\n\n```javascript\nfunction signupUser(userData, callback) {\n  db.createUser(userData, function(err, user) {\n    if (err) {\n      callback(err);\n    } else {\n      billingClient.createAccount(user.id, function(err, account) {\n        if (err) {\n          callback(err);\n        } else {\n          mailer.sendWelcomeEmail(user.email, function(err, info) {\n            if (err) {\n              callback(err);\n            } else {\n              analytics.track('user_signed_up', user.id, function(err) {\n                if (err) {\n                  console.log('analytics failed but continuing');\n                  callback(null, { user: user, account: account });\n                } else {\n                  callback(null, { user: user, account: account });\n                }\n              });\n            }\n          });\n        }\n      });\n    }\n  });\n}\n```\n\nRefactor this function to eliminate the callback pyramid using async/await, without adding any new npm dependencies (assume db, billingClient, mailer, and analytics already expose promise-returning methods alongside their callback-based ones, e.g. db.createUserAsync). The public API must not change: signupUser(userData, callback) must still accept a Node-style error-first callback as its second argument and behave identically, including the requirement that an analytics failure is logged but does not fail the overall signup.",
+      "targetTokens": 600
+    },
+    {
+      "id": "medium-122",
+      "title": "God function order processing",
+      "category": "refactoring",
+      "text": "The Python function below handles an entire order lifecycle - validation, pricing, tax, shipping cost, and confirmation email - in one large function. It is correct but 70+ lines long and difficult to test in isolation.\n\n```python\ndef process_order(order):\n    if not order.get('items') or len(order['items']) == 0:\n        raise ValueError('Order must have at least one item')\n    for item in order['items']:\n        if item['quantity'] <= 0:\n            raise ValueError(f\"Invalid quantity for item {item['sku']}\")\n        if item['unit_price'] < 0:\n            raise ValueError(f\"Invalid price for item {item['sku']}\")\n\n    subtotal = 0\n    for item in order['items']:\n        subtotal += item['quantity'] * item['unit_price']\n\n    if order.get('coupon_code'):\n        if order['coupon_code'] == 'SAVE10':\n            subtotal = subtotal * 0.9\n        elif order['coupon_code'] == 'SAVE20':\n            subtotal = subtotal * 0.8\n        else:\n            pass\n\n    state = order['shipping_address']['state']\n    if state in ('CA', 'NY', 'WA'):\n        tax_rate = 0.0875\n    elif state in ('TX', 'FL'):\n        tax_rate = 0.0625\n    else:\n        tax_rate = 0.05\n    tax = subtotal * tax_rate\n\n    total_weight = sum(i['quantity'] * i.get('weight', 1.0) for i in order['items'])\n    if total_weight < 5:\n        shipping = 4.99\n    elif total_weight < 20:\n        shipping = 9.99\n    else:\n        shipping = 19.99\n    if subtotal > 100:\n        shipping = 0\n\n    total = subtotal + tax + shipping\n\n    email_body = f\"Thanks for your order! Subtotal: {subtotal}, Tax: {tax}, Shipping: {shipping}, Total: {total}\"\n    send_email(order['customer_email'], 'Order Confirmation', email_body)\n\n    return {'subtotal': subtotal, 'tax': tax, 'shipping': shipping, 'total': total}\n```\n\nRefactor this into several smaller, independently testable functions (for example, separate validation, pricing, tax, shipping, and notification logic), while keeping process_order(order) as the single public entry point with the exact same input shape and return value. Do not introduce any new third-party dependencies.",
+      "targetTokens": 700
+    },
+    {
+      "id": "medium-123",
+      "title": "Deeply nested discount eligibility",
+      "category": "refactoring",
+      "text": "This Java method determines whether a customer is eligible for a loyalty discount, using five levels of nested if statements. It is correct but hard to read and extend.\n\n```java\npublic boolean isEligibleForDiscount(Customer customer, Order order) {\n    boolean eligible = false;\n    if (customer != null) {\n        if (customer.getAccountStatus() == AccountStatus.ACTIVE) {\n            if (customer.getYearsAsMember() >= 1) {\n                if (order != null) {\n                    if (order.getTotal().compareTo(BigDecimal.valueOf(50)) >= 0) {\n                        if (!customer.hasFlag(\"fraud_review\")) {\n                            eligible = true;\n                        } else {\n                            eligible = false;\n                        }\n                    } else {\n                        eligible = false;\n                    }\n                } else {\n                    eligible = false;\n                }\n            } else {\n                eligible = false;\n            }\n        } else {\n            eligible = false;\n        }\n    } else {\n        eligible = false;\n    }\n    return eligible;\n}\n```\n\nRefactor this method to use guard clauses that return early on any disqualifying condition, flattening the nesting to at most one level deep. The public method signature public boolean isEligibleForDiscount(Customer customer, Order order) must remain unchanged, and no new libraries may be introduced.",
+      "targetTokens": 500
+    },
+    {
+      "id": "medium-124",
+      "title": "Duplicated payment method branches",
+      "category": "refactoring",
+      "text": "The JavaScript function below calculates a processing fee for an order, with nearly identical duplicated logic copy-pasted for each payment method.\n\n```javascript\nfunction calculateProcessingFee(order) {\n  if (order.paymentMethod === 'credit_card') {\n    let fee = order.amount * 0.029 + 0.30;\n    if (order.currency !== 'USD') {\n      fee += order.amount * 0.01;\n    }\n    if (fee < 0.50) {\n      fee = 0.50;\n    }\n    return Math.round(fee * 100) / 100;\n  } else if (order.paymentMethod === 'debit_card') {\n    let fee = order.amount * 0.015 + 0.15;\n    if (order.currency !== 'USD') {\n      fee += order.amount * 0.01;\n    }\n    if (fee < 0.50) {\n      fee = 0.50;\n    }\n    return Math.round(fee * 100) / 100;\n  } else if (order.paymentMethod === 'ach') {\n    let fee = order.amount * 0.008;\n    if (order.currency !== 'USD') {\n      fee += order.amount * 0.01;\n    }\n    if (fee < 0.50) {\n      fee = 0.50;\n    }\n    return Math.round(fee * 100) / 100;\n  } else {\n    throw new Error('Unsupported payment method: ' + order.paymentMethod);\n  }\n}\n```\n\nRefactor to eliminate the duplicated currency-surcharge, minimum-fee, and rounding logic, extracting it into a shared helper while keeping only the per-method rate/base-fee as the varying part (a lookup table is a good approach). The exported function calculateProcessingFee(order) must keep the exact same signature and return values for all existing inputs, and no new dependencies may be added.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-125",
+      "title": "Money as float primitive obsession",
+      "category": "refactoring",
+      "text": "Money is represented as raw floats and currency as a separate string parameter in the Python module below, which has already caused a rounding bug in production.\n\n```python\ndef add_amounts(amount1, currency1, amount2, currency2):\n    if currency1 != currency2:\n        raise ValueError('Currency mismatch')\n    return amount1 + amount2\n\ndef apply_discount(amount, currency, percent):\n    return amount * (1 - percent / 100)\n\ndef format_amount(amount, currency):\n    return f\"{currency} {amount:.2f}\"\n\ndef invoice_total(line_items):\n    total = 0.0\n    currency = line_items[0]['currency']\n    for item in line_items:\n        total = add_amounts(total, currency, item['amount'], item['currency'])\n    return total, currency\n```\n\nRefactor this module to introduce a small Money value class (storing amount as an integer number of cents plus a currency code, to eliminate float rounding errors) used internally by these functions, while keeping every function's external signature and return types exactly as they are today (callers still pass and receive plain floats and currency strings). No new third-party dependencies may be added; the Money class should live in the same module.",
+      "targetTokens": 600
+    },
+    {
+      "id": "medium-126",
+      "title": "Go nested error handling cleanup",
+      "category": "refactoring",
+      "text": "Nested error handling makes the Go function below hard to follow. It reads a config file, parses it, validates it, and connects to a database, with each fallible step indented one level deeper than the last.\n\n```go\nfunc InitializeApp(configPath string) (*App, error) {\n    data, err := os.ReadFile(configPath)\n    if err == nil {\n        var cfg Config\n        err2 := json.Unmarshal(data, &cfg)\n        if err2 == nil {\n            if cfg.DatabaseURL != \"\" {\n                if cfg.Port > 0 && cfg.Port < 65536 {\n                    db, err3 := sql.Open(\"postgres\", cfg.DatabaseURL)\n                    if err3 == nil {\n                        return &App{Config: cfg, DB: db}, nil\n                    } else {\n                        return nil, fmt.Errorf(\"failed to open db: %w\", err3)\n                    }\n                } else {\n                    return nil, errors.New(\"invalid port in config\")\n                }\n            } else {\n                return nil, errors.New(\"missing database_url in config\")\n            }\n        } else {\n            return nil, fmt.Errorf(\"failed to parse config: %w\", err2)\n        }\n    } else {\n        return nil, fmt.Errorf(\"failed to read config file: %w\", err)\n    }\n}\n```\n\nRefactor this function to use Go's idiomatic early-return error handling style (if err != nil { return nil, err } immediately after each fallible call) to eliminate the nesting entirely. The function signature func InitializeApp(configPath string) (*App, error) and all existing error message text must remain unchanged, and no new dependencies may be added.",
+      "targetTokens": 500
+    },
+    {
+      "id": "medium-127",
+      "title": "Ruby god method reports",
+      "category": "refactoring",
+      "text": "The Ruby method below fetches sales data, formats it into a report, and writes it to disk, all in a single method that mixes data access, formatting, and I/O concerns.\n\n```ruby\ndef generate_monthly_report(month, year, output_path)\n  connection = PG.connect(dbname: 'sales')\n  result = connection.exec_params(\n    'SELECT product_name, SUM(quantity) as qty, SUM(quantity * unit_price) as revenue FROM sales WHERE EXTRACT(MONTH FROM sold_at) = $1 AND EXTRACT(YEAR FROM sold_at) = $2 GROUP BY product_name ORDER BY revenue DESC',\n    [month, year]\n  )\n  lines = []\n  lines << \"Monthly Sales Report - #{month}/#{year}\"\n  lines << '=' * 40\n  total_revenue = 0\n  result.each do |row|\n    lines << \"#{row['product_name'].ljust(20)} qty=#{row['qty'].rjust(5)} revenue=$#{sprintf('%.2f', row['revenue'].to_f)}\"\n    total_revenue += row['revenue'].to_f\n  end\n  lines << '=' * 40\n  lines << \"Total Revenue: $#{sprintf('%.2f', total_revenue)}\"\n  File.open(output_path, 'w') { |f| f.write(lines.join(\"\\n\")) }\n  connection.close\n  return total_revenue\nend\n```\n\nRefactor this into separate methods for data retrieval, report formatting, and file output, so each concern can be tested independently (for example, the formatting logic should be testable without a database or filesystem). The public method generate_monthly_report(month, year, output_path) must keep its exact signature and return value, and no new gems may be added.",
+      "targetTokens": 600
+    },
+    {
+      "id": "medium-128",
+      "title": "TypeScript chained fetch callbacks",
+      "category": "refactoring",
+      "text": "Take a look at this TypeScript function, which fetches a user, then their orders, then generates an invoice, using nested callback-style .then() chains with error handling duplicated at each level.\n\n```typescript\nfunction buildInvoicePreview(userId: string, callback: (err: Error | null, preview?: InvoicePreview) => void): void {\n  fetchUser(userId).then((user) => {\n    fetchOrders(user.id).then((orders) => {\n      fetchInvoiceTemplate(user.accountType).then((template) => {\n        try {\n          const preview = renderInvoice(user, orders, template);\n          callback(null, preview);\n        } catch (renderErr) {\n          callback(renderErr as Error);\n        }\n      }).catch((templateErr) => {\n        callback(templateErr);\n      });\n    }).catch((ordersErr) => {\n      callback(ordersErr);\n    });\n  }).catch((userErr) => {\n    callback(userErr);\n  });\n}\n```\n\nRefactor this function to use async/await with a single try/catch block instead of nested .then()/.catch() chains, without adding any new npm packages. The public signature buildInvoicePreview(userId: string, callback: (err: Error | null, preview?: InvoicePreview) => void): void must remain exactly as-is, since other modules already depend on this callback-based interface.",
+      "targetTokens": 500
+    },
+    {
+      "id": "medium-129",
+      "title": "Regional shipping fee duplication",
+      "category": "refactoring",
+      "text": "The C# method below computes shipping cost per region, with the same base-fee-plus-surcharge pattern duplicated for every region in a long if-else chain.\n\n```csharp\npublic decimal CalculateShippingCost(string region, decimal weightKg, bool isExpress)\n{\n    decimal cost;\n    if (region == \"Northeast\")\n    {\n        cost = 5.00m + weightKg * 0.40m;\n        if (isExpress) cost += 12.00m;\n    }\n    else if (region == \"Southeast\")\n    {\n        cost = 4.50m + weightKg * 0.35m;\n        if (isExpress) cost += 10.00m;\n    }\n    else if (region == \"Midwest\")\n    {\n        cost = 4.00m + weightKg * 0.30m;\n        if (isExpress) cost += 9.00m;\n    }\n    else if (region == \"West\")\n    {\n        cost = 6.00m + weightKg * 0.45m;\n        if (isExpress) cost += 14.00m;\n    }\n    else\n    {\n        throw new ArgumentException(\"Unknown region: \" + region);\n    }\n    return Math.Round(cost, 2);\n}\n```\n\nRefactor this method to eliminate the duplicated per-region shape (base fee + per-kg rate + express surcharge) by replacing the if-else chain with a lookup table (e.g. a Dictionary keyed by region holding the three numbers), while keeping the public method signature public decimal CalculateShippingCost(string region, decimal weightKg, bool isExpress) and all existing behavior for every listed region identical. No new NuGet packages may be introduced.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-130",
+      "title": "Nested validation try blocks",
+      "category": "refactoring",
+      "text": "Nested try/except blocks and nested if statements are tangled together in the Python validation function below, making the control flow hard to follow.\n\n```python\ndef validate_payload(payload):\n    if payload is not None:\n        try:\n            user_id = payload['user_id']\n            try:\n                amount = float(payload['amount'])\n                if amount > 0:\n                    try:\n                        currency = payload['currency']\n                        if currency in ('USD', 'EUR', 'GBP'):\n                            return {'valid': True, 'user_id': user_id, 'amount': amount, 'currency': currency}\n                        else:\n                            return {'valid': False, 'error': 'unsupported currency'}\n                    except KeyError:\n                        return {'valid': False, 'error': 'missing currency'}\n                else:\n                    return {'valid': False, 'error': 'amount must be positive'}\n            except (ValueError, TypeError):\n                return {'valid': False, 'error': 'amount must be numeric'}\n        except KeyError:\n            return {'valid': False, 'error': 'missing user_id'}\n    else:\n        return {'valid': False, 'error': 'payload is empty'}\n```\n\nRefactor this function to use early returns (guard clauses) for each validation failure instead of nested try/except and if blocks, flattening the structure to a single level. The function name, its single payload argument, and the exact shape and content of every returned dictionary (including error message strings) must remain unchanged.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-131",
+      "title": "Form handler mixed concerns",
+      "category": "refactoring",
+      "text": "Exported as the single handler for a signup form, the JavaScript function below mixes validation logic, direct DOM manipulation, an API call, and logging all in one long function.\n\n```javascript\nexport function handleSignupSubmit(formEl) {\n  const email = formEl.querySelector('#email').value;\n  const password = formEl.querySelector('#password').value;\n  const errorsEl = formEl.querySelector('#errors');\n  errorsEl.innerHTML = '';\n  let hasError = false;\n  if (!email.includes('@')) {\n    errorsEl.innerHTML += '<p>Invalid email</p>';\n    hasError = true;\n  }\n  if (password.length < 8) {\n    errorsEl.innerHTML += '<p>Password too short</p>';\n    hasError = true;\n  }\n  if (!/[0-9]/.test(password)) {\n    errorsEl.innerHTML += '<p>Password needs a digit</p>';\n    hasError = true;\n  }\n  console.log('validation result', hasError);\n  if (!hasError) {\n    fetch('/api/signup', {\n      method: 'POST',\n      body: JSON.stringify({ email, password }),\n      headers: { 'Content-Type': 'application/json' }\n    }).then((res) => {\n      console.log('signup response status', res.status);\n      if (res.ok) {\n        formEl.querySelector('#success').style.display = 'block';\n      } else {\n        errorsEl.innerHTML += '<p>Server error, please try again</p>';\n      }\n    });\n  }\n}\n```\n\nRefactor this into separate functions for validation (pure, returning a list of error strings, no DOM access), submission (the API call), and DOM updates, so the validation logic can be unit tested without a browser DOM. The exported function handleSignupSubmit(formEl) must keep the exact same name, signature, and externally observable behavior, and no new dependencies may be added.",
+      "targetTokens": 600
+    },
+    {
+      "id": "medium-132",
+      "title": "Address data as arrays",
+      "category": "refactoring",
+      "text": "This PHP snippet passes address data around as plain associative arrays through several functions, with the same set of keys (street, city, state, zip) assumed implicitly everywhere and no validation of shape.\n\n```php\nfunction formatAddress($address) {\n    return $address['street'] . ', ' . $address['city'] . ', ' . $address['state'] . ' ' . $address['zip'];\n}\n\nfunction isValidZip($address) {\n    return preg_match('/^\\d{5}(-\\d{4})?$/', $address['zip']) === 1;\n}\n\nfunction calculateShippingZone($address) {\n    $westCoastStates = ['CA', 'OR', 'WA'];\n    if (in_array($address['state'], $westCoastStates)) {\n        return 'west';\n    }\n    return 'other';\n}\n\nfunction printShippingLabel($fromAddress, $toAddress) {\n    echo 'FROM: ' . formatAddress($fromAddress) . PHP_EOL;\n    echo 'TO: ' . formatAddress($toAddress) . PHP_EOL;\n    echo 'ZONE: ' . calculateShippingZone($toAddress) . PHP_EOL;\n}\n```\n\nRefactor this code to introduce a small Address class encapsulating street, city, state, and zip with basic validation in its constructor, and update formatAddress, isValidZip, calculateShippingZone, and printShippingLabel to accept an Address object instead of a raw associative array. Keep every function name and its return value's type and content identical to today; only the parameter type changes. No new Composer packages may be added.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-133",
+      "title": "Nested Swing listener chain",
+      "category": "refactoring",
+      "text": "This Java Swing snippet chains a sequence of dependent actions (validate form, save to disk, then show a confirmation dialog) using nested anonymous ActionListener and Runnable implementations.\n\n```java\nsaveButton.addActionListener(new ActionListener() {\n    public void actionPerformed(ActionEvent e) {\n        if (validateForm()) {\n            SwingUtilities.invokeLater(new Runnable() {\n                public void run() {\n                    saveToDisk(new SaveCallback() {\n                        public void onSuccess() {\n                            SwingUtilities.invokeLater(new Runnable() {\n                                public void run() {\n                                    JOptionPane.showMessageDialog(frame, \"Saved successfully\");\n                                }\n                            });\n                        }\n                        public void onFailure(Exception ex) {\n                            SwingUtilities.invokeLater(new Runnable() {\n                                public void run() {\n                                    JOptionPane.showMessageDialog(frame, \"Save failed: \" + ex.getMessage());\n                                }\n                            });\n                        }\n                    });\n                }\n            });\n        } else {\n            JOptionPane.showMessageDialog(frame, \"Form is invalid\");\n        }\n    }\n});\n```\n\nRefactor this into named private methods and lambda expressions (Java 8+ functional interfaces) to eliminate the nested anonymous class pyramid. The end-to-end behavior (validate, then save off the EDT dispatch thread, then show one of the two dialogs back on the EDT) must be preserved, and no new libraries may be added.",
+      "targetTokens": 600
+    },
+    {
+      "id": "medium-134",
+      "title": "Duplicated export format branches",
+      "category": "refactoring",
+      "text": "Below is a Python function that exports a report to CSV, JSON, or XML, with the row-iteration and field-selection logic copy-pasted almost identically in all three branches.\n\n```python\ndef export_report(rows, fmt):\n    if fmt == 'csv':\n        lines = ['name,amount,date']\n        for row in rows:\n            lines.append(f\"{row['name']},{row['amount']},{row['date']}\")\n        return '\\n'.join(lines)\n    elif fmt == 'json':\n        items = []\n        for row in rows:\n            items.append({'name': row['name'], 'amount': row['amount'], 'date': row['date']})\n        return json.dumps(items)\n    elif fmt == 'xml':\n        parts = ['<report>']\n        for row in rows:\n            parts.append(f\"<row><name>{row['name']}</name><amount>{row['amount']}</amount><date>{row['date']}</date></row>\")\n        parts.append('</report>')\n        return ''.join(parts)\n    else:\n        raise ValueError(f'Unsupported format: {fmt}')\n```\n\nRefactor this function so the field selection (name, amount, date) is defined once and reused across all three format branches, rather than repeated three times, while keeping the exact same output strings for all three formats and the same function signature export_report(rows, fmt). Only Python's standard library (already-imported json) may be used - no new dependencies.",
+      "targetTokens": 550
+    },
+    {
+      "id": "medium-135",
+      "title": "Webhook handler nesting cleanup",
+      "category": "refactoring",
+      "text": "Authentication, payload validation, business logic, and a notification side effect are all performed inline within nested conditionals in the JavaScript webhook handler below.\n\n```javascript\napp.post('/webhooks/order-updated', (req, res) => {\n  const signature = req.headers['x-webhook-signature'];\n  if (signature) {\n    if (verifySignature(req.body, signature, WEBHOOK_SECRET)) {\n      const payload = req.body;\n      if (payload && payload.order_id) {\n        if (payload.status && ['paid', 'shipped', 'cancelled'].includes(payload.status)) {\n          db.orders.update(payload.order_id, { status: payload.status }, (err) => {\n            if (err) {\n              res.status(500).json({ error: 'db update failed' });\n            } else {\n              if (payload.status === 'shipped') {\n                notifyCustomer(payload.order_id, 'Your order has shipped!', (notifyErr) => {\n                  if (notifyErr) {\n                    console.error('notify failed', notifyErr);\n                  }\n                  res.status(200).json({ ok: true });\n                });\n              } else {\n                res.status(200).json({ ok: true });\n              }\n            }\n          });\n        } else {\n          res.status(400).json({ error: 'invalid status' });\n        }\n      } else {\n        res.status(400).json({ error: 'missing order_id' });\n      }\n    } else {\n      res.status(401).json({ error: 'invalid signature' });\n    }\n  } else {\n    res.status(401).json({ error: 'missing signature' });\n  }\n});\n```\n\nRefactor this handler to reduce nesting via early returns and to split authentication, validation, and the business logic (including the conditional notification) into separate named functions, while keeping the Express route path /webhooks/order-updated, the HTTP methods used, and every existing response status code and JSON body shape exactly the same for each corresponding input case. No new npm dependencies may be added.",
+      "targetTokens": 650
+    },
+    {
+      "id": "medium-136",
+      "title": "Shrinking sentences outage story",
+      "category": "creative-constrained",
+      "text": "Tell a 100-word story (the total word count must equal exactly 100) about an on-call engineer discovering a production outage at 3 a.m. The story must be composed of exactly 6 sentences, and each sentence must contain strictly fewer words than the sentence immediately before it (a strictly decreasing word count from first sentence to last). After the story, add a one-line note stating the word count of each of the 6 sentences in order, so the decreasing pattern can be verified at a glance.",
+      "targetTokens": 350
+    },
+    {
+      "id": "medium-137",
+      "title": "Eight-bullet CLI changelog",
+      "category": "creative-constrained",
+      "text": "Draft a changelog entry for version 3.2.0 of a fictional command-line tool called pathwise, a dependency-graph analyzer for monorepos. The changelog must contain exactly 8 bullet points, no more and no fewer, each starting with one of the words Added, Fixed, Changed, Removed, or Deprecated, and each bullet must be a single line of no more than 20 words. Include at least one Added, one Fixed, one Changed, and one Removed bullet among the 8. Do not add a title, introduction, or closing remarks - output only the 8 bullets.",
+      "targetTokens": 300
+    },
+    {
+      "id": "medium-138",
+      "title": "Limerick on distributed consensus",
+      "category": "creative-constrained",
+      "text": "Compose a limerick (5 lines, strict AABBA rhyme scheme, following the traditional limerick meter of anapestic trimeter for lines 1, 2, and 5, and anapestic dimeter for lines 3 and 4) about the Raft consensus algorithm's leader election process. The limerick must explicitly mention the words 'quorum' and 'heartbeat' somewhere in its five lines. After the limerick, list which words rhyme at the end of each of the 5 lines so the AABBA pattern can be checked.",
+      "targetTokens": 300
+    },
+    {
+      "id": "medium-139",
+      "title": "Rate limiting doc budget",
+      "category": "creative-constrained",
+      "text": "Produce a documentation section titled 'API Rate Limiting' explaining how a hypothetical REST API enforces a token-bucket rate limit of 100 requests per minute per API key, including what HTTP status code and headers are returned when a client exceeds the limit. The section must be exactly 150 words, not counting the title itself. After the section, report the exact word count you produced so it can be checked against the 150-word requirement.",
+      "targetTokens": 300
+    },
+    {
+      "id": "medium-140",
+      "title": "Ten six-word deploy disasters",
+      "category": "creative-constrained",
+      "text": "Give me exactly 10 six-word stories (each story must be exactly six words, no more, no fewer, counted by whitespace-separated tokens) about software deployments that went wrong. Number them 1 through 10. After the list, for each one, state its word count in parentheses to allow verification that every entry is exactly six words.",
+      "targetTokens": 300
+    },
+    {
+      "id": "medium-141",
+      "title": "Five haikus on project lifecycle",
+      "category": "creative-constrained",
+      "text": "Craft a sequence of exactly 5 haiku poems (each following the traditional 5-7-5 syllable structure across its three lines) that together depict the life of a software project from kickoff to deprecation, in this order: (1) kickoff, (2) first release, (3) peak usage, (4) legacy maintenance, (5) sunset. Label each haiku with its stage name. After the sequence, list the syllable count of each of the 3 lines for every haiku so the 5-7-5 pattern can be verified.",
+      "targetTokens": 350
+    },
+    {
+      "id": "medium-142",
+      "title": "Twelve-line dialogue exchange",
+      "category": "creative-constrained",
+      "text": "Stage a short exchange consisting entirely of dialogue (no narration, no stage directions, no descriptive text) between two engineers named Priya and Tomas debating whether to roll back a risky deployment. The scene must contain exactly 12 lines, alternating strictly between the two speakers (Priya, Tomas, Priya, Tomas, and so on), and each individual line must be under 15 words. Prefix each line with the speaker's name and a colon. Do not include any narration outside the 12 spoken lines.",
+      "targetTokens": 350
+    },
+    {
+      "id": "medium-143",
+      "title": "REFACTOR acrostic poem",
+      "category": "creative-constrained",
+      "text": "Construct an acrostic poem about technical debt where the first letter of each line spells out the word REFACTOR (8 lines total, one line per letter, in order R-E-F-A-C-T-O-R). Each line must be between 6 and 10 words long. After the poem, list the first letter of each line in sequence to confirm it spells REFACTOR correctly.",
+      "targetTokens": 300
+    },
+    {
+      "id": "medium-144",
+      "title": "Five-paragraph press release",
+      "category": "creative-constrained",
+      "text": "Put together a press release announcing the fictional launch of 'Aperture', a new open-source observability dashboard. The release must follow this exact structure: a headline of no more than 10 words, then exactly 5 paragraphs. The first paragraph must be exactly 40 words. The remaining four paragraphs can vary in length but the entire release (excluding the headline) must total between 220 and 260 words. After the release, report the headline's word count and the first paragraph's exact word count.",
+      "targetTokens": 450
+    },
+    {
+      "id": "medium-145",
+      "title": "Compiler wait quatrains",
+      "category": "creative-constrained",
+      "text": "Pen a poem about the experience of waiting for a slow compiler, structured as exactly 5 stanzas of exactly 4 lines each (20 lines total), where every stanza follows an ABAB rhyme scheme. After the poem, list the end-rhyme word pairs for each stanza's A-lines and B-lines to allow the rhyme scheme to be verified.",
+      "targetTokens": 300
+    },
+    {
+      "id": "medium-146",
+      "title": "Ten six-word taglines",
+      "category": "creative-constrained",
+      "text": "Come up with exactly 10 marketing taglines for a fictional productivity app called 'Anchor', where each tagline must be exactly 6 words long (counted by whitespace-separated tokens), no more and no fewer. Number the taglines 1 through 10. No two taglines may share the same first word. After the list, state the word count of each tagline in parentheses to confirm all are exactly six words.",
+      "targetTokens": 300
+    },
+    {
+      "id": "medium-147",
+      "title": "Two-hundred-word language eulogy",
+      "category": "creative-constrained",
+      "text": "Author a eulogy for a fictional deprecated programming language called 'Fenwick', mourning its retirement after 15 years of production use. The eulogy must be exactly 200 words (not counting a title if you include one) and must be structured into exactly 3 paragraphs. After the eulogy, report the total word count and the word count of each of the 3 paragraphs individually so the totals can be checked.",
+      "targetTokens": 400
+    },
+    {
+      "id": "medium-148",
+      "title": "Three-branch adventure micro-fiction",
+      "category": "creative-constrained",
+      "text": "Sketch out a choose-your-own-adventure micro-story about a developer facing a failing CI pipeline minutes before a release deadline. The story must have exactly 3 branches representing 3 different decisions the developer could make, and each branch must be exactly 50 words long (not counting the branch's short label, e.g. 'Branch A: Roll back'). Label the branches A, B, and C. After the story, report the exact word count of each of the 3 branches.",
+      "targetTokens": 400
+    },
+    {
+      "id": "medium-149",
+      "title": "Eight apologetic error messages",
+      "category": "creative-constrained",
+      "text": "List exactly 8 error messages for a fictional file-sync app, each under 12 words, representing the same underlying 'sync conflict' error but written in an increasingly apologetic tone from message 1 (blunt, no apology) to message 8 (maximally apologetic and self-deprecating). Number them 1 through 8 in that order. After the list, state the word count of each message to confirm every one is under the 12-word limit.",
+      "targetTokens": 350
+    },
+    {
+      "id": "medium-150",
+      "title": "Sonnet on technical debt",
+      "category": "creative-constrained",
+      "text": "Compose a Shakespearean sonnet (exactly 14 lines, rhyme scheme ABAB CDCD EFEF GG, written in loose iambic pentameter) about a team slowly drowning in accumulated technical debt, ending with a rhyming couplet that offers a note of resolve. After the sonnet, list the end-word of every line in order, grouped by quatrain and the final couplet, so the ABAB CDCD EFEF GG rhyme scheme can be checked.",
+      "targetTokens": 400
+    }
+  ]
+}

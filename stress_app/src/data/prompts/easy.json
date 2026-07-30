@@ -1,0 +1,705 @@
+{
+  "difficulty": "easy",
+  "prompts": [
+    {
+      "id": "easy-001",
+      "title": "Capital of Japan",
+      "category": "factual-recall",
+      "text": "What is the capital of Japan? Answer in one word.",
+      "targetTokens": 16
+    },
+    {
+      "id": "easy-002",
+      "title": "Chemical Symbol Gold",
+      "category": "factual-recall",
+      "text": "Give the chemical symbol for gold in one word.",
+      "targetTokens": 16
+    },
+    {
+      "id": "easy-003",
+      "title": "Author of Romeo and Juliet",
+      "category": "factual-recall",
+      "text": "Who wrote Romeo and Juliet? Reply with just the author's name.",
+      "targetTokens": 16
+    },
+    {
+      "id": "easy-004",
+      "title": "Closest Planet to Sun",
+      "category": "factual-recall",
+      "text": "Which planet is closest to the Sun? One-word answer.",
+      "targetTokens": 16
+    },
+    {
+      "id": "easy-005",
+      "title": "End of World War II",
+      "category": "factual-recall",
+      "text": "In what year did World War II end? Answer with just the year.",
+      "targetTokens": 16
+    },
+    {
+      "id": "easy-006",
+      "title": "Largest Ocean",
+      "category": "factual-recall",
+      "text": "Name the largest ocean on Earth in one word.",
+      "targetTokens": 16
+    },
+    {
+      "id": "easy-007",
+      "title": "Speed of Light",
+      "category": "factual-recall",
+      "text": "What is the approximate speed of light in a vacuum, in km/s? Give a rounded figure.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-008",
+      "title": "Longest River",
+      "category": "factual-recall",
+      "text": "Which river is the longest in the world? One-word answer.",
+      "targetTokens": 16
+    },
+    {
+      "id": "easy-009",
+      "title": "Number of Continents",
+      "category": "factual-recall",
+      "text": "How many continents are there on Earth? Answer with a single number.",
+      "targetTokens": 16
+    },
+    {
+      "id": "easy-010",
+      "title": "First US President",
+      "category": "factual-recall",
+      "text": "Tell me the name of the first President of the United States.",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-011",
+      "title": "Define Photosynthesis",
+      "category": "definition",
+      "text": "Define photosynthesis in one sentence.",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-012",
+      "title": "Define API",
+      "category": "definition",
+      "text": "Explain what an API is in a single sentence, suitable for a beginner.",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-013",
+      "title": "Define Inflation",
+      "category": "definition",
+      "text": "In one sentence, define economic inflation.",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-014",
+      "title": "Define Recursion",
+      "category": "definition",
+      "text": "Give a one-sentence definition of recursion in programming.",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-015",
+      "title": "Define Democracy",
+      "category": "definition",
+      "text": "What does the word 'democracy' mean? Answer in one sentence.",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-016",
+      "title": "Define Osmosis",
+      "category": "definition",
+      "text": "Provide a concise, one-sentence definition of osmosis.",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-017",
+      "title": "Define Blockchain",
+      "category": "definition",
+      "text": "Define 'blockchain' in a single sentence for someone with no technical background.",
+      "targetTokens": 40
+    },
+    {
+      "id": "easy-018",
+      "title": "Define Metaphor",
+      "category": "definition",
+      "text": "In one sentence, explain what a metaphor is.",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-019",
+      "title": "Define Gravity",
+      "category": "definition",
+      "text": "Give a short, one-sentence definition of gravity.",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-020",
+      "title": "Define Machine Learning",
+      "category": "definition",
+      "text": "Define 'machine learning' in one sentence.",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-021",
+      "title": "Multiply 17 by 6",
+      "category": "arithmetic",
+      "text": "What is 17 multiplied by 6?",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-022",
+      "title": "Km to Miles Conversion",
+      "category": "arithmetic",
+      "text": "Convert 100 kilometers to miles, rounded to one decimal place.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-023",
+      "title": "Percentage of 200",
+      "category": "arithmetic",
+      "text": "What is 15% of 200?",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-024",
+      "title": "Hours to Minutes",
+      "category": "arithmetic",
+      "text": "How many minutes are there in 3.5 hours?",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-025",
+      "title": "Add Two Numbers",
+      "category": "arithmetic",
+      "text": "Add 234 and 567.",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-026",
+      "title": "Square Root of 144",
+      "category": "arithmetic",
+      "text": "What is the square root of 144?",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-027",
+      "title": "Fahrenheit to Celsius",
+      "category": "arithmetic",
+      "text": "Convert 98.6 degrees Fahrenheit to Celsius, rounded to one decimal.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-028",
+      "title": "Discounted Price",
+      "category": "arithmetic",
+      "text": "If a shirt costs $40 and is 25% off, what is the sale price?",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-029",
+      "title": "Factorial of 9",
+      "category": "arithmetic",
+      "text": "What is 9 factorial (9!)? Show just the number.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-030",
+      "title": "Kilograms to Grams",
+      "category": "arithmetic",
+      "text": "Convert 2.5 kilograms to grams.",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-031",
+      "title": "Spanish Greeting Translation",
+      "category": "translation",
+      "text": "Translate 'Good morning, how are you?' into Spanish.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-032",
+      "title": "French Coffee Request",
+      "category": "translation",
+      "text": "Translate the sentence 'I would like a cup of coffee' into French.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-033",
+      "title": "German Train Station Question",
+      "category": "translation",
+      "text": "How do you say 'Where is the train station?' in German?",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-034",
+      "title": "Japanese Thank You",
+      "category": "translation",
+      "text": "Translate 'Thank you very much' into Japanese.",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-035",
+      "title": "Italian Weather Sentence",
+      "category": "translation",
+      "text": "Render the sentence 'The weather is beautiful today' in Italian.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-036",
+      "title": "Spanish Introduction Translation",
+      "category": "translation",
+      "text": "Translate this into Spanish: 'My name is Anna and I live in Madrid.'",
+      "targetTokens": 28
+    },
+    {
+      "id": "easy-037",
+      "title": "French See You Tomorrow",
+      "category": "translation",
+      "text": "How would a native French speaker say 'See you tomorrow'?",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-038",
+      "title": "German Learning to Cook",
+      "category": "translation",
+      "text": "Translate 'I am learning to cook' into German.",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-039",
+      "title": "Japanese Help Request",
+      "category": "translation",
+      "text": "Provide the Japanese translation of 'Please help me.'",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-040",
+      "title": "Italian Happy Birthday",
+      "category": "translation",
+      "text": "Translate 'Happy birthday!' into Italian.",
+      "targetTokens": 16
+    },
+    {
+      "id": "easy-041",
+      "title": "Grammar Fix",
+      "category": "simple-rewrite",
+      "text": "Fix the grammar in this sentence: 'She don't like going to the store on Sundays.'",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-042",
+      "title": "Shorten Wordy Sentence",
+      "category": "simple-rewrite",
+      "text": "Make this sentence shorter: 'Due to the fact that it was raining very heavily outside, we decided to cancel the picnic.'",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-043",
+      "title": "Pluralize Sentence",
+      "category": "simple-rewrite",
+      "text": "Rewrite the following in plural form: 'The child plays with the toy.'",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-044",
+      "title": "Remove Passive Voice",
+      "category": "simple-rewrite",
+      "text": "Remove the passive voice from this sentence: 'The cake was eaten by the children.'",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-045",
+      "title": "Fix Spelling Errors",
+      "category": "simple-rewrite",
+      "text": "Correct the spelling errors in: 'Recieve the pakage tommorow.'",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-046",
+      "title": "Statement to Question",
+      "category": "simple-rewrite",
+      "text": "Turn this sentence into a question: 'The meeting starts at noon.'",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-047",
+      "title": "Clean Up Run-on Sentence",
+      "category": "simple-rewrite",
+      "text": "Rewrite this run-on sentence so it reads more clearly: 'I went to the store and I bought milk and then I went home and I made dinner.'",
+      "targetTokens": 40
+    },
+    {
+      "id": "easy-048",
+      "title": "Past to Present Tense",
+      "category": "simple-rewrite",
+      "text": "Change this sentence from past tense to present tense: 'She walked to the park and fed the ducks.'",
+      "targetTokens": 28
+    },
+    {
+      "id": "easy-049",
+      "title": "Simplify for Young Reader",
+      "category": "simple-rewrite",
+      "text": "Simplify this sentence for a young reader: 'The committee reached a consensus regarding the proposed amendment.'",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-050",
+      "title": "Fix Punctuation",
+      "category": "simple-rewrite",
+      "text": "Fix the punctuation in this sentence: 'Lets eat grandma'",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-051",
+      "title": "Orange Fruits List",
+      "category": "short-list",
+      "text": "List three fruits that are typically orange in color.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-052",
+      "title": "Sorting Algorithms List",
+      "category": "short-list",
+      "text": "Name three common sorting algorithms used in computer science.",
+      "targetTokens": 28
+    },
+    {
+      "id": "easy-053",
+      "title": "HTTP Methods List",
+      "category": "short-list",
+      "text": "List the first four HTTP request methods you can think of.",
+      "targetTokens": 28
+    },
+    {
+      "id": "easy-054",
+      "title": "Renewable Energy Sources",
+      "category": "short-list",
+      "text": "Give three examples of renewable energy sources.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-055",
+      "title": "Prime Numbers List",
+      "category": "short-list",
+      "text": "List three prime numbers less than 20.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-056",
+      "title": "Dynamically Typed Languages",
+      "category": "short-list",
+      "text": "Name three programming languages that are dynamically typed.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-057",
+      "title": "South American Countries",
+      "category": "short-list",
+      "text": "List three countries located in South America.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-058",
+      "title": "Ocean Mammals List",
+      "category": "short-list",
+      "text": "Provide three examples of mammals that live in the ocean.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-059",
+      "title": "Primary Colors List",
+      "category": "short-list",
+      "text": "List three primary colors.",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-060",
+      "title": "Ringed Planets List",
+      "category": "short-list",
+      "text": "Name three planets in our solar system that have rings.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-061",
+      "title": "Restaurant Review Sentiment",
+      "category": "classification",
+      "text": "Classify the sentiment of this review as positive, negative, or neutral: 'The food arrived cold and the service was slow.' Answer with one word.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-062",
+      "title": "Spam Email Check",
+      "category": "classification",
+      "text": "Is the following email spam or not spam? 'Congratulations! You've won a free iPhone, click here now!' Answer with one word.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-063",
+      "title": "Language ID German Sentence",
+      "category": "classification",
+      "text": "Identify the language of this sentence in one word: 'Ich gehe heute ins Kino.'",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-064",
+      "title": "Headline Topic Label",
+      "category": "classification",
+      "text": "Label the topic of this headline in a single word: 'Central bank raises interest rates amid inflation concerns.'",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-065",
+      "title": "Tweet Sentiment Label",
+      "category": "classification",
+      "text": "Classify this tweet's sentiment (positive/negative/neutral) in one word: 'I can't believe how amazing this concert was!'",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-066",
+      "title": "Fact or Opinion",
+      "category": "classification",
+      "text": "Determine if this statement is a fact or an opinion, in one word: 'Pizza is the best food in the world.'",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-067",
+      "title": "Language ID French Phrase",
+      "category": "classification",
+      "text": "In one word, name the language of this phrase: 'Bonjour, comment allez-vous?'",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-068",
+      "title": "Spam or Legit Message",
+      "category": "classification",
+      "text": "Is this customer message spam or not spam? 'Hey, just confirming our meeting tomorrow at 3pm.' Answer with one word.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-069",
+      "title": "Emotion Classification",
+      "category": "classification",
+      "text": "Classify the emotion expressed in this sentence with one word: 'I just lost my job and I don't know what to do.'",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-070",
+      "title": "News Headline Category",
+      "category": "classification",
+      "text": "Label this news snippet's category in a single word: 'The home team won the championship after a dramatic overtime finish.'",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-071",
+      "title": "Reverse a String",
+      "category": "one-line-code",
+      "text": "Write a one-line Python expression that reverses the string 'hello world'.",
+      "targetTokens": 28
+    },
+    {
+      "id": "easy-072",
+      "title": "Sum an Array",
+      "category": "one-line-code",
+      "text": "Give a single line of JavaScript that sums all numbers in the array [1, 2, 3, 4, 5].",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-073",
+      "title": "Count Lines in File",
+      "category": "one-line-code",
+      "text": "Write a one-liner bash command to count the number of lines in a file called data.txt.",
+      "targetTokens": 28
+    },
+    {
+      "id": "easy-074",
+      "title": "SQL Salary Filter",
+      "category": "one-line-code",
+      "text": "Provide a single SQL statement that selects all columns from a table named 'employees' where salary is greater than 50000.",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-075",
+      "title": "Squares List Comprehension",
+      "category": "one-line-code",
+      "text": "Show a one-line Python list comprehension that returns the squares of numbers from 1 to 10.",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-076",
+      "title": "Check Even Number",
+      "category": "one-line-code",
+      "text": "Give a one-line JavaScript snippet that checks whether a number is even.",
+      "targetTokens": 28
+    },
+    {
+      "id": "easy-077",
+      "title": "Grep for Errors",
+      "category": "one-line-code",
+      "text": "Type out a single bash command using grep to find all lines containing the word 'error' in log.txt.",
+      "targetTokens": 28
+    },
+    {
+      "id": "easy-078",
+      "title": "Max of Two Numbers",
+      "category": "one-line-code",
+      "text": "Provide a one-line Python function definition that returns the maximum of two numbers.",
+      "targetTokens": 28
+    },
+    {
+      "id": "easy-079",
+      "title": "Count Rows in Table",
+      "category": "one-line-code",
+      "text": "What single line of SQL would count the number of rows in a table called 'orders'?",
+      "targetTokens": 28
+    },
+    {
+      "id": "easy-080",
+      "title": "Uppercase a String",
+      "category": "one-line-code",
+      "text": "Give a one-liner in Python that converts a string to uppercase.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-081",
+      "title": "CSV Row to JSON",
+      "category": "format-conversion",
+      "text": "Convert this CSV row into JSON: name,age,city\nAlice,30,Boston",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-082",
+      "title": "Reformat US Date",
+      "category": "format-conversion",
+      "text": "Reformat the date '03/14/2024' from MM/DD/YYYY into YYYY-MM-DD format.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-083",
+      "title": "Snake Case to Camel Case",
+      "category": "format-conversion",
+      "text": "Convert the snake_case variable name 'user_first_name' into camelCase.",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-084",
+      "title": "Celsius to Fahrenheit Row",
+      "category": "format-conversion",
+      "text": "Turn this Celsius temperature into a Fahrenheit table row: 25°C. Output as 'Celsius | Fahrenheit'.",
+      "targetTokens": 28
+    },
+    {
+      "id": "easy-085",
+      "title": "Camel Case to Snake Case",
+      "category": "format-conversion",
+      "text": "Convert the camelCase identifier 'totalOrderCount' into snake_case.",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-086",
+      "title": "Movie CSV to JSON",
+      "category": "format-conversion",
+      "text": "Convert this CSV line into a JSON object: title,year,rating\nInception,2010,8.8",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-087",
+      "title": "24-Hour to 12-Hour Time",
+      "category": "format-conversion",
+      "text": "Reformat the time '14:30' from 24-hour format into 12-hour format with AM/PM.",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-088",
+      "title": "Key-Value Pairs to JSON",
+      "category": "format-conversion",
+      "text": "Convert this list of key-value pairs into a JSON object: color=red, size=medium, price=19.99",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-089",
+      "title": "Reformat Written Date",
+      "category": "format-conversion",
+      "text": "Turn the date 'January 5, 2023' into the format DD-MM-YYYY.",
+      "targetTokens": 20
+    },
+    {
+      "id": "easy-090",
+      "title": "XML Tag to JSON",
+      "category": "format-conversion",
+      "text": "Convert this XML-style tag into a JSON key-value pair: <status>active</status>",
+      "targetTokens": 24
+    },
+    {
+      "id": "easy-091",
+      "title": "Casual to Formal Email",
+      "category": "tone-shift",
+      "text": "Rewrite this sentence in a formal tone: 'Hey, can you send me that file when you get a chance?'",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-092",
+      "title": "Formal to Casual Rewrite",
+      "category": "tone-shift",
+      "text": "Turn this formal sentence into something more casual: 'I would be most grateful if you could attend the meeting.'",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-093",
+      "title": "Pirate Grocery Errand",
+      "category": "tone-shift",
+      "text": "Rewrite this sentence as if a pirate said it: 'I am going to the store to buy some bread.'",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-094",
+      "title": "Autumn Leaves Haiku",
+      "category": "tone-shift",
+      "text": "Turn this statement into a haiku: 'The autumn leaves are falling from the trees.'",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-095",
+      "title": "Upbeat Event Announcement",
+      "category": "tone-shift",
+      "text": "Punch up this sentence with a more enthusiastic, upbeat tone: 'The event is scheduled for next Tuesday.'",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-096",
+      "title": "Polite Bug Request",
+      "category": "tone-shift",
+      "text": "Make this sentence sound more polite and professional: 'Fix this bug now.'",
+      "targetTokens": 28
+    },
+    {
+      "id": "easy-097",
+      "title": "Pirate Storm Warning",
+      "category": "tone-shift",
+      "text": "Rewrite this line as a pirate would say it: 'There is a storm coming, we should leave.'",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-098",
+      "title": "Formal Business Email Opening",
+      "category": "tone-shift",
+      "text": "Turn this casual message into a formal business email opening: 'Hey team, quick update on the project.'",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-099",
+      "title": "Rainy Morning Haiku",
+      "category": "tone-shift",
+      "text": "Compose a short haiku about a rainy morning.",
+      "targetTokens": 32
+    },
+    {
+      "id": "easy-100",
+      "title": "Sarcastic Meeting Comment",
+      "category": "tone-shift",
+      "text": "Rewrite this sentence in a sarcastic tone: 'Wow, another meeting that could have been an email.'",
+      "targetTokens": 32
+    }
+  ]
+}

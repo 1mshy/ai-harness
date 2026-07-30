@@ -1,0 +1,19 @@
+{
+  "scannedAt": "2026-07-30",
+  "findings": {
+    "fontStack": null,
+    "palette": null,
+    "motion": "none detected — motion-cut project",
+    "spacing": null,
+    "framework": "Tauri 2 + React 19 + Vite 7 (scaffolded during this run)"
+  },
+  "preserved": [],
+  "introduced": [
+    "token system (tokens.css)",
+    "macrostructure",
+    "microinteraction discipline",
+    "slop-test gates",
+    "validated chart palette"
+  ],
+  "note": "Empty directory at scan time — no package.json, no CSS, no design.md. Nothing to preserve."
+}

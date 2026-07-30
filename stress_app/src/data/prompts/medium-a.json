@@ -1,0 +1,530 @@
+{
+  "difficulty": "medium",
+  "prompts": [
+    {
+      "id": "medium-001",
+      "title": "Token Bucket Rate Limiter",
+      "category": "code-generation",
+      "targetTokens": 420,
+      "text": "Implement a thread-safe token bucket rate limiter in Python as a class `TokenBucket(capacity: int, refill_rate: float)`. It must expose `allow() -> bool` that atomically consumes one token if available and returns True, or returns False without blocking if no token is available. Tokens refill continuously based on elapsed wall-clock time (not on a fixed timer), capped at `capacity`. Use `threading.Lock` to guard the shared state so the bucket is safe under concurrent calls from multiple threads. Handle these edge cases explicitly: (1) `refill_rate` of 0 (no refill, bucket only ever drains), (2) a burst of calls arriving in the same microsecond (elapsed time near zero), (3) the bucket being queried after a very long idle period (refill must cap at capacity, not overflow it). Include a short docstring and a small `if __name__ == '__main__':` demo that spins up 5 threads hammering `allow()` and prints how many were accepted."
+    },
+    {
+      "id": "medium-002",
+      "title": "Rotated Array Search",
+      "category": "code-generation",
+      "targetTokens": 380,
+      "text": "Write a Go function `func searchRotated(nums []int, target int) int` that finds the index of `target` in a sorted array that has been rotated an unknown number of times (e.g. [4,5,6,7,0,1,2]), using a modified binary search in O(log n) time -- a linear scan is not an acceptable solution. Return -1 if the target is not present. Handle these edge cases explicitly: an empty slice, a slice of length 1, duplicate values adjacent to the rotation pivot (e.g. [1,1,1,2,1,1,1] searching for 2), and the case where the array is not rotated at all. Include a comment explaining how you decide which half of the array is sorted at each step, since that's the part people usually get wrong."
+    },
+    {
+      "id": "medium-003",
+      "title": "O(1) LRU Cache in Java",
+      "category": "code-generation",
+      "targetTokens": 460,
+      "text": "Implement an LRU (least-recently-used) cache in Java as a generic class `LRUCache<K, V>` with a fixed capacity passed to the constructor. It must support `V get(K key)` and `void put(K key, V value)`, both in O(1) average time. Do not use Java's built-in `LinkedHashMap` with `removeEldestEntry` -- implement the underlying doubly-linked list plus hash map yourself so the mechanics are visible. On `get`, a hit must move that entry to the most-recently-used position. On `put`, if the key already exists, update its value and mark it most-recently-used; if the cache is at capacity and the key is new, evict the least-recently-used entry before inserting. Handle capacity 0 (cache that stores nothing) and repeated puts of the same key without it ever being evicted early."
+    },
+    {
+      "id": "medium-004",
+      "title": "Async Retry With Backoff",
+      "category": "code-generation",
+      "targetTokens": 400,
+      "text": "Write an async Python function `async def retry_with_backoff(coro_fn, *, max_attempts=5, base_delay=0.2, max_delay=10.0, retriable=(TimeoutError, ConnectionError))` that calls `await coro_fn()` and retries on any exception whose type is in `retriable`, using exponential backoff with full jitter (delay = random.uniform(0, min(max_delay, base_delay * 2**attempt))). Non-retriable exceptions must propagate immediately without retrying. After `max_attempts` failed attempts, re-raise the last exception. Use `asyncio.sleep` for the delay so it doesn't block the event loop. Handle these edge cases: `max_attempts=1` (no retries at all, single call), a coroutine that succeeds on the very last allowed attempt, and making sure the jitter calculation never produces a negative or zero-with-blocking delay that stalls indefinitely."
+    },
+    {
+      "id": "medium-005",
+      "title": "RFC4180 CSV Line Parser",
+      "category": "code-generation",
+      "targetTokens": 420,
+      "text": "Write a JavaScript function `parseCsvLine(line)` that parses a single line of RFC4180-style CSV into an array of string fields, handling: fields wrapped in double quotes that may contain commas (e.g. `\"Smith, John\",42` should yield `[\"Smith, John\", \"42\"]`), doubled double-quotes inside a quoted field representing a literal quote character (e.g. `\"She said \"\"hi\"\"\"` should yield `She said \"hi\"`), and unquoted fields that may be empty (e.g. `a,,c` should yield three fields with the middle one being an empty string). Do not use a regular-expression-only approach that breaks on nested quotes -- implement it as a small state machine that walks the string character by character. Do not use any CSV parsing library; this must be a self-contained function with no dependencies."
+    },
+    {
+      "id": "medium-006",
+      "title": "Prefix-Search Trie",
+      "category": "code-generation",
+      "targetTokens": 480,
+      "text": "Implement a Trie (prefix tree) in C++ as a class supporting `void insert(const string& word)`, `bool search(const string& word)` (exact match), and `vector<string> autocomplete(const string& prefix, int limit)` which returns up to `limit` words in the trie that start with `prefix`, in the order they were inserted. Use a `std::unordered_map<char, Node*>` per node for children rather than a fixed 26-entry array, since the tests will include mixed-case tokens. Handle the empty-string prefix (should be able to return up to `limit` arbitrary words), a prefix that matches zero words, and make sure you don't leak memory -- either use smart pointers or write a destructor that frees every node."
+    },
+    {
+      "id": "medium-007",
+      "title": "Bounded Producer-Consumer Queue",
+      "category": "code-generation",
+      "targetTokens": 500,
+      "text": "In Java, implement a bounded blocking queue from scratch (do not use `java.util.concurrent.BlockingQueue` or any of its implementations) that supports multiple producer threads calling `put(T item)` and multiple consumer threads calling `T take()`. `put` must block when the queue is full and `take` must block when the queue is empty, using `synchronized`/`wait`/`notifyAll` (not spin-locking). Fix these two well-known pitfalls explicitly in your implementation: (1) using `notify()` instead of `notifyAll()`, which can deadlock when there are both waiting producers and waiting consumers on the same monitor; (2) checking the empty/full condition with `if` instead of a `while` loop, which breaks under spurious wakeups. Provide a small demo with 3 producer threads and 2 consumer threads processing 100 total items, and confirm no items are lost or duplicated."
+    },
+    {
+      "id": "medium-008",
+      "title": "K-Way Merge With a Heap",
+      "category": "code-generation",
+      "targetTokens": 360,
+      "text": "Write a Python function `def merge_k_sorted(lists: list[list[int]]) -> list[int]` that merges k already-sorted lists of integers into one sorted list, using `heapq` so the overall time complexity is O(N log k) where N is the total number of elements, not O(N log N) via a final full sort and not O(N*k) via repeated pairwise merges. Push tuples of `(value, list_index, elem_index)` onto the heap so ties break deterministically and you avoid Python trying to compare list objects when values are equal. Handle these edge cases: some input lists being empty, all lists being empty (should return `[]`), and a single input list (should return it unchanged, still going through the heap machinery correctly)."
+    },
+    {
+      "id": "medium-009",
+      "title": "Bounded Async Concurrency Pool",
+      "category": "code-generation",
+      "targetTokens": 420,
+      "text": "In TypeScript, implement a function `async function runWithConcurrency<T>(tasks: Array<() => Promise<T>>, limit: number): Promise<T[]>` that runs the given task-producing functions with at most `limit` running concurrently at any time, and returns their results in the same order as the input array (not the order they finish in). If any task rejects, the overall promise should reject with that error, but tasks already in flight should be allowed to settle rather than being abruptly abandoned (no need to truly cancel them, just don't let an unhandled rejection escape). Handle `limit` greater than `tasks.length` (everything just runs immediately), `limit` of 1 (fully sequential), and an empty `tasks` array (should resolve immediately to `[]`)."
+    },
+    {
+      "id": "medium-010",
+      "title": "Consistent Hashing Ring",
+      "category": "code-generation",
+      "targetTokens": 460,
+      "text": "Implement a consistent hashing ring in Python as a class `HashRing` supporting `add_node(node_id: str)`, `remove_node(node_id: str)`, and `get_node(key: str) -> str` which returns which node a given key maps to. Use `hashlib.md5` (or similar) to hash both node identifiers and keys onto a fixed-size ring (e.g. 0 to 2**32 - 1), and use at least 100 virtual replicas per physical node so that load stays roughly balanced as nodes are added or removed. `get_node` should walk clockwise from the key's hash position to the nearest node replica, wrapping around past the maximum value back to zero. Handle the case of zero nodes registered (raise a clear exception rather than crashing on an index error), and verify with a short demo that removing one node out of five only reassigns roughly 1/5 of keys, not all of them."
+    },
+    {
+      "id": "medium-011",
+      "title": "Lazy-Expiring TTL Cache",
+      "category": "code-generation",
+      "targetTokens": 400,
+      "text": "Write a Go package-level type `TTLCache` (generic over `comparable` keys and `any` values, Go 1.18+ generics) with methods `Set(key K, value V, ttl time.Duration)` and `Get(key K) (V, bool)`. Do not spawn a background goroutine to sweep expired entries; instead expire lazily -- store the absolute expiry time alongside each value, and have `Get` check whether the stored entry has expired before returning it, deleting it and returning the zero value and `false` if so. Guard the internal map with a `sync.RWMutex` so it's safe for concurrent use. Handle a `ttl` of zero or negative duration (the entry should be considered already expired and never returned), and a `Get` on a key that was never set (return the zero value and `false`, not a panic)."
+    },
+    {
+      "id": "medium-012",
+      "title": "Fixed-Capacity Ring Buffer",
+      "category": "code-generation",
+      "targetTokens": 460,
+      "text": "In C, implement a fixed-capacity circular (ring) buffer of `int`s with the following interface: `RingBuffer* rb_create(size_t capacity)`, `int rb_push(RingBuffer* rb, int value)` (returns 0 on success, -1 if full), `int rb_pop(RingBuffer* rb, int* out)` (returns 0 on success, -1 if empty), and `void rb_destroy(RingBuffer* rb)`. Use a single contiguous `malloc`'d array of `capacity` ints plus head/tail indices and a count (do not use a sentinel 'always leave one slot empty' trick -- track fullness explicitly with a count field). Make sure the head and tail indices wrap around correctly using modulo arithmetic, and that `rb_destroy` frees every allocation with no leaks. Handle `capacity == 0` (creation should fail and return NULL) and pushing to a full buffer / popping from an empty buffer without corrupting internal state."
+    },
+    {
+      "id": "medium-013",
+      "title": "Union-Find With Path Compression",
+      "category": "code-generation",
+      "targetTokens": 400,
+      "text": "Implement a Disjoint Set Union / Union-Find data structure in Python as a class `DSU(n: int)` supporting `find(x: int) -> int` and `union(x: int, y: int) -> bool` (returns False if x and y were already in the same set, True if the union actually merged two different sets). Implement both path compression (during `find`, point every visited node directly at the root) and union by rank (attach the smaller-rank tree under the root of the larger-rank tree, incrementing rank only when ranks are equal), so that amortized complexity is near-O(alpha(n)) per operation, not O(n). Handle `find` or `union` being called with an index equal to n-1 (the last valid index) and with a value already at its own root (self-union), and add a `count_sets() -> int` helper that returns how many disjoint sets currently exist."
+    },
+    {
+      "id": "medium-014",
+      "title": "Strongly-Typed Event Emitter",
+      "category": "code-generation",
+      "targetTokens": 460,
+      "text": "Design a strongly-typed event emitter in TypeScript. Given an event map interface like `interface Events { login: (userId: string) => void; error: (err: Error) => void; }`, implement a generic class `TypedEmitter<E extends Record<string, (...args: any[]) => void>>` with methods `on<K extends keyof E>(event: K, handler: E[K]): void`, `off<K extends keyof E>(event: K, handler: E[K]): void`, and `emit<K extends keyof E>(event: K, ...args: Parameters<E[K]>): void`, such that calling `emit('login', 123)` on the example above is a compile-time type error (it must be a string) rather than only failing at runtime. Store handlers in a `Map<keyof E, Set<Function>>` internally. Handle emitting an event with zero registered listeners (must not throw), calling `off` with a handler that was never registered (must be a silent no-op), and one handler throwing an exception during `emit` without preventing the remaining handlers for that event from still being called."
+    },
+    {
+      "id": "medium-015",
+      "title": "Configurable Debounce Function",
+      "category": "code-generation",
+      "targetTokens": 480,
+      "text": "Below is the spec for a JavaScript `debounce(fn, waitMs, options)` utility -- implement it. It must return a new function that delays invoking `fn` until `waitMs` milliseconds have elapsed since the last time the debounced function was called. The `options` object may include `{ leading: boolean, trailing: boolean }` (default `{ leading: false, trailing: true }`): if `leading` is true, `fn` also fires immediately on the first call of a new burst; if `trailing` is true, `fn` fires once more after the burst goes quiet. Support both `leading` and `trailing` being true simultaneously (fires at both the start and the end of a burst, but not for every intermediate call). The returned function must preserve `this` binding and forward all arguments from the most recent invocation to `fn`. Also expose a `.cancel()` method on the returned function that cancels any pending trailing call. Handle `waitMs` of 0 (should still defer to the next microtask/tick rather than firing fully synchronously) and repeated rapid calls where only the very last set of arguments should be used for the trailing call."
+    },
+    {
+      "id": "medium-016",
+      "title": "Entity Extraction Into Strict JSON",
+      "category": "structured-output",
+      "targetTokens": 560,
+      "text": "Read the following news brief and extract every entity into a JSON object that matches EXACTLY this schema, with no additional keys: {\"organizations\": [{\"name\": string, \"role\": string}], \"people\": [{\"name\": string, \"title\": string|null}], \"locations\": [string], \"monetary_amounts\": [{\"amount_usd\": number, \"context\": string}], \"dates\": [{\"date\": string, \"event\": string}]}. Output must be valid JSON only, no prose before or after. Brief: \"Cedar Rapids, Iowa -- Meridian Grid Partners announced Tuesday that it will invest $2.4 billion to build a new hyperscale data center campus on the site of the former Linwood industrial park, pending approval from the Linn County Board of Supervisors expected on September 15. The project, code-named 'Project Tallgrass', is a joint venture between Meridian Grid Partners and Ashwell Digital Infrastructure, with financing arranged through a consortium led by Prairie State Capital and including Northbridge Pension Trust as an anchor investor. Meridian's CEO, Dana Okafor, said the first of four planned buildings would break ground in early 2027 and reach commercial operation by mid-2028, with the full campus representing roughly 480 megawatts of critical IT load once all phases are complete. Ashwell's VP of Development, Marco Delacroix, added that the company has already signed a 20-year power purchase agreement with Interstate Power & Light for 150 megawatts of wind capacity from the nearby Buffalo Ridge wind farm, with an option to expand to 300 megawatts by 2030. The Linn County Economic Development Corporation estimates the project will create 350 permanent operations jobs and up to 2,200 construction jobs at peak, and has offered a 10-year property tax abatement worth an estimated $180 million in exchange for a minimum capital investment commitment of $2 billion. State Senator Priya Ramanathan, who represents the district, said she plans to introduce companion legislation in Des Moines in January to extend a similar abatement structure statewide. Meridian previously completed a smaller 60-megawatt facility in Altoona, Iowa in 2023 in partnership with MidAmerican Energy.\""
+    },
+    {
+      "id": "medium-017",
+      "title": "OpenAPI Spec for Reviews API",
+      "category": "structured-output",
+      "targetTokens": 480,
+      "text": "Write an OpenAPI 3.0 specification, in YAML, for a product-reviews resource with these three operations: `GET /products/{productId}/reviews` (list reviews, supports query params `page` integer default 1 and `rating` integer 1-5 optional filter, returns an array of Review objects plus pagination metadata), `POST /products/{productId}/reviews` (create a review, request body requires `rating` 1-5 and `body` string 10-2000 chars, `title` optional), and `DELETE /reviews/{reviewId}` (returns 204 on success, 404 if not found, 403 if the caller isn't the review's author). Define a reusable `Review` component schema with fields: `id` (string, uuid format), `productId` (string), `authorId` (string), `rating` (integer, enum-like minimum 1 maximum 5), `title` (string, nullable), `body` (string), `status` (string enum: pending, published, flagged, removed), `createdAt` (string, date-time format). Include realistic response schemas for the 400, 403, and 404 error cases using a shared `Error` schema with `code` and `message` fields. Output only the YAML document."
+    },
+    {
+      "id": "medium-018",
+      "title": "Nested JSON Schema for User Profiles",
+      "category": "structured-output",
+      "targetTokens": 460,
+      "text": "Produce a JSON Schema (draft-07) describing a user profile object with the following shape: top-level required fields `id` (string, uuid), `email` (string, format email), `displayName` (string, 1-80 chars); a required nested `address` object with `street`, `city`, `postalCode` (all strings) and an optional `country` restricted to the enum [\"US\", \"CA\", \"MX\", \"GB\", \"DE\"] defaulting to \"US\"; an optional `preferences` object with boolean fields `emailNotifications` and `smsNotifications` plus an enum `theme` of [\"light\", \"dark\", \"system\"]; and an optional array field `roles` whose items must be one of the enum values [\"admin\", \"editor\", \"viewer\", \"billing\"], with `additionalProperties: false` enforced at every object level so unexpected keys are rejected. After the schema, also produce one complete example JSON instance that validates successfully against it, including at least one optional field populated and one left out entirely. Output the schema and the example as two separate fenced JSON code blocks, nothing else."
+    },
+    {
+      "id": "medium-019",
+      "title": "Kubernetes Deployment Manifest",
+      "category": "structured-output",
+      "targetTokens": 500,
+      "text": "Author a Kubernetes Deployment manifest in YAML for a service named `checkout-api` that satisfies all of the following: 3 replicas; container image `registry.internal/checkout-api:1.4.2`; container port 8080; resource requests of 250m CPU / 256Mi memory and limits of 500m CPU / 512Mi memory; a readiness probe that does an HTTP GET on `/healthz/ready` on port 8080 with a 5-second initial delay and 10-second period; a liveness probe on `/healthz/live` with a 15-second initial delay and 20-second period; environment variables `DATABASE_URL` (sourced from a Secret named `checkout-db-secret`, key `url`) and `LOG_LEVEL` set to the literal value `info`; a rolling update strategy with `maxUnavailable: 1` and `maxSurge: 1`; and pod anti-affinity so that no two replicas of this deployment are scheduled onto the same node. Include the `apiVersion`, `kind`, `metadata.labels`, and `selector` fields correctly matched to the pod template labels. Output only the YAML."
+    },
+    {
+      "id": "medium-020",
+      "title": "Nested Product Catalog Schema",
+      "category": "structured-output",
+      "targetTokens": 460,
+      "text": "Design a JSON Schema for a product-catalog entry that must support product variants (like size and color combinations each with their own SKU, price, and stock count). The top-level object needs: `productId` (string), `name` (string), `basePriceCents` (integer, minimum 0), `category` restricted to enum [\"apparel\", \"footwear\", \"accessories\", \"home\"], an optional `description` (string, nullable), and a required `variants` array (minItems 1) whose items each require `sku` (string, pattern matching uppercase letters/digits/hyphens only), `attributes` (an object with free-form string keys and string values, e.g. {\"size\": \"M\", \"color\": \"Navy\"}), `priceCents` (integer, minimum 0, overriding basePriceCents for that variant), and `stock` (integer, minimum 0). Add a top-level optional `tags` array of unique strings. Output the schema as one JSON code block, followed by a short example instance with exactly two variants that validates against it, as a second JSON code block."
+    },
+    {
+      "id": "medium-021",
+      "title": "CI/CD Pipeline YAML Config",
+      "category": "structured-output",
+      "targetTokens": 480,
+      "text": "Generate a YAML CI/CD pipeline configuration (using a GitHub-Actions-style structure) for a repository that builds and tests a Node.js service across a matrix of Node versions 18, 20, and 22, on both `ubuntu-latest` and `macos-latest`. Stages required: `install` (cache dependencies keyed on the lockfile hash), `lint`, `test` (must upload a coverage report as an artifact named `coverage-<node-version>-<os>`), and a `deploy` job that only runs on pushes to `main`, only after `lint` and `test` succeed on every matrix combination, and only for the `ubuntu-latest` / Node 20 combination specifically (deploy should not run redundantly for every matrix cell). Include environment-specific secrets referenced as `${{ secrets.DEPLOY_TOKEN }}` and a manual approval gate (an `environment: production` block) before the deploy job runs. Output only the YAML workflow file."
+    },
+    {
+      "id": "medium-022",
+      "title": "Order Lifecycle State Machine JSON",
+      "category": "structured-output",
+      "targetTokens": 420,
+      "text": "Model an e-commerce order's lifecycle as a JSON state machine definition matching this schema: {\"initialState\": string, \"states\": [{\"name\": string, \"isFinal\": boolean, \"transitions\": [{\"on\": string, \"target\": string, \"guard\": string|null}]}]}. The states must be: `pending_payment`, `paid`, `fulfilling`, `shipped`, `delivered`, `cancelled`, and `refunded`. Include these transitions specifically: `pending_payment` -> `paid` on event `PAYMENT_CONFIRMED`; `pending_payment` -> `cancelled` on event `CANCEL` or on event `PAYMENT_TIMEOUT` (with a guard string noting the timeout is 30 minutes); `paid` -> `fulfilling` on event `FULFILLMENT_STARTED`; `fulfilling` -> `shipped` on event `SHIPPED`; `shipped` -> `delivered` on event `DELIVERY_CONFIRMED`; and both `paid` and `fulfilling` -> `refunded` on event `REFUND_ISSUED` (a guard noting a refund is only allowed before shipment). `delivered`, `cancelled`, and `refunded` are the only `isFinal: true` states. Output only the JSON object, no commentary."
+    },
+    {
+      "id": "medium-023",
+      "title": "Structured Infra Resource Descriptor",
+      "category": "structured-output",
+      "targetTokens": 460,
+      "text": "Define a generic JSON schema for describing a cloud infrastructure resource inventory entry (this is a custom internal format, not tied to any one cloud provider's real API), then produce three example instances that validate against it. Required schema fields: `resourceId` (string), `resourceType` (enum: [\"compute-instance\", \"managed-database\", \"object-storage-bucket\", \"load-balancer\"]), `region` (string), `tags` (object, free-form string-to-string key/value pairs), `costPerMonthUsd` (number, minimum 0), and a `spec` object whose required sub-fields depend on `resourceType` (for `compute-instance`: `vcpus` integer and `memoryGb` number; for `managed-database`: `engine` enum [\"postgres\", \"mysql\", \"redis\"] and `storageGb` integer; for `object-storage-bucket`: `versioningEnabled` boolean; for `load-balancer`: `scheme` enum [\"internal\", \"internet-facing\"]). Output the schema as one JSON code block (using `oneOf` to express the type-dependent `spec` shapes), then the three example instances -- one of each of three different `resourceType` values -- as a second JSON code block containing a JSON array."
+    },
+    {
+      "id": "medium-024",
+      "title": "GraphQL Schema for a Blog",
+      "category": "structured-output",
+      "targetTokens": 460,
+      "text": "Write a GraphQL SDL schema for a blogging platform covering: an `Author` type (`id: ID!`, `name: String!`, `bio: String`), a `Post` type (`id: ID!`, `title: String!`, `body: String!`, `status: PostStatus!`, `author: Author!`, `comments: [Comment!]!`, `publishedAt: String`), a `Comment` type (`id: ID!`, `body: String!`, `author: Author!`, `createdAt: String!`), and a `PostStatus` enum with values `DRAFT`, `PUBLISHED`, `ARCHIVED`. Define a `Searchable` interface with a single field `matchesQuery(query: String!): Boolean!` and make `Post` implement it. Include a `Query` type with `post(id: ID!): Post`, `posts(status: PostStatus, first: Int = 10, after: String): PostConnection!` using cursor-based pagination (define `PostConnection` and `PostEdge` types with a `pageInfo` field of type `PageInfo` containing `hasNextPage: Boolean!` and `endCursor: String`), and a `Mutation` type with `createPost(title: String!, body: String!): Post!` and `addComment(postId: ID!, body: String!): Comment!`. Output only the SDL."
+    },
+    {
+      "id": "medium-025",
+      "title": "Multi-Step Form Wizard Schema",
+      "category": "structured-output",
+      "targetTokens": 460,
+      "text": "Define a JSON Schema for the submitted payload of a three-step loan-application wizard. Step 1 (`personalInfo`, required object): `fullName` (string), `dateOfBirth` (string, date format), `ssnLastFour` (string, pattern exactly 4 digits). Step 2 (`employment`, required object): `status` enum [\"employed\", \"self_employed\", \"unemployed\", \"retired\"]; if `status` is `employed` or `self_employed`, an `annualIncome` (number, minimum 0) becomes required and `employerName` (string) becomes required only for `employed` -- express this conditional requirement using `if`/`then` composition, not just a comment. Step 3 (`loanDetails`, required object): `amountRequested` (number, minimum 1000, maximum 100000), `termMonths` enum [12, 24, 36, 48, 60], and an optional `coApplicant` object (nullable) with the same shape as `personalInfo`. Add a top-level optional `referralCode` (string, nullable). Output the schema as a single JSON code block, followed by one valid example instance where `status` is `self_employed`, as a second JSON code block."
+    },
+    {
+      "id": "medium-026",
+      "title": "Docker Compose Multi-Service YAML",
+      "category": "structured-output",
+      "targetTokens": 460,
+      "text": "Write a `docker-compose.yml` (compose spec version 3.9-compatible) defining four services: `web` (builds from `./web`, exposes port 3000, depends on `api` being healthy, environment variable `API_URL=http://api:8000`); `api` (image `myorg/api:2.1.0`, port 8000, depends on both `db` and `cache` being healthy, has a healthcheck hitting `/healthz` every 10s with 3 retries); `db` (image `postgres:16`, a named volume `db-data` mounted at `/var/lib/postgresql/data`, environment variables for `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`, and a healthcheck using `pg_isready`); and `cache` (image `redis:7-alpine`, a healthcheck using `redis-cli ping`). All four services should share a custom bridge network named `app-net`. Declare the `db-data` named volume at the top level. Output only the YAML file."
+    },
+    {
+      "id": "medium-027",
+      "title": "Business Rules Into a Decision Table",
+      "category": "structured-output",
+      "targetTokens": 420,
+      "text": "Convert the following shipping-discount policy into a strict JSON decision table matching this schema: {\"rules\": [{\"conditions\": {\"orderTotalUsd\": {\"min\": number|null, \"max\": number|null}, \"customerTier\": string|null, \"isFirstOrder\": boolean|null}, \"action\": {\"discountPercent\": number, \"freeShipping\": boolean}}], \"defaultAction\": {\"discountPercent\": number, \"freeShipping\": boolean}}. Policy: 'Orders over $150 always get free shipping regardless of anything else. First-time customers get a 10% discount on any order under $150, but no free shipping unless the $150 threshold is separately met. Gold-tier customers get a flat 15% discount on orders between $50 and $150, and free shipping on anything over $75. Everyone else gets no discount and pays standard shipping.' Encode overlapping cases as separate rule entries in priority order (most specific/highest-priority first) rather than trying to merge them into one rule, and set a sensible `defaultAction` for orders matching none of the rules. Output only the JSON object."
+    },
+    {
+      "id": "medium-028",
+      "title": "Event Logging Record JSON Schema",
+      "category": "structured-output",
+      "targetTokens": 420,
+      "text": "Define a JSON Schema for a single structured log event emitted by a distributed pipeline. Required fields: `eventId` (string, uuid), `timestamp` (string, date-time), `severity` (enum: [\"debug\", \"info\", \"warn\", \"error\", \"critical\"]), `service` (string), `message` (string). Required nested `metadata` object with `traceId` (string), `spanId` (string), and an optional `tags` object of free-form string key/value pairs. Add an optional `error` object (only meaningful when `severity` is `error` or `critical`) containing `errorType` (string), `stackTrace` (string, nullable), and `retryable` (boolean); express with `if`/`then` that when `severity` is `error` or `critical`, the `error` object becomes required. Disallow additional properties at every level. Output the schema as one JSON code block, then two example instances (one `info` event without an `error` object, one `critical` event with one) as a second JSON code block containing a JSON array of the two instances."
+    },
+    {
+      "id": "medium-029",
+      "title": "Structured Test Report JSON",
+      "category": "structured-output",
+      "targetTokens": 420,
+      "text": "Produce a JSON test report matching exactly this schema: {\"runId\": string, \"startedAt\": string, \"durationMs\": integer, \"summary\": {\"total\": integer, \"passed\": integer, \"failed\": integer, \"skipped\": integer}, \"suites\": [{\"name\": string, \"tests\": [{\"name\": string, \"status\": \"passed\"|\"failed\"|\"skipped\", \"durationMs\": integer, \"failureMessage\": string|null}]}]}. Populate it with a realistic run of three suites -- `AuthServiceTests` (5 tests, one failing with a plausible assertion-mismatch message), `PaymentGatewayTests` (4 tests, one skipped with `failureMessage` null), and `InventorySyncTests` (6 tests, all passing) -- and make sure the top-level `summary` counts are internally consistent with the actual per-test statuses you wrote (they must add up correctly; this will be checked). Output only the JSON object."
+    },
+    {
+      "id": "medium-030",
+      "title": "Restaurant Menu JSON Schema",
+      "category": "structured-output",
+      "targetTokens": 420,
+      "text": "Design a JSON Schema for a restaurant's digital menu. Top level: `restaurantName` (string) and a required `categories` array (minItems 1), where each category has `name` (string) and an `items` array. Each menu item requires `name` (string), `priceCents` (integer, minimum 0), and `allergens` (array of unique strings restricted to the enum [\"gluten\", \"dairy\", \"nuts\", \"shellfish\", \"soy\", \"eggs\"], may be empty); optional fields include `description` (string, nullable), `spicyLevel` (integer, 0-3), and a `sizes` array for items with multiple portion options, where each size has `label` (string, e.g. 'small'/'large') and `priceCents` (integer) that overrides the item-level price when present. Enforce `additionalProperties: false` throughout. Output the schema as one JSON code block, then one example instance with at least two categories, one item that uses `sizes` and one that doesn't, as a second JSON code block."
+    },
+    {
+      "id": "medium-031",
+      "title": "Group Access Logs By Status",
+      "category": "data-transformation",
+      "targetTokens": 380,
+      "text": "Here is an excerpt of an Nginx access log:\n192.168.1.14 - - [30/Jul/2026:08:12:01 +0000] \"GET /api/orders HTTP/1.1\" 200 512\n192.168.1.22 - - [30/Jul/2026:08:12:03 +0000] \"GET /api/orders/991 HTTP/1.1\" 404 128\n192.168.1.14 - - [30/Jul/2026:08:12:05 +0000] \"POST /api/orders HTTP/1.1\" 201 340\n192.168.1.9 - - [30/Jul/2026:08:12:07 +0000] \"GET /api/health HTTP/1.1\" 200 20\n192.168.1.22 - - [30/Jul/2026:08:12:11 +0000] \"GET /api/orders/991 HTTP/1.1\" 404 128\n192.168.1.31 - - [30/Jul/2026:08:12:14 +0000] \"POST /api/login HTTP/1.1\" 500 88\n192.168.1.14 - - [30/Jul/2026:08:12:19 +0000] \"GET /api/orders HTTP/1.1\" 200 512\n192.168.1.9 - - [30/Jul/2026:08:12:22 +0000] \"POST /api/login HTTP/1.1\" 500 88\n192.168.1.31 - - [30/Jul/2026:08:12:25 +0000] \"GET /api/orders HTTP/1.1\" 200 512\nParse each line and produce a summary table (as markdown) grouped by HTTP status code, showing: the count of requests, the distinct set of paths that returned that status, and the total response bytes summed across those requests. Then separately list which client IP addresses triggered any 4xx or 5xx response, since those need investigation."
+    },
+    {
+      "id": "medium-032",
+      "title": "Pivot Quarterly Sales by Region",
+      "category": "data-transformation",
+      "targetTokens": 400,
+      "text": "Given this long-format sales CSV:\nregion,quarter,revenue\nWest,Q1,120000\nWest,Q2,135000\nWest,Q3,98000\nWest,Q4,151000\nEast,Q1,88000\nEast,Q2,91000\nEast,Q3,105000\nEast,Q4,99000\nSouth,Q1,76000\nSouth,Q2,80000\nSouth,Q3,72000\nSouth,Q4,90000\nWrite the pandas code (using `pivot_table`) that reshapes this into a wide table with `region` as the row index and one column per quarter (`Q1`..`Q4`) containing revenue, plus a `Total` column that sums across the four quarters. Also show the resulting table's contents directly (not just the code) as a markdown table, and state which region had the largest quarter-over-quarter swing between any two consecutive quarters."
+    },
+    {
+      "id": "medium-033",
+      "title": "Normalize and Dedupe Address List",
+      "category": "data-transformation",
+      "targetTokens": 600,
+      "text": "Below is a raw list of customer-submitted addresses pulled from a signup form, with inconsistent formatting, abbreviations, and near-duplicate entries for what is clearly the same physical address:\n1) \"123 Main St, Apt 4B, Springfield IL 62704\"\n2) \"123 Main Street Apartment 4-B Springfield, Illinois 62704\"\n3) \"456 Oak Avenue, Suite 200, Denver CO 80202\"\n4) \"456 Oak Ave Ste 200 Denver, Colorado 80202-1234\"\n5) \"789 Elm Rd, Austin TX 78701\"\n6) \"789 Elm Road Austin, Tx 78701\"\n7) \"22 Birchwood Court, Unit 3, Portland OR 97201\"\n8) \"22 Birchwood Ct #3 Portland, Oregon 97201\"\n9) \"555 Riverside Drive, Chicago IL 60601\"\n10) \"555 Riverside Dr Chicago, Illinois 60601\"\n11) \"88 Maple Ln, Boise ID 83702\"\n12) \"321 Highland Park Blvd, Nashville TN 37203\"\n13) \"321 Highland Pk Boulevard Nashville, Tennessee 37203\"\n14) \"9 Lakeview Terrace, Apt 1, Seattle WA 98101\"\nNormalize every entry to a consistent format: `Street Number + Street Name (with standardized abbreviations St/Ave/Rd/Blvd/Ln/Ct/Dr), Unit designator standardized to 'Apt N' or 'Unit N' or 'Ste N', City, TWO-LETTER State Code ZIP`. Then merge entries that refer to the same physical address (there are 6 distinct physical addresses represented across these 14 entries) into a single canonical row, and output the final deduplicated, normalized list as a markdown table with columns: Canonical Address, Original Entry Numbers Merged."
+    },
+    {
+      "id": "medium-034",
+      "title": "SQL Top-N Per Category Window Query",
+      "category": "data-transformation",
+      "targetTokens": 380,
+      "text": "Given a table `orders(order_id INT, customer_id INT, category VARCHAR, amount DECIMAL, order_date DATE)`, write a single SQL query using the `ROW_NUMBER()` window function that returns, for each `category`, the 3 highest-`amount` orders, including `order_id`, `customer_id`, `amount`, `order_date`, and the computed rank column, ordered by `category` ascending then rank ascending. Then write a second query that instead returns each customer's most recent order per category using `RANK()` (not `ROW_NUMBER()`), and explain in one sentence why `RANK()` versus `ROW_NUMBER()` produces a meaningfully different result when two orders in the same category share the exact same `order_date`."
+    },
+    {
+      "id": "medium-035",
+      "title": "Melt Wide Sensor Data to Long",
+      "category": "data-transformation",
+      "targetTokens": 380,
+      "text": "You have a wide-format CSV of hourly sensor readings:\ntimestamp,sensor_temp_c,sensor_humidity_pct,sensor_pressure_hpa\n2026-07-29 00:00,21.4,55,1013.2\n2026-07-29 01:00,21.1,56,1013.0\n2026-07-29 02:00,20.9,57,1012.8\n2026-07-29 03:00,20.7,58,1012.9\nWrite the pandas code using `melt` to reshape this into long format with columns `timestamp`, `metric` (one of `temp_c`, `humidity_pct`, `pressure_hpa` -- strip the `sensor_` prefix), and `value`. Show the resulting long-format DataFrame's contents directly, sorted by `timestamp` then `metric` alphabetically, as a markdown table with all 12 resulting rows."
+    },
+    {
+      "id": "medium-036",
+      "title": "Categorize Changelog by Version",
+      "category": "data-transformation",
+      "targetTokens": 400,
+      "text": "Here is a raw, uncategorized changelog fragment:\nv2.3.0 - Fixed crash on startup when config file missing\nv2.3.0 - Added dark mode toggle to settings\nv2.3.0 - Changed default timeout from 30s to 60s\nv2.3.0 - Fixed memory leak in background sync\nv2.2.1 - Fixed login redirect loop on expired session\nv2.2.1 - Added Spanish and Portuguese localization\nv2.2.0 - Added bulk export feature\nv2.2.0 - Changed onboarding flow to 3 steps instead of 5\nv2.2.0 - Fixed incorrect timezone display in reports\nv2.2.0 - Added webhook retry with exponential backoff\nReorganize this into a structured changelog grouped first by version (newest first) and then by change type -- `Added`, `Fixed`, `Changed` -- as three separate bulleted subsections under each version heading (omit a subsection entirely if that version has zero entries of that type). Output the result as markdown."
+    },
+    {
+      "id": "medium-037",
+      "title": "Resample Requests Into Per-Minute Buckets",
+      "category": "data-transformation",
+      "targetTokens": 400,
+      "text": "Here are raw HTTP request timestamps (one request per line, ISO8601) from a load test:\n2026-07-30T09:00:02, 2026-07-30T09:00:14, 2026-07-30T09:00:28, 2026-07-30T09:00:41, 2026-07-30T09:00:55, 2026-07-30T09:01:03, 2026-07-30T09:01:09, 2026-07-30T09:01:22, 2026-07-30T09:01:47, 2026-07-30T09:02:05, 2026-07-30T09:02:11, 2026-07-30T09:02:38, 2026-07-30T09:02:44, 2026-07-30T09:03:01, 2026-07-30T09:03:19\nWrite the pandas code (using `resample('1min')` on a DatetimeIndex) that buckets these into per-minute request counts covering every minute from 09:00 through 09:03 inclusive, including minutes with zero requests if any exist in that range. Then show the resulting per-minute counts directly as a markdown table, and state the requests-per-second rate implied by the busiest minute."
+    },
+    {
+      "id": "medium-038",
+      "title": "One-Hot Encode Categorical Column",
+      "category": "data-transformation",
+      "targetTokens": 360,
+      "text": "Given this small inline dataset of support tickets:\nticket_id,priority,channel\n1,high,email\n2,low,chat\n3,medium,email\n4,high,phone\n5,low,email\n6,medium,chat\nWrite the pandas code using `pd.get_dummies` to one-hot encode the `channel` column (drop the first category to avoid the dummy-variable trap, and prefix the resulting columns with `channel_`), while leaving `ticket_id` and `priority` untouched. Show the full resulting DataFrame's contents directly as a markdown table with all 6 rows and all resulting columns, and state exactly which category was dropped and why that doesn't lose information."
+    },
+    {
+      "id": "medium-039",
+      "title": "Compute Monthly Cohort Retention",
+      "category": "data-transformation",
+      "targetTokens": 460,
+      "text": "Given this inline signup/activity data:\nuser_id,signup_month,active_month\n1,2026-01,2026-01\n1,2026-01,2026-02\n1,2026-01,2026-03\n2,2026-01,2026-01\n2,2026-01,2026-03\n3,2026-01,2026-01\n4,2026-02,2026-02\n4,2026-02,2026-03\n5,2026-02,2026-02\n6,2026-02,2026-02\n6,2026-02,2026-03\n7,2026-02,2026-04\nCompute a cohort retention table where rows are `signup_month` (2026-01 and 2026-02), columns are 'months since signup' (0, 1, 2, 3), and cell values are the percentage of that cohort's users who had at least one active_month record that many months after signup. Show your intermediate reasoning briefly (cohort sizes, and which users count in which month-offset bucket), then output the final retention percentages as a markdown table."
+    },
+    {
+      "id": "medium-040",
+      "title": "Flatten Nested Orders to CSV Rows",
+      "category": "data-transformation",
+      "targetTokens": 420,
+      "text": "Given this nested JSON representing orders with line items:\n[{\"orderId\": \"A100\", \"customer\": \"Jane Kim\", \"items\": [{\"sku\": \"WIDGET-1\", \"qty\": 2, \"price\": 9.99}, {\"sku\": \"GADGET-2\", \"qty\": 1, \"price\": 24.50}]}, {\"orderId\": \"A101\", \"customer\": \"Raj Patel\", \"items\": [{\"sku\": \"WIDGET-1\", \"qty\": 5, \"price\": 9.99}]}, {\"orderId\": \"A102\", \"customer\": \"Maria Lopez\", \"items\": []}]\nFlatten this into tabular CSV rows with columns `orderId, customer, sku, qty, price, lineTotal` where `lineTotal = qty * price`. An order with zero items (like A102) must still produce exactly one output row with `sku`, `qty`, `price`, and `lineTotal` left blank rather than being silently dropped. Output the result as an actual CSV text block (comma-separated, header row included), not a description of it."
+    },
+    {
+      "id": "medium-041",
+      "title": "Fuzzy-Match and Merge Customer Records",
+      "category": "data-transformation",
+      "targetTokens": 460,
+      "text": "Here are customer records pulled from two different systems that were never properly linked:\nSystem A: (id=A1, name=\"Robert Chen\", email=\"rchen@example.com\", phone=\"555-201-3344\")\nSystem A: (id=A2, name=\"Katie O'Brien\", email=\"kobrien88@example.com\", phone=\"555-908-1122\")\nSystem A: (id=A3, name=\"Sam Nguyen\", email=\"snguyen@example.com\", phone=\"555-442-9981\")\nSystem B: (id=B1, name=\"Rob Chen\", email=\"rchen@example.com\", phone=\"555-201-3344\")\nSystem B: (id=B2, name=\"Katherine O'Brien\", email=\"k.obrien@example.com\", phone=\"555-908-1122\")\nSystem B: (id=B3, name=\"Samuel Nguyen\", email=\"snguyen@newmail.com\", phone=\"555-442-9999\")\nSystem B: (id=B4, name=\"Alicia Ford\", email=\"aford@example.com\", phone=\"555-773-6600\")\nMatch and merge records that refer to the same real person across the two systems, using whichever signal is strongest per pair (exact email match, exact phone match, or close name similarity) and note which signal you used for each merge decision. Output one canonical merged record per distinct person (there should be 4 people total) as a markdown table with columns: Canonical Name, Email, Phone, Source IDs Merged, Match Basis."
+    },
+    {
+      "id": "medium-042",
+      "title": "SQL Running Total With Window Function",
+      "category": "data-transformation",
+      "targetTokens": 360,
+      "text": "Given a table `daily_revenue(store_id INT, sale_date DATE, revenue DECIMAL)`, write a single SQL query using window functions that returns, for every row, `store_id`, `sale_date`, `revenue`, a `running_total` (cumulative sum of revenue per store ordered by date), and a `trailing_7day_avg` (average revenue over that day and the 6 preceding days, per store, using a `ROWS BETWEEN 6 PRECEDING AND CURRENT ROW` frame). Partition both window functions by `store_id`. Then explain in 2-3 sentences what happens to `trailing_7day_avg` for the first 6 days of a store's data (when fewer than 7 rows exist in the frame) and why that's usually acceptable behavior rather than something you need to special-case."
+    },
+    {
+      "id": "medium-043",
+      "title": "Normalize Mixed-Format Log Timestamps",
+      "category": "data-transformation",
+      "targetTokens": 420,
+      "text": "Here is a log excerpt with inconsistent timestamp formats coming from different services:\n[2026-07-30 09:14:02] service=auth msg=\"login ok\"\nJul 30 09:15:47 service=billing msg=\"invoice generated\"\n2026-07-30T09:16:33Z service=inventory msg=\"stock updated\"\n30/07/2026 09:18:10 service=auth msg=\"logout\"\n[2026-07-30 09:19:55] service=billing msg=\"payment failed\"\nJul 30 09:22:01 service=auth msg=\"login ok\"\nParse every line, normalize all timestamps to strict ISO8601 UTC (`YYYY-MM-DDTHH:MM:SSZ`), and group the normalized entries by hour bucket (there's only one hour bucket here, 09:00, but explain what would change if entries spanned two hours), then within that bucket show counts per `service`. Output as a markdown table with columns: Original Timestamp, Normalized Timestamp, Service, Message, followed by a second small table of per-service counts."
+    },
+    {
+      "id": "medium-044",
+      "title": "Cross-Tab Headcount by Department",
+      "category": "data-transformation",
+      "targetTokens": 400,
+      "text": "Given this inline employee roster:\nname,department,level\nAlex,Engineering,Senior\nBrooke,Engineering,Junior\nCasey,Engineering,Senior\nDana,Sales,Junior\nElliot,Sales,Junior\nFinn,Sales,Senior\nGrace,Marketing,Mid\nHenry,Engineering,Mid\nIvy,Marketing,Senior\nJordan,Sales,Mid\nProduce a cross-tabulation (pivot) table with `department` as rows and `level` (Junior, Mid, Senior) as columns, where each cell is the count of employees in that department at that level, plus a `Total` column per department and a `Total` row summing each level column across all departments. Show the pandas `pivot_table` (or `crosstab`) code that produces this, then show the actual resulting table as markdown."
+    },
+    {
+      "id": "medium-045",
+      "title": "Summarize Git Log Per Author",
+      "category": "data-transformation",
+      "targetTokens": 520,
+      "text": "Here is a `git log --oneline --stat`-style commit history:\na1b2c3d Alice Chen: Add rate limiter middleware (+142 -8)\ne4f5a6b Bob Reyes: Fix flaky integration test in checkout suite (+21 -34)\nc7d8e9f Alice Chen: Refactor token bucket to use monotonic clock (+56 -61)\n1a2b3c4 Priya Shah: Add Spanish translations for onboarding flow (+310 -2)\n5d6e7f8 Bob Reyes: Bump dependency versions for security patch (+12 -12)\n9g0h1i2 Alice Chen: Add unit tests for rate limiter edge cases (+180 -0)\n3j4k5l6 Priya Shah: Fix incorrect pluralization in Spanish strings (+8 -8)\nb7c8d9e Bob Reyes: Remove dead code in legacy payments module (+4 -220)\nf0g1h2i Alice Chen: Document rate limiter configuration options (+95 -1)\nk3l4m5n Priya Shah: Add French translations for onboarding flow (+298 -2)\nq6r7s8t Bob Reyes: Fix off-by-one in pagination helper (+9 -6)\nw9x0y1z Alice Chen: Bump rate limiter default capacity from 10 to 20 (+3 -3)\nm2n3o4p Priya Shah: Fix French translation typo in checkout page (+2 -2)\nz5a6b7c Bob Reyes: Add regression test for pagination fix (+44 -0)\nGroup these commits by author and produce a per-author summary table with columns: Author, Commit Count, Lines Added, Lines Removed, Net Lines Changed, and a short comma-separated list of the recurring themes in that author's commits (e.g. 'rate limiter, testing, docs'). Output the summary as a markdown table sorted by Commit Count descending."
+    },
+    {
+      "id": "medium-046",
+      "title": "Off-By-One in Window Sum",
+      "category": "debugging",
+      "targetTokens": 340,
+      "text": "This JavaScript function is supposed to return the maximum sum of any contiguous subarray of length `k`, but it returns a wrong answer for at least one input. Find the bug and provide the corrected code.\nfunction maxWindowSum(arr, k) {\n  let maxSum = 0;\n  for (let i = 0; i <= arr.length - k; i++) {\n    let sum = 0;\n    for (let j = i; j < i + k - 1; j++) {\n      sum += arr[j];\n    }\n    maxSum = Math.max(maxSum, sum);\n  }\n  return maxSum;\n}\nTrace through `maxWindowSum([1, 2, 3, 4], 2)` step by step to show what it currently returns versus the correct answer, identify the exact off-by-one, and give the fixed function."
+    },
+    {
+      "id": "medium-047",
+      "title": "Go Data Race on Shared Counter",
+      "category": "debugging",
+      "targetTokens": 380,
+      "text": "The Go program below launches 100 goroutines that each increment a shared counter 1000 times, then prints the final value, expecting 100000. Running it under `go run -race` reports a data race, and the printed value is frequently wrong. Identify exactly which line(s) cause the race and provide a corrected version using a `sync.Mutex` (do not just switch to `atomic.AddInt64` -- explain why the mutex approach is what's being asked for here, then also mention atomic as a one-line alternative).\npackage main\nimport (\n\t\"fmt\"\n\t\"sync\"\n)\nfunc main() {\n\tcounter := 0\n\tvar wg sync.WaitGroup\n\tfor i := 0; i < 100; i++ {\n\t\twg.Add(1)\n\t\tgo func() {\n\t\t\tdefer wg.Done()\n\t\t\tfor j := 0; j < 1000; j++ {\n\t\t\t\tcounter++\n\t\t\t}\n\t\t}()\n\t}\n\twg.Wait()\n\tfmt.Println(counter)\n}"
+    },
+    {
+      "id": "medium-048",
+      "title": "List Mutation During Iteration",
+      "category": "debugging",
+      "targetTokens": 340,
+      "text": "Below is a Python function meant to remove every even number from a list in place and return it. It sometimes leaves an even number behind, especially when there are two even numbers in a row.\ndef remove_evens(nums):\n    for i in range(len(nums)):\n        if nums[i] % 2 == 0:\n            del nums[i]\n    return nums\nExplain precisely why deleting from a list while iterating over it by index causes elements to be skipped (walk through `remove_evens([2, 4, 5, 6, 7])` to demonstrate), note that this will also eventually raise an `IndexError` for some inputs, and provide a corrected implementation along with a brief note on which of the common fixes (iterate over a copy, build a new list via comprehension, or iterate backwards) you chose and why."
+    },
+    {
+      "id": "medium-049",
+      "title": "Missing Await Causes Race",
+      "category": "debugging",
+      "targetTokens": 360,
+      "text": "The following Node.js function is supposed to fetch a user, then fetch that user's orders, and return a combined object. In production it intermittently returns `orders: undefined` even though the orders clearly exist in the database.\nasync function getUserWithOrders(userId) {\n  const user = await fetchUser(userId);\n  let orders;\n  fetchOrdersForUser(user.id).then(result => {\n    orders = result;\n  });\n  return { user, orders };\n}\nIdentify the missing `await` (or equivalent fix) that causes `orders` to be read before the promise resolves, explain why this bug is intermittent rather than always failing (hint: timing / event loop ordering), and rewrite the function so it reliably waits for both fetches before returning."
+    },
+    {
+      "id": "medium-050",
+      "title": "SQL Injection in Flask Endpoint",
+      "category": "debugging",
+      "targetTokens": 380,
+      "text": "This Flask endpoint has a SQL injection vulnerability. Identify exactly how an attacker could exploit it (give a concrete malicious value for the `username` query parameter that would let them bypass the intended filter and dump the whole `users` table), and provide the corrected version using parameterized queries.\n@app.route('/users/search')\ndef search_users():\n    username = request.args.get('username', '')\n    query = \"SELECT id, username, email FROM users WHERE username LIKE '%\" + username + \"%'\"\n    cursor.execute(query)\n    rows = cursor.fetchall()\n    return jsonify(rows)\nAlso note whether simply escaping quote characters yourself would be a sufficient fix, and explain briefly why parameterized queries are the correct approach instead."
+    },
+    {
+      "id": "medium-051",
+      "title": "Django N+1 Query Bug",
+      "category": "debugging",
+      "targetTokens": 520,
+      "text": "Given these Django models:\nclass Post(models.Model):\n    title = models.CharField(max_length=200)\n    author = models.ForeignKey('User', on_delete=models.CASCADE)\n    created_at = models.DateTimeField(auto_now_add=True)\n\nclass Comment(models.Model):\n    post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)\n    author = models.ForeignKey('User', on_delete=models.CASCADE)\n    body = models.TextField()\n\nand this view function, which is unacceptably slow on a page listing 50 posts, generating well over 150 database queries per request according to the Django Debug Toolbar:\ndef post_feed(request):\n    posts = Post.objects.all().order_by('-created_at')[:50]\n    result = []\n    for post in posts:\n        comment_count = post.comments.count()\n        author_name = post.author.username\n        result.append({\n            'title': post.title,\n            'author': author_name,\n            'comment_count': comment_count,\n        })\n    return JsonResponse({'posts': result})\nExplain exactly which lines inside the loop each trigger an additional query per post (there are two separate N+1 sources here, not one), and rewrite `post_feed` using `select_related` and/or `annotate` with `Count` so the whole view executes in a small constant number of queries regardless of how many posts are on the page."
+    },
+    {
+      "id": "medium-052",
+      "title": "JS Event Listener Memory Leak",
+      "category": "debugging",
+      "targetTokens": 380,
+      "text": "The React-free vanilla JavaScript component below creates a memory leak: every time `openModal()` is called and then the modal is closed and reopened, an additional resize handler accumulates, so eventually the resize callback fires dozens of times per actual resize event and the page gets progressively slower.\nfunction openModal(modalEl) {\n  modalEl.classList.add('open');\n  window.addEventListener('resize', () => {\n    repositionModal(modalEl);\n  });\n}\nfunction closeModal(modalEl) {\n  modalEl.classList.remove('open');\n}\nExplain precisely why `closeModal` does nothing to undo what `openModal` set up, why the anonymous arrow function used as the listener makes the leak harder to fix with a naive `removeEventListener` call, and provide a corrected pair of functions that don't accumulate listeners across repeated open/close cycles."
+    },
+    {
+      "id": "medium-053",
+      "title": "Java Lock-Ordering Deadlock",
+      "category": "debugging",
+      "targetTokens": 420,
+      "text": "The Java code below is meant to transfer money between two `Account` objects safely, but under concurrent load it occasionally deadlocks completely, freezing the two threads involved forever.\nclass Account {\n    private final Object lock = new Object();\n    private double balance;\n    Object getLock() { return lock; }\n    void transfer(Account to, double amount) {\n        synchronized (this.getLock()) {\n            synchronized (to.getLock()) {\n                this.balance -= amount;\n                to.balance += amount;\n            }\n        }\n    }\n}\nExplain the exact interleaving of two threads calling `accountA.transfer(accountB, 50)` and `accountB.transfer(accountA, 30)` simultaneously that produces the deadlock (name which thread holds which lock and what each is waiting for), and provide a corrected `transfer` implementation that establishes a consistent global lock ordering (e.g. by a stable unique account ID) so the deadlock cannot occur regardless of transfer direction."
+    },
+    {
+      "id": "medium-054",
+      "title": "Python Mutable Default Argument",
+      "category": "debugging",
+      "targetTokens": 340,
+      "text": "This Python function is meant to append a tag to a per-call list and return it, defaulting to an empty list when no list is provided. Instead, tags accumulate across unrelated calls that don't pass their own list explicitly.\ndef add_tag(tag, tags=[]):\n    tags.append(tag)\n    return tags\nDemonstrate the bug concretely by showing what `add_tag('urgent')` followed later by `add_tag('reviewed')` returns (both called without the `tags` argument), explain in terms of Python's function-definition-time evaluation of default arguments why this happens, and provide the corrected version using the standard `None` sentinel idiom."
+    },
+    {
+      "id": "medium-055",
+      "title": "C Signed Integer Overflow Bug",
+      "category": "debugging",
+      "targetTokens": 380,
+      "text": "The C function below is meant to safely detect integer overflow before it happens and return an error code instead of a wrapped-around result, but the overflow check itself is broken because it relies on undefined behavior.\nint safe_add(int a, int b, int *result) {\n    int sum = a + b;\n    if (sum < a || sum < b) {\n        return -1; /* overflow detected */\n    }\n    *result = sum;\n    return 0;\n}\nExplain why, with `a = INT_MAX` and `b = 1`, the expression `a + b` is signed integer overflow, which is undefined behavior in C -- meaning the compiler is free to assume it never happens and may optimize the `if` check away entirely, so this function cannot reliably detect the very overflow it's checking for. Then provide a corrected, fully portable implementation that checks for overflow before performing the addition (e.g. by comparing `b` against `INT_MAX - a`), without ever computing an out-of-range value."
+    },
+    {
+      "id": "medium-056",
+      "title": "Closure Capture Bug in a Loop",
+      "category": "debugging",
+      "targetTokens": 340,
+      "text": "The JavaScript snippet below is supposed to log 0, 1, 2, 3, 4 (one second apart) but instead logs 5 five times.\nfor (var i = 0; i < 5; i++) {\n  setTimeout(function() {\n    console.log(i);\n  }, i * 1000);\n}\nExplain precisely why `var`'s function-scoping (as opposed to block-scoping) causes every callback to share the same single `i` variable, which has already reached 5 by the time any callback runs. Then give two different correct fixes: one that changes `var` to `let`, and one that keeps `var` but fixes it using an IIFE that captures the current value of `i` as a parameter -- explain briefly why the `let` fix works in terms of per-iteration binding."
+    },
+    {
+      "id": "medium-057",
+      "title": "Bare Except Hides Real Errors",
+      "category": "debugging",
+      "targetTokens": 360,
+      "text": "Below is a Python function that silently returns `None` on any failure instead of surfacing what actually went wrong, which has made a production incident nearly impossible to debug from the logs alone.\ndef load_config(path):\n    try:\n        with open(path) as f:\n            return json.load(f)\n    except:\n        return None\nExplain concretely what kinds of real problems this bare `except:` swallows beyond the intended 'file not found' case (give at least two examples, such as a `KeyboardInterrupt` during a long read, or a `json.JSONDecodeError` from a genuinely malformed config file that a developer needs to know about), and rewrite the function to catch only the specific exceptions that represent recoverable, expected failure modes, while logging enough detail to diagnose the rest, and letting truly unexpected exceptions propagate."
+    },
+    {
+      "id": "medium-058",
+      "title": "Pagination Off-By-One Skips Records",
+      "category": "debugging",
+      "targetTokens": 360,
+      "text": "The pagination helper below is meant to return page `page` (1-indexed) of `pageSize` items from a larger `allItems` array, but it silently skips one item at the boundary between every pair of consecutive pages.\nfunction getPage(allItems, page, pageSize) {\n  const start = page * pageSize;\n  const end = start + pageSize - 1;\n  return allItems.slice(start, end);\n}\nTrace through `getPage(items, 1, 10)` on an array of 30 items to show exactly which items it returns versus which it should return for a correctly 1-indexed page 1, identify the two separate bugs (the `start` calculation and the `end`/slice semantics), and provide the corrected function."
+    },
+    {
+      "id": "medium-059",
+      "title": "React useEffect Stale Closure",
+      "category": "debugging",
+      "targetTokens": 380,
+      "text": "The React component below is meant to poll a `count` value and log its current value once per second, but it always logs 0 no matter how long it runs, even though the displayed count on screen updates correctly via the button.\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  useEffect(() => {\n    const id = setInterval(() => {\n      console.log('current count:', count);\n    }, 1000);\n    return () => clearInterval(id);\n  }, []);\n  return (\n    <button onClick={() => setCount(c => c + 1)}>\n      Count: {count}\n    </button>\n  );\n}\nExplain why the empty dependency array `[]` causes the `setInterval` callback to close over the `count` value from the render when the effect first ran, and never see subsequent updates, then provide a corrected version -- either by adding `count` to the dependency array (and explain the tradeoff of re-creating the interval on every render) or by using a ref to always read the latest count."
+    },
+    {
+      "id": "medium-060",
+      "title": "Unsafe Java Lazy Singleton",
+      "category": "debugging",
+      "targetTokens": 400,
+      "text": "The Java singleton implementation below is intended to be a thread-safe, lazily-initialized singleton, but under concurrent access on multiple CPU cores it can occasionally hand out a reference to a partially-constructed `Singleton` object with fields still at their default values.\npublic class Singleton {\n    private static Singleton instance;\n    private int configValue;\n    private Singleton() {\n        configValue = loadExpensiveConfig();\n    }\n    public static Singleton getInstance() {\n        if (instance == null) {\n            synchronized (Singleton.class) {\n                if (instance == null) {\n                    instance = new Singleton();\n                }\n            }\n        }\n        return instance;\n    }\n}\nExplain why this double-checked-locking pattern is broken without the `volatile` keyword on `instance` -- specifically, how the JVM's memory model permits instruction reordering during object construction such that another thread can observe a non-null `instance` reference before the constructor has finished writing all of its fields. Provide the one-line fix (`private static volatile Singleton instance;`) and explain briefly why `volatile` alone is sufficient here without needing a full lock on every read."
+    },
+    {
+      "id": "medium-061",
+      "title": "Explain TCP Slow Start",
+      "category": "explanation",
+      "targetTokens": 420,
+      "text": "Explain TCP slow start to a junior backend engineer who understands sockets but has never studied congestion control, in about 300-400 words. Cover what the congestion window (cwnd) is, why a connection starts with a small window rather than immediately sending at full link speed, and how the window grows (roughly doubling each round trip until a threshold or a loss event). Include one concrete worked example: a connection starting with cwnd = 1 segment (about 1460 bytes), and walk through what cwnd becomes after each of the first four round trips assuming no packet loss, then describe what happens on the round trip where a loss is finally detected. Avoid diving into the math of every congestion-avoidance variant (Reno vs Cubic) -- keep the focus on slow start itself."
+    },
+    {
+      "id": "medium-062",
+      "title": "Explain CRDTs With an Example",
+      "category": "explanation",
+      "targetTokens": 460,
+      "text": "In roughly 350-450 words, explain what a CRDT (conflict-free replicated data type) is and why it matters for systems that need to accept writes on multiple replicas without a coordinating leader, aimed at a backend engineer who has heard the term but never implemented one. Cover the core guarantee (replicas that have seen the same set of updates, applied in any order, converge to the same state) and briefly contrast state-based (CvRDT) versus operation-based (CmRDT) approaches at a high level. Then walk through one concrete, fully worked example: a G-Counter (grow-only counter) CRDT across three replicas A, B, and C, each incrementing their own slot independently a few times, and show how merging (taking the element-wise max per replica slot) produces the same final total regardless of merge order."
+    },
+    {
+      "id": "medium-063",
+      "title": "Explain MVCC in Databases",
+      "category": "explanation",
+      "targetTokens": 460,
+      "text": "Explain multi-version concurrency control (MVCC) to someone who understands basic SQL transactions but has never looked at how a database engine implements isolation internally, in about 350-450 words. Cover why MVCC lets readers avoid blocking on writers (and vice versa) by keeping multiple versions of a row tagged with transaction visibility information, rather than relying purely on locks. Include one concrete example using PostgreSQL semantics: transaction T1 starts and reads a row where `balance = 100`; transaction T2 then updates that same row to `balance = 150` and commits; walk through exactly what T1 sees if it re-reads the row under READ COMMITTED versus under REPEATABLE READ isolation, and explain in terms of row versions why the two isolation levels differ here."
+    },
+    {
+      "id": "medium-064",
+      "title": "Explain PagedAttention KV-Cache Paging",
+      "category": "explanation",
+      "targetTokens": 480,
+      "text": "Explain PagedAttention (the technique behind vLLM's KV-cache management) to an ML engineer who understands transformer attention and the KV cache conceptually but hasn't studied inference-serving internals, in roughly 400-500 words. Cover the core problem it solves: naive KV-cache allocation reserves a contiguous buffer sized for the maximum possible sequence length per request, which wastes enormous amounts of GPU memory to internal fragmentation when actual generation lengths vary. Explain how PagedAttention borrows the operating-system idea of paging -- storing the KV cache in fixed-size non-contiguous blocks referenced by a per-sequence block table -- to eliminate that waste and enable memory sharing. Give one concrete example: two requests sharing a common long system-prompt prefix, and explain specifically how their block tables can point at the same physical KV-cache blocks for that shared prefix while diverging only once their generated tokens differ, and why that matters for serving throughput under high concurrency."
+    },
+    {
+      "id": "medium-065",
+      "title": "Explain V8 JIT Deoptimization",
+      "category": "explanation",
+      "targetTokens": 440,
+      "text": "In about 350-450 words, explain V8's JIT deoptimization mechanism to a JavaScript developer who knows their code eventually 'gets optimized' but has never seen why a function can suddenly get slow again at runtime. Cover the two-tier idea (an initial interpreter/baseline compiler, then an optimizing compiler like TurboFan that specializes generated machine code based on the shapes and types it has observed so far) and explain what a deoptimization ('bailout') is: when an assumption baked into the optimized code turns out to be wrong for a new input, V8 discards the optimized version and falls back to the slower tier. Give one concrete example: a function `function add(a, b) { return a + b; }` called thousands of times with two numbers (getting optimized for the number+number case), and then suddenly called once with a string argument, triggering a deopt -- explain what specifically about the string case invalidates the optimized machine code's assumptions."
+    },
+    {
+      "id": "medium-066",
+      "title": "Explain CAP Theorem Tradeoffs",
+      "category": "explanation",
+      "targetTokens": 440,
+      "text": "Explain the CAP theorem to a product engineer who is choosing a database for a new service and keeps hearing the term thrown around in design reviews, in roughly 350-450 words. Define Consistency, Availability, and Partition tolerance precisely enough to avoid the common oversimplification that you 'pick two of three' (note that partition tolerance isn't really optional in any real distributed system, so the actual choice under a partition is between consistency and availability). Give one concrete comparative example: contrast how a strongly consistent system like a single-region PostgreSQL primary with synchronous replicas behaves during a network partition (it typically sacrifices availability on the minority side rather than serve stale data) versus how a system explicitly designed for availability like DynamoDB or Cassandra with tunable consistency behaves during the same partition (it keeps serving reads and writes on both sides, accepting the risk of returning stale or conflicting data that must be reconciled later)."
+    },
+    {
+      "id": "medium-067",
+      "title": "Explain Consistent Hashing",
+      "category": "explanation",
+      "targetTokens": 420,
+      "text": "Explain consistent hashing to a backend engineer who understands regular hash-mod-N sharding but doesn't know why it breaks down when nodes are added or removed, in about 350 words. Cover the core idea: mapping both nodes and keys onto a fixed hash ring, and assigning each key to the next node clockwise from its position, so that adding or removing one node only remaps a small fraction of keys instead of nearly all of them. Give one concrete worked example with a 4-node ring, showing conceptually which keys move when a 5th node is added between two existing nodes on the ring, versus what would happen to almost every key under naive `hash(key) % N` sharding when N changes from 4 to 5. Briefly mention why virtual nodes (multiple ring positions per physical node) are used in practice to smooth out load imbalance."
+    },
+    {
+      "id": "medium-068",
+      "title": "Explain B-Trees vs LSM-Trees",
+      "category": "explanation",
+      "targetTokens": 460,
+      "text": "In roughly 400 words, explain the structural difference between B-tree-based storage engines (like the one in traditional PostgreSQL/MySQL InnoDB indexes) and LSM-tree-based storage engines (like the one in RocksDB or Cassandra) to an engineer picking a storage engine for a new write-heavy service. Cover why B-trees do in-place updates directly on disk pages (good for read-heavy, random-access workloads, but each write can trigger random I/O), while LSM-trees buffer writes in memory (a memtable) and flush them as sorted, immutable files that are periodically merged (compaction), turning random writes into sequential ones at the cost of extra background I/O and slightly more expensive reads that may need to check multiple levels. Give one concrete example: a workload ingesting 50,000 small writes per second, and explain briefly why an LSM-tree-based engine is the more common choice for that workload versus a B-tree-based one."
+    },
+    {
+      "id": "medium-069",
+      "title": "Explain Raft Leader Election",
+      "category": "explanation",
+      "targetTokens": 460,
+      "text": "Explain how leader election works in the Raft consensus protocol to someone who understands that distributed systems need a leader but has never read the Raft paper, in about 400 words. Cover the three node states (follower, candidate, leader), the role of randomized election timeouts in avoiding repeated split votes, and the requirement of a majority vote to become leader. Walk through one concrete example with a 5-node cluster: the current leader crashes, two followers' election timeouts happen to expire close together and both become candidates for the same term, request votes, and end up in a split vote (2 votes each, one node abstains or votes late); explain what happens next (a new randomized timeout, a new term, and how the randomization makes a second split vote unlikely) and how it resolves into one clear leader."
+    },
+    {
+      "id": "medium-070",
+      "title": "Explain the Generational GC Hypothesis",
+      "category": "explanation",
+      "targetTokens": 440,
+      "text": "In about 350-450 words, explain the generational garbage collection hypothesis and how a collector like G1 (used by the JVM) exploits it, to a developer who has heard 'most objects die young' but doesn't know the mechanics behind it. Cover why splitting the heap into a young generation (collected frequently and cheaply) and an old generation (collected rarely, since surviving objects tend to live a long time) is far more efficient than scanning the entire heap on every collection. Give one concrete example: an HTTP request-handling service allocating a large number of short-lived objects per request (parsed JSON, temporary DTOs) that almost never survive past the request's completion, versus a small set of long-lived objects (a connection pool, a cache) that should quickly get promoted out of the young generation so they aren't repeatedly re-scanned on every minor collection."
+    },
+    {
+      "id": "medium-071",
+      "title": "Explain Kafka Exactly-Once Semantics",
+      "category": "explanation",
+      "targetTokens": 460,
+      "text": "Explain how Kafka achieves exactly-once processing semantics (as opposed to the simpler at-least-once default) to a data engineer building a streaming pipeline, in roughly 400 words. Cover the two pieces that combine to make this work: idempotent producers (each producer gets a unique producer ID and sequence number per partition, so the broker can detect and drop duplicate retries of the same message) and transactions (allowing a consume-transform-produce cycle to atomically commit both the output messages and the consumer offset, so a crash mid-processing can't result in the output being produced without the offset being committed, or vice versa). Give one concrete example: a consumer reading order events, computing a total, and producing an aggregate to an output topic -- walk through what would go wrong under at-least-once semantics if the consumer crashed right after producing the aggregate but before committing its offset, and explain how the transactional approach prevents that specific failure from causing a duplicate aggregate."
+    },
+    {
+      "id": "medium-072",
+      "title": "Explain Optimistic vs Pessimistic Locking",
+      "category": "explanation",
+      "targetTokens": 400,
+      "text": "Explain the difference between optimistic and pessimistic locking for handling concurrent updates to the same database row, to a backend engineer choosing between the two for a new feature, in about 300-350 words. Cover how pessimistic locking (e.g. `SELECT ... FOR UPDATE`) prevents conflicts by blocking other transactions from touching the row until the current one finishes, versus optimistic locking (e.g. a `version` column checked and incremented on update) which allows concurrent reads and only detects a conflict at write time, forcing the loser to retry. Give one concrete example: two users simultaneously trying to update the same inventory count for a product with limited stock -- walk through what happens under each approach when both submit their update within milliseconds of each other, and give one sentence of guidance on which approach fits low-contention versus high-contention scenarios."
+    },
+    {
+      "id": "medium-073",
+      "title": "Explain the TLS 1.3 Handshake",
+      "category": "explanation",
+      "targetTokens": 480,
+      "text": "In roughly 400-450 words, explain the TLS 1.3 handshake to a developer who understands that HTTPS 'does some negotiation before the request happens' but has never traced through the actual message flow, and who has previously read that TLS 1.3 is 'faster' than TLS 1.2 without knowing why. Cover the key structural change: TLS 1.3 collapses the handshake to a single round trip by having the client guess the server's likely key-exchange group and send its key share proactively in the very first ClientHello, rather than waiting for a ServerHello to negotiate parameters first. Walk through the concrete message flow: ClientHello (with key share) -> ServerHello (with its own key share) + EncryptedExtensions + Certificate + CertificateVerify + Finished, all sent back essentially together -> client's Finished -> both sides now have a shared secret and application data can flow. Contrast this briefly with TLS 1.2's two-round-trip handshake to make the speedup concrete, and briefly mention 0-RTT resumption as a further optimization for repeat connections."
+    },
+    {
+      "id": "medium-074",
+      "title": "Explain Vector Clocks",
+      "category": "explanation",
+      "targetTokens": 420,
+      "text": "Explain vector clocks to a distributed-systems engineer who understands that clock skew makes wall-clock timestamps unreliable for ordering events across machines, in about 350 words. Cover the core mechanism: each node maintains a vector of counters, one per node in the system, incrementing its own entry on every local event and merging (taking the element-wise max) with an incoming vector clock whenever it receives a message, so that the resulting partial order can distinguish events that causally happened-before one another from events that are truly concurrent. Give one concrete example with three nodes A, B, and C: A performs a local update (vector [1,0,0]), sends a message to B, B updates its own vector by merging and incrementing (becoming [1,1,0]) and separately C performs its own unrelated local update (vector [0,0,1]); explain, using these three resulting vectors, which pairs of events are causally ordered and which are concurrent, and why comparing the vectors (rather than timestamps) reveals that correctly."
+    },
+    {
+      "id": "medium-075",
+      "title": "Explain Spectre Speculative Execution",
+      "category": "explanation",
+      "targetTokens": 460,
+      "text": "In roughly 400 words, explain speculative execution and the Spectre vulnerability class it enabled, to a systems programmer who understands CPU pipelining and branch prediction at a basic level but has never studied the security implications. Cover why modern CPUs speculatively execute instructions past a not-yet-resolved branch (predicting which way it will go) to keep the pipeline full and avoid stalling, and why this is normally safe because a mispredicted branch's speculative results are architecturally discarded, never committed to visible registers or memory. Then explain the key insight behind Spectre: even though the speculative results themselves are discarded, they can leave measurable side effects in the CPU's microarchitectural state (specifically, which cache lines get pulled into the CPU cache during speculation), which an attacker can detect afterward via a cache-timing side channel, even though the architectural state looks perfectly clean. Give one concrete example: a bounds-check bypass gadget where speculative execution reads past the end of an array before the bounds check resolves, and that out-of-bounds byte's value influences which of 256 possible cache lines gets touched, letting an attacker recover the byte one bit-pattern at a time via timing."
+    }
+  ]
+}

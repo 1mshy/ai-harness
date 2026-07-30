@@ -1,0 +1,130 @@
+/* Hallmark · pre-emit critique: P5 H5 E4 S5 R4 V4
+ * genre: atmospheric · macrostructure: Workbench · theme: Terminal
+ * enrichment: none (typography + live data) · nav: N3 side-rail · footer: status bar
+ * tone: technical/utilitarian · anchor hue: 75 (amber phosphor)
+ * axes: paper=dark · display=mono · accent=warm
+ *
+ * Portable token export. Every colour, font, space, and easing used by the app
+ * is declared here; app.css references these by name and never inlines a value.
+ */
+
+:root {
+  /* ---- paper & ink -------------------------------------------------------
+   * Warm-tinted near-black, not #000. Elevation climbs in lightness, ~3.5% a
+   * step, so a raised card reads as closer to the viewer on a dark canvas.  */
+  --color-paper: oklch(14% 0.008 75);
+  --color-paper-2: oklch(17.5% 0.009 75);
+  --color-paper-3: oklch(21% 0.010 75);
+  --color-paper-4: oklch(25% 0.011 75);
+  --color-rule: oklch(31% 0.010 75);
+  --color-rule-soft: oklch(24% 0.009 75);
+  --color-neutral: oklch(52% 0.010 75);
+  --color-muted: oklch(70% 0.008 75);
+  --color-ink: oklch(93% 0.007 85);
+
+  /* ---- accent ------------------------------------------------------------
+   * One warm accent, amber phosphor. Active nav, focus rings, live indicators,
+   * primary action. Never a large fill.                                     */
+  --color-accent: oklch(80% 0.155 75);
+  --color-accent-dim: oklch(62% 0.120 75);
+  --color-accent-deep: oklch(38% 0.075 75);
+  --color-focus: oklch(84% 0.150 80);
+
+  /* ---- status ------------------------------------------------------------
+   * Data encodings, not chrome. Green/red carry pass/fail; both are paired
+   * with a glyph or label so they never signal by hue alone.                */
+  --color-ok: oklch(76% 0.150 150);
+  --color-ok-deep: oklch(34% 0.070 150);
+  --color-fail: oklch(66% 0.190 25);
+  --color-fail-deep: oklch(32% 0.090 25);
+
+  /* ---- difficulty scale --------------------------------------------------
+   * Ordinal, three steps, separated on hue rather than lightness so the marks
+   * survive deuteranopia and greyscale printing.                            */
+  --color-easy: oklch(74% 0.100 195);
+  --color-medium: oklch(80% 0.140 75);
+  --color-hard: oklch(68% 0.150 300);
+  --color-easy-deep: oklch(30% 0.050 195);
+  --color-medium-deep: oklch(32% 0.065 75);
+  --color-hard-deep: oklch(30% 0.070 300);
+
+  /* ---- chart marks -------------------------------------------------------
+   * Distinct from the UI accents above: chart series need their own steps
+   * from the same hues, selected against the dark chart surface rather than
+   * flipped from a light set. Fixed categorical order — chart-1 is always
+   * assigned first and hues are never cycled for an extra series.
+   *
+   * Validated with dataviz/scripts/validate_palette.js against surface
+   * #13100c (--color-paper-2), mode dark, --pairs all:
+   *   lightness band PASS (all within L 0.48–0.67) · chroma floor PASS
+   *   CVD separation PASS (worst ΔE 14.2 protan) · normal vision PASS (22.8)
+   *   contrast vs surface PASS (all ≥ 3:1)
+   * The UI accent steps (L 0.68–0.80) FAIL the dark band and must not be
+   * used as chart marks.                                                    */
+  --chart-1: oklch(66.5% 0.155 75);
+  --chart-2: oklch(58.5% 0.118 195);
+  --chart-3: oklch(50.5% 0.160 300);
+  --chart-surface: var(--color-paper-2);
+
+  /* ---- type --------------------------------------------------------------
+   * Mono is the display voice — this is a terminal-lineage tool and the
+   * numerics must align in columns. Inter carries running prose only.       */
+  --font-display: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace,
+    SFMono-Regular, Menlo, monospace;
+  --font-mono: var(--font-display);
+  --font-body: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.625rem;
+  --text-2xl: 2.25rem;
+  --text-display-s: 3rem;
+
+  --tracking-tight: -0.02em;
+  --tracking-wide: 0.08em;
+  --tracking-caps: 0.14em;
+
+  /* ---- space · 4pt scale ------------------------------------------------- */
+  --space-3xs: 2px;
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* ---- shape ------------------------------------------------------------- */
+  --radius-xs: 3px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+  --rule: 1px solid var(--color-rule);
+  --rule-soft: 1px solid var(--color-rule-soft);
+
+  /* ---- motion ------------------------------------------------------------ */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast: 110ms;
+  --dur-base: 180ms;
+  --dur-slow: 280ms;
+
+  /* ---- elevation --------------------------------------------------------- */
+  --shadow-card: 0 1px 2px oklch(0% 0 0 / 0.4), 0 8px 24px oklch(0% 0 0 / 0.28);
+  --shadow-modal: 0 24px 64px oklch(0% 0 0 / 0.6), 0 2px 8px oklch(0% 0 0 / 0.4);
+  --glow-accent: 0 0 0 1px var(--color-accent-deep),
+    0 0 18px oklch(80% 0.155 75 / 0.16);
+
+  /* ---- layout ------------------------------------------------------------ */
+  --rail-w: 208px;
+  --statusbar-h: 30px;
+  --titlebar-h: 38px;
+}
