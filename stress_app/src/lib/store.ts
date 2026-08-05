@@ -72,6 +72,8 @@ export interface LogLine {
 export interface Sample {
   t: number;
   outTps: number;
+  /** Decode rate as the engine reports it; null until two scrapes exist. */
+  serverTps: number | null;
   reqPerSec: number;
   inFlight: number;
   p50Ttft: number | null;
@@ -85,6 +87,15 @@ const MAX_LOG = 600;
 const MAX_CARDS = 60;
 const MAX_SAMPLES = 900;
 const CARD_TAIL = 4000;
+
+/** Baseline for differencing vLLM's lifetime generation counter. */
+interface ServerCounter {
+  at: number;
+  tokens: number;
+  tps: number | null;
+}
+
+const IDLE_COUNTER: ServerCounter = { at: 0, tokens: 0, tps: null };
 
 interface Store {
   config: RunConfig;
@@ -110,6 +121,8 @@ interface Store {
   /** Cumulative completion tokens; the per-second sampler diffs this. */
   tokensTotal: number;
   lastSample: { t: number; tokens: number; completed: number };
+  /** `generation_tokens_total` at the previous scrape, for the server rate. */
+  lastServer: ServerCounter;
 
   onStart: (e: RequestStart) => void;
   onDelta: (batch: Delta[]) => void;
@@ -150,6 +163,36 @@ function loadEnabled(): Record<string, boolean> {
 /** Absent from the map means enabled — a fresh corpus is fully armed. */
 function isOn(enabled: Record<string, boolean>, id: string): boolean {
   return enabled[id] !== false;
+}
+
+/**
+ * Decode throughput as the engine measures it: the delta on vLLM's lifetime
+ * token counter over the wall time between the two scrapes that bracket it.
+ * This counts tokens as the GPU emits them rather than when a request lands,
+ * and it includes any traffic the rig is not generating.
+ */
+function serverGenTps(
+  m: ServerMetrics | null,
+  last: ServerCounter,
+  now: number,
+  staleMs: number,
+): { tps: number | null; next: ServerCounter } {
+  const total = m != null && m.ok ? m.generationTokensTotal : null;
+  if (m == null || total == null) return { tps: null, next: IDLE_COUNTER };
+
+  // The sampler ticks once a second whatever the poll interval is; between two
+  // scrapes the counter is unchanged, which is not the same as a zero rate.
+  // Hold the last figure, but only while the scrape behind it is still recent.
+  if (m.at === last.at) {
+    return { tps: now - m.at < staleMs ? last.tps : null, next: last };
+  }
+
+  const dt = (m.at - last.at) / 1000;
+  const delta = total - last.tokens;
+  // First scrape of the pair, or a counter that went backwards because the
+  // engine restarted: re-baseline and report a rate one interval later.
+  const tps = last.at === 0 || dt <= 0 || delta < 0 ? null : delta / dt;
+  return { tps, next: { at: m.at, tokens: total, tps } };
 }
 
 export const useStore = create<Store>((set, get) => ({
@@ -218,6 +261,7 @@ export const useStore = create<Store>((set, get) => ({
   series: [],
   tokensTotal: 0,
   lastSample: { t: 0, tokens: 0, completed: 0 },
+  lastServer: IDLE_COUNTER,
 
   onStart: (e) =>
     set((s) => {
@@ -361,11 +405,27 @@ export const useStore = create<Store>((set, get) => ({
 
   sample: () =>
     set((s) => {
-      if (s.run.state !== "running") return {};
+      const running = s.run.state === "running";
+      // Before the first run there is no client traffic to measure, but the
+      // engine's own queue and KV figures still move — sample those so the
+      // Metrics page is live from launch instead of blank. Once a run has
+      // finished, stop: its charts are there to be read, and a tail of idle
+      // zeroes would scroll them out of the retention window.
+      const idleScrape = s.run.state === "idle" && (s.metrics?.ok ?? false);
+      if (!running && !idleScrape) return {};
       const now = Date.now();
+      // Independent of the client clock: the rate is only meaningful across
+      // the interval the server itself stamped on the two scrapes.
+      const server = serverGenTps(
+        s.metrics,
+        s.lastServer,
+        now,
+        Math.max(2000, s.config.metricsPollMs * 3),
+      );
       const last = s.lastSample;
       if (last.t === 0) {
         return {
+          lastServer: server.next,
           lastSample: {
             t: now,
             tokens: s.tokensTotal,
@@ -374,7 +434,7 @@ export const useStore = create<Store>((set, get) => ({
         };
       }
       const dt = (now - last.t) / 1000;
-      if (dt <= 0) return {};
+      if (dt <= 0) return { lastServer: server.next };
 
       // Percentiles over the trailing window, not the whole run, so the chart
       // shows degradation as it happens rather than a smoothed lifetime figure.
@@ -392,11 +452,19 @@ export const useStore = create<Store>((set, get) => ({
 
       const sampleRow: Sample = {
         t: now,
-        outTps: Math.max(0, (s.tokensTotal - last.tokens) / dt),
-        reqPerSec: Math.max(0, (s.run.completed - last.completed) / dt),
-        inFlight: s.run.inFlight,
-        p50Ttft: at(50),
-        p99Ttft: at(99),
+        outTps: running ? Math.max(0, (s.tokensTotal - last.tokens) / dt) : 0,
+        // Server-side, so it keeps reporting through idle time — the engine is
+        // still decoding whether or not this rig is the one asking.
+        serverTps: server.tps,
+        reqPerSec: running
+          ? Math.max(0, (s.run.completed - last.completed) / dt)
+          : 0,
+        inFlight: running ? s.run.inFlight : 0,
+        // Percentiles belong to the run that produced them; replaying the last
+        // run's numbers through idle time would draw a flat line that is not
+        // measuring anything.
+        p50Ttft: running ? at(50) : null,
+        p99Ttft: running ? at(99) : null,
         kvCache: s.metrics?.kvCacheUsage ?? null,
         queued: s.metrics?.numWaiting ?? null,
         running: s.metrics?.numRunning ?? null,
@@ -404,6 +472,7 @@ export const useStore = create<Store>((set, get) => ({
 
       return {
         series: [...s.series, sampleRow].slice(-MAX_SAMPLES),
+        lastServer: server.next,
         lastSample: {
           t: now,
           tokens: s.tokensTotal,
@@ -429,6 +498,9 @@ export const useStore = create<Store>((set, get) => ({
       series: [],
       tokensTotal: 0,
       lastSample: { t: 0, tokens: 0, completed: 0 },
+      // Sampling stops between runs, so the stale baseline would otherwise
+      // spread the next delta over however long the rig sat idle.
+      lastServer: IDLE_COUNTER,
       log: [],
     }),
 }));

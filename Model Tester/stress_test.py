@@ -39,6 +39,8 @@ from urllib.parse import urlparse, urlunparse
 import httpx
 from openai import AsyncOpenAI
 
+from hard_prompts import HARD_PROMPTS
+
 try:
     from rich.console import Console
     from rich.table import Table
@@ -74,7 +76,8 @@ class Config:
     url: str = DEFAULT_URL
     model: Optional[str] = None
     system: str = "You are a helpful assistant."
-    prompt: Optional[str] = None  # None -> rotate through PROMPTS
+    prompt: Optional[str] = None  # None -> rotate through PROMPTS (or HARD_PROMPTS)
+    hard: bool = False              # rotate through HARD_PROMPTS instead of PROMPTS
     max_tokens: int = 16000
     temperature: float = 0.7
     timeout: float = 120.0          # per-request timeout for measured runs
@@ -82,7 +85,12 @@ class Config:
     warmup: bool = True
 
     def messages(self, index: int = 0) -> list[dict]:
-        text = self.prompt if self.prompt else PROMPTS[index % len(PROMPTS)]
+        if self.prompt:
+            text = self.prompt
+        elif self.hard:
+            text = HARD_PROMPTS[index % len(HARD_PROMPTS)]
+        else:
+            text = PROMPTS[index % len(PROMPTS)]
         msgs = []
         if self.system:
             msgs.append({"role": "system", "content": self.system})
@@ -666,6 +674,9 @@ def edit_settings(cfg: Config) -> None:
     cfg.warmup_timeout = ask_float("warm-up timeout (s)", cfg.warmup_timeout)
     p = ask("fixed prompt (blank = rotate varied prompts)", cfg.prompt or "")
     cfg.prompt = p or None
+    h = ask("use hard prompts (transcripts/extraction) instead of short ones? (y/n)",
+            "y" if cfg.hard else "n")
+    cfg.hard = h.lower().startswith("y")
     w = ask("warm up before runs? (y/n)", "y" if cfg.warmup else "n")
     cfg.warmup = w.lower().startswith("y")
 
@@ -675,7 +686,7 @@ MENU = """
   URL    : {url}
   Model  : {model}
   Prompt : {prompt}
-  Tokens : max_tokens={max_tokens}  temp={temperature}  warmup={warmup}
+  Tokens : max_tokens={max_tokens}  temp={temperature}  warmup={warmup}  hard={hard}
 -----------------------------------------------------------------
   1) Single request (smoke test)
   2) Sequential run   (N requests, one at a time)
@@ -702,8 +713,9 @@ def interactive(cfg: Config) -> None:
     while True:
         print(MENU.format(
             url=cfg.url, model=cfg.model or "(none)",
-            prompt=(cfg.prompt or "varied (rotating)"),
+            prompt=(cfg.prompt or ("hard (rotating)" if cfg.hard else "varied (rotating)")),
             max_tokens=cfg.max_tokens, temperature=cfg.temperature, warmup=cfg.warmup,
+            hard=cfg.hard,
         ))
         choice = input("> ").strip().lower()
         try:
@@ -758,6 +770,8 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--url", default=DEFAULT_URL)
     p.add_argument("--model", default=None, help="model id (default: first non-embedding model)")
     p.add_argument("--prompt", default=None, help="fixed prompt (default: rotate varied prompts)")
+    p.add_argument("--hard", action="store_true",
+                   help="rotate through hard prompts (transcripts, extraction, JSON output) instead of short ones")
     p.add_argument("--system", default="You are a helpful assistant.")
     p.add_argument("--max-tokens", type=int, default=256)
     p.add_argument("--temperature", type=float, default=0.7)
@@ -791,6 +805,7 @@ def build_parser() -> argparse.ArgumentParser:
 def cfg_from_args(args) -> Config:
     return Config(
         url=args.url, model=args.model, system=args.system, prompt=args.prompt,
+        hard=args.hard,
         max_tokens=args.max_tokens, temperature=args.temperature,
         timeout=args.timeout, warmup_timeout=args.warmup_timeout,
         warmup=not args.no_warmup,

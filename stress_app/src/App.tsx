@@ -27,6 +27,9 @@ const PAGES = [
 
 type PageId = (typeof PAGES)[number]["id"];
 
+/** Retry spacing for the idle scrape once the endpoint stops answering. */
+const IDLE_BACKOFF_MS = 5000;
+
 export default function App() {
   const [page, setPage] = useState<PageId>("console");
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -81,6 +84,43 @@ export default function App() {
     const id = window.setInterval(() => useStore.getState().sample(), 1000);
     return () => window.clearInterval(id);
   }, []);
+
+  // ---- server telemetry while no run is active ---------------------------
+  // The Rust runner scrapes /metrics for the lifetime of a run and emits the
+  // events wired above. Nothing polls outside one, which left the Metrics page
+  // empty until the first run — so drive the same scrape from here instead.
+  useEffect(() => {
+    if (isRunning) return;
+
+    let cancelled = false;
+    let timer = 0;
+
+    const tick = async () => {
+      let ok = false;
+      try {
+        const snapshot = await invoke<ServerMetrics>("fetch_metrics", {
+          baseUrl: config.baseUrl,
+        });
+        if (cancelled) return;
+        useStore.getState().onMetrics(snapshot);
+        ok = snapshot.ok;
+      } catch {
+        if (cancelled) return;
+      }
+      // A server that isn't answering shouldn't be hit once a second for the
+      // life of the app.
+      timer = window.setTimeout(
+        tick,
+        ok ? Math.max(500, config.metricsPollMs) : IDLE_BACKOFF_MS,
+      );
+    };
+
+    void tick();
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [isRunning, config.baseUrl, config.metricsPollMs]);
 
   // ---- probe the server once on launch -----------------------------------
   useEffect(() => {

@@ -18,10 +18,29 @@ export default function Metrics() {
 
   const times = useMemo(() => series.map((s) => s.t), [series]);
 
-  const throughput: Series[] = useMemo(
-    () => [{ name: "output tok/s", color: C1, values: series.map((s) => s.outTps) }],
-    [series],
-  );
+  // Everything derived from `completed` needs client traffic to exist; the
+  // server-side panels do not, and stay live whether or not a run is going.
+  const hasRunData = completed.length > 0;
+
+  const throughput: Series[] = useMemo(() => {
+    const out: Series[] = [];
+    // Without a run the client line is a row of zeroes, which reads as a
+    // measurement rather than the absence of one.
+    if (hasRunData) {
+      out.push({ name: "client", color: C1, values: series.map((s) => s.outTps) });
+    }
+    out.push({ name: "server", color: C2, values: series.map((s) => s.serverTps) });
+    return out;
+  }, [series, hasRunData]);
+
+  // The freshest scrape-derived rate, with a little slack so a poll interval
+  // slower than the sampler doesn't blank the tile between ticks.
+  const serverTpsNow = useMemo(() => {
+    for (const s of series.slice(-3).reverse()) {
+      if (s.serverTps != null) return s.serverTps;
+    }
+    return null;
+  }, [series]);
 
   const ttft: Series[] = useMemo(
     () => [
@@ -94,45 +113,55 @@ export default function Metrics() {
     ? (completed.length - ok.length) / completed.length
     : null;
 
-  if (series.length === 0 && completed.length === 0) {
+  if (series.length === 0 && !hasRunData && !metrics) {
     return (
       <Empty
-        title="No telemetry yet"
-        hint="Throughput, latency percentiles, and the vLLM server's own queue and KV-cache figures are sampled once a second while a run is active. Start a run to populate this page."
+        title="Waiting for the first scrape"
+        hint="The vLLM server's Prometheus endpoint is polled once a second, run or no run. If this doesn't clear, check the base URL in Settings."
       />
     );
   }
 
   return (
     <div className="stack" style={{ gap: "var(--space-md)" }}>
-      <div className="stats">
-        <Stat
-          k="Aggregate throughput"
-          v={aggregateTps ? aggregateTps.toFixed(0) : "—"}
-          unit=" tok/s"
-          sub="all workers, run mean"
-          tone="accent"
-        />
-        <Stat
-          k="Per-request decode"
-          v={tps.length ? (mean(tps) as number).toFixed(1) : "—"}
-          unit=" tok/s"
-          sub="mean, excludes prefill"
-        />
-        <Stat
-          k="Requests/s"
-          v={rps ? rps.toFixed(2) : "—"}
-          sub={`${num(ok.length)} succeeded`}
-        />
-        <Stat k="TTFT p50" v={ms(percentile(ttfts, 50))} sub={`p90 ${ms(percentile(ttfts, 90))}`} />
-        <Stat k="TTFT p99" v={ms(percentile(ttfts, 99))} sub={`max ${ms(percentile(ttfts, 100))}`} />
-        <Stat
-          k="Error rate"
-          v={errorRate != null ? pct(errorRate, 1) : "—"}
-          sub={`${num(completed.length - ok.length)} failed`}
-          tone={errorRate ? "fail" : undefined}
-        />
-      </div>
+      {hasRunData ? (
+        <div className="stats">
+          <Stat
+            k="Aggregate throughput"
+            v={aggregateTps ? aggregateTps.toFixed(0) : "—"}
+            unit=" tok/s"
+            sub="all workers, run mean"
+            tone="accent"
+          />
+          <Stat
+            k="Per-request decode"
+            v={tps.length ? (mean(tps) as number).toFixed(1) : "—"}
+            unit=" tok/s"
+            sub="mean, excludes prefill"
+          />
+          <Stat
+            k="Requests/s"
+            v={rps ? rps.toFixed(2) : "—"}
+            sub={`${num(ok.length)} succeeded`}
+          />
+          <Stat k="TTFT p50" v={ms(percentile(ttfts, 50))} sub={`p90 ${ms(percentile(ttfts, 90))}`} />
+          <Stat k="TTFT p99" v={ms(percentile(ttfts, 99))} sub={`max ${ms(percentile(ttfts, 100))}`} />
+          <Stat
+            k="Error rate"
+            v={errorRate != null ? pct(errorRate, 1) : "—"}
+            sub={`${num(completed.length - ok.length)} failed`}
+            tone={errorRate ? "fail" : undefined}
+          />
+        </div>
+      ) : (
+        <Panel title="Client-side load">
+          <p className="field__hint">
+            No requests issued yet — throughput, latency percentiles, and error
+            rate fill in once a run starts. The server's own figures below are
+            live regardless.
+          </p>
+        </Panel>
+      )}
 
       <div
         style={{
@@ -148,19 +177,33 @@ export default function Metrics() {
             unit=" tok/s"
             format={(v) => v.toFixed(0)}
           />
+          {throughput.length > 1 ? (
+            <>
+              <div style={{ marginTop: "var(--space-xs)" }}>
+                <Legend series={throughput} />
+              </div>
+              <p className="field__hint" style={{ marginTop: "var(--space-2xs)" }}>
+                Client counts a request's tokens when it finishes, so it lags and
+                steps; server is vLLM's own counter differenced per scrape, and
+                includes traffic from anyone else on the box.
+              </p>
+            </>
+          ) : null}
         </Panel>
 
-        <Panel title="Time to first token">
-          <LineChart
-            series={ttft}
-            times={times}
-            unit="ms"
-            format={(v) => v.toFixed(0)}
-          />
-          <div style={{ marginTop: "var(--space-xs)" }}>
-            <Legend series={ttft} />
-          </div>
-        </Panel>
+        {hasRunData ? (
+          <Panel title="Time to first token">
+            <LineChart
+              series={ttft}
+              times={times}
+              unit="ms"
+              format={(v) => v.toFixed(0)}
+            />
+            <div style={{ marginTop: "var(--space-xs)" }}>
+              <Legend series={ttft} />
+            </div>
+          </Panel>
+        ) : null}
 
         <Panel title="Server pressure">
           <LineChart series={pressure} times={times} format={(v) => v.toFixed(0)} />
@@ -179,29 +222,48 @@ export default function Metrics() {
           />
         </Panel>
 
-        <Panel title="Median TTFT by difficulty">
-          <BarChart bars={byDifficulty.ttft} unit="ms" format={(v) => v.toFixed(0)} />
-        </Panel>
+        {hasRunData ? (
+          <>
+            <Panel title="Median TTFT by difficulty">
+              <BarChart bars={byDifficulty.ttft} unit="ms" format={(v) => v.toFixed(0)} />
+            </Panel>
 
-        <Panel title="Median total latency by difficulty">
-          <BarChart
-            bars={byDifficulty.total}
-            unit={"ms"}
-            format={(v) => (v >= 10000 ? `${(v / 1000).toFixed(1)}s` : v.toFixed(0))}
-          />
-        </Panel>
+            <Panel title="Median total latency by difficulty">
+              <BarChart
+                bars={byDifficulty.total}
+                unit={"ms"}
+                format={(v) => (v >= 10000 ? `${(v / 1000).toFixed(1)}s` : v.toFixed(0))}
+              />
+            </Panel>
+          </>
+        ) : null}
       </div>
 
       <Panel
         title="vLLM server telemetry"
         actions={
-          <span className={`badge badge--${metrics?.ok ? "ok" : "fail"}`}>
-            {metrics?.ok ? "/metrics live" : "/metrics unavailable"}
+          <span
+            className={`badge badge--${
+              metrics?.ok ? "ok" : metrics ? "fail" : "muted"
+            }`}
+          >
+            {metrics?.ok
+              ? "/metrics live"
+              : metrics
+                ? "/metrics unavailable"
+                : "scraping…"}
           </span>
         }
       >
         {metrics?.ok ? (
           <div className="stats">
+            <Stat
+              k="Generation rate"
+              v={serverTpsNow != null ? serverTpsNow.toFixed(0) : "—"}
+              unit=" tok/s"
+              sub="engine-wide, all clients"
+              tone="accent"
+            />
             <Stat k="Requests running" v={num(metrics.numRunning)} sub="in the engine batch" />
             <Stat
               k="Requests waiting"
@@ -263,6 +325,7 @@ export default function Metrics() {
                 <tr>
                   <th>time</th>
                   <th className="num">out tok/s</th>
+                  <th className="num">srv tok/s</th>
                   <th className="num">req/s</th>
                   <th className="num">ttft p50</th>
                   <th className="num">ttft p99</th>
@@ -276,6 +339,7 @@ export default function Metrics() {
                   <tr key={s.t}>
                     <td className="dim">{clock(s.t)}</td>
                     <td className="num">{s.outTps.toFixed(0)}</td>
+                    <td className="num">{num(s.serverTps)}</td>
                     <td className="num">{s.reqPerSec.toFixed(2)}</td>
                     <td className="num">{ms(s.p50Ttft)}</td>
                     <td className="num">{ms(s.p99Ttft)}</td>
@@ -295,16 +359,18 @@ export default function Metrics() {
         )}
       </Panel>
 
-      <Panel title="Latency distribution">
-        <div className="stats">
-          <Stat k="Total p50" v={ms(percentile(totals, 50))} />
-          <Stat k="Total p90" v={ms(percentile(totals, 90))} />
-          <Stat k="Total p99" v={ms(percentile(totals, 99))} />
-          <Stat k="Total max" v={ms(percentile(totals, 100))} />
-          <Stat k="TTFT mean" v={ms(mean(ttfts))} />
-          <Stat k="Sample size" v={num(ok.length)} sub="successful requests" />
-        </div>
-      </Panel>
+      {hasRunData ? (
+        <Panel title="Latency distribution">
+          <div className="stats">
+            <Stat k="Total p50" v={ms(percentile(totals, 50))} />
+            <Stat k="Total p90" v={ms(percentile(totals, 90))} />
+            <Stat k="Total p99" v={ms(percentile(totals, 99))} />
+            <Stat k="Total max" v={ms(percentile(totals, 100))} />
+            <Stat k="TTFT mean" v={ms(mean(ttfts))} />
+            <Stat k="Sample size" v={num(ok.length)} sub="successful requests" />
+          </div>
+        </Panel>
+      ) : null}
     </div>
   );
 }
