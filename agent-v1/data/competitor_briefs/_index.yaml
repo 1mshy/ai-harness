@@ -1,0 +1,114 @@
+# Competitor / adjacent-brand classification.
+#
+# `relationship` is the load-bearing field and it is data, not judgement.
+# COMPLEMENTARY_HARDWARE means the brand sells parts a Unitronic-tuned car
+# frequently already has bolted to it. Treating one of those as a rival makes
+# the agent argue against the customer's own build, which is how a support
+# conversation becomes an argument.
+#
+# A brand can be both: IE, 034Motorsport and CTS sell hardware Unitronic runs
+# on AND publish their own software. `software_overlap: true` marks that, and
+# the brief says which conversation is which.
+#
+# Hand-authored 2026-08-05. Mention counts measured over 3,680 competitor
+# mentions in calls_analysis.competitor_mentions.
+
+version: 1
+authored_on: 2026-08-05
+total_mentions_measured: 3680
+covered_by_briefs: 2785
+
+brands:
+  - id: apr
+    name: APR
+    aliases: [apr, apr tuned, "a.p.r.", apr plus]
+    relationship: software_rival
+    software_overlap: true
+    mentions: 1280
+    brief: apr.md
+
+  - id: integrated_engineering
+    name: Integrated Engineering
+    aliases: [ie, integrated engineering, "i.e.", ie intake, ie manifold]
+    relationship: complementary_hardware
+    software_overlap: true
+    mentions: 553
+    brief: integrated-engineering.md
+
+  - id: 034motorsport
+    name: 034Motorsport
+    aliases: ["034", 034 motorsport, 034motorsport, oh three four]
+    relationship: complementary_hardware
+    software_overlap: true
+    mentions: 418
+    brief: 034motorsport.md
+
+  - id: cts_turbo
+    name: CTS Turbo
+    aliases: [cts, cts turbo, ctsturbo]
+    relationship: complementary_hardware
+    software_overlap: true
+    mentions: 357
+    brief: cts-turbo.md
+
+  - id: cobb
+    name: COBB Tuning
+    aliases: [cobb, cobb tuning, accessport, access port, ap3, ap v3]
+    relationship: software_rival
+    software_overlap: true
+    mentions: 177
+    brief: cobb.md
+
+# Brands with no standalone brief but which MUST NOT be treated as rivals.
+# They appear often enough in build lists that misclassifying them is the
+# realistic failure, and the correct response is a compatibility answer.
+  - id: ecs_tuning
+    name: ECS Tuning
+    aliases: [ecs, ecs tuning]
+    relationship: complementary_hardware
+    software_overlap: false
+    note: >-
+      Primarily a retailer and parts manufacturer. Frequently the shop the
+      customer bought from, including Unitronic products. Never a rival.
+
+  - id: awe_tuning
+    name: AWE Tuning
+    aliases: [awe, awe tuning, awe exhaust]
+    relationship: complementary_hardware
+    software_overlap: false
+    note: Exhaust systems and intakes. Bolt-on hardware; no conflict.
+
+  - id: eventuri
+    name: Eventuri
+    aliases: [eventuri]
+    relationship: complementary_hardware
+    software_overlap: false
+    note: Carbon fibre intake systems. Bolt-on hardware; no conflict.
+
+  - id: csf
+    name: CSF Radiators
+    aliases: [csf, csf radiators, csf race]
+    relationship: complementary_hardware
+    software_overlap: false
+    note: >-
+      Cooling — radiators, intercoolers, charge coolers. Directly supportive of
+      higher-stage software, which is heat-limited.
+
+# How the agent must behave per relationship. Read this before responding to
+# any mention, and note that neither branch permits a comparative claim.
+policy:
+  complementary_hardware: >-
+    Treat as part of the customer's build, not as an objection. The real
+    question is almost always compatibility or whether the software accounts
+    for the part. Answer that with check_stage_availability and
+    search_knowledge. Never suggest replacing working hardware.
+  software_rival: >-
+    Do not disparage and do not compare specifications. State what Unitronic
+    offers for their platform, verified with check_stage_availability, and ask
+    what they are trying to achieve. If they want a genuine head-to-head,
+    log_knowledge_gap then escalate_to_human.
+  universal_prohibitions:
+    - No claims about a competitor's reliability, safety or support quality.
+    - No competitor prices, warranty terms, specifications or power figures.
+    - No emissions-equipment workaround regardless of whose part it is.
+    - No price quoted from anywhere but get_fee_schedule.

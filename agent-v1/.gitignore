@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+# Qdrant snapshots are hundreds of MB each and are operational artefacts,
+# not source. Manifests are kept: they carry the checksum and point count
+# needed to verify a snapshot that lives somewhere else.
+ops/snapshots/*.snapshot
+eval_data/
+.tokensave/

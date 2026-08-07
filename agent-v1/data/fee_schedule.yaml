@@ -1,0 +1,189 @@
+# Unitronic fee schedule — HAND-AUTHORED. Never generated, never mined.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+# WHY THIS FILE EXISTS AND WHY IT IS NOT DERIVED FROM THE CALL CORPUS
+#
+# The corpus carries 13,359 price observations under 4,862 distinct free-text
+# labels. Those labels are what a transcript said, not what a price list says.
+# "license transfer" alone spans $2 to $150,000 across the corpus — the low end
+# is a mishearing, the high end is somebody reading out a VIN or an order
+# number that the analyzer captured as a currency amount. There is no
+# aggregation, no median, no "most common value" and no confidence threshold
+# that turns that distribution into a price you may say out loud to a customer.
+#
+# Anything mined from calls is therefore banned from this file by construction.
+# Every amount below was written by a person from the published price list and
+# is re-verified on the cadence in `review`. If a fee is not in this file, the
+# correct behaviour is to say the price must be confirmed — not to search for
+# it, not to infer it from an order history, and not to repeat a number that
+# appeared in a retrieved knowledge unit.
+#
+# `stability: volatile` is not decoration. UniFLEX moved from $500 to $400
+# inside the observation window; a volatile line must be quoted with the
+# verified_on date attached so a stale figure is visible as stale rather than
+# stated as current.
+#
+# Items with `amount: null` are real fee categories with no fixed price. They
+# are listed on purpose: an agent that knows "stage upgrade pricing exists and
+# is quote-only" refuses correctly, whereas an agent that has never heard of it
+# invents a number.
+# ─────────────────────────────────────────────────────────────────────────────
+
+schedule_version: 1
+verified_on: 2026-08-05
+verified_by: product_marketing
+currency: USD
+# Every one of these is pre-tax and excludes shipping. Canadian retail is
+# priced separately and is not in scope for this file.
+tax_note: >-
+  All amounts are pre-tax and exclude shipping and duties. Quote the amount,
+  then say that taxes and shipping are calculated at checkout.
+
+review:
+  cadence_days: 90
+  next_review: 2026-11-03
+  owner: product_marketing
+  # A schedule older than this must not be quoted at all. The agent degrades to
+  # "let me confirm that price for you" rather than quoting a stale figure.
+  hard_expiry_days: 180
+
+items:
+  - id: license_transfer
+    label: Software license transfer
+    aliases: [license transfer, transfer my tune, transfer license, move my license]
+    amount: 150.00
+    unit: per_vehicle
+    stability: stable
+    # Held at $150 across three consecutive calendar years of quoting. This is
+    # the single most-asked fee on the support line.
+    stable_since: 2024-01-01
+    description: >-
+      Transfers an existing Unitronic software license from one vehicle or one
+      owner to another. Charged once per transfer, not per stage.
+    conditions: >-
+      Requires the current licence holder's account details and the receiving
+      vehicle's VIN. Does not include any stage upgrade cost.
+
+  - id: uniconnect_cable
+    label: UniCONNECT+ flashing cable
+    aliases: [uniconnect, uniconnect+, uni connect, flashing cable, flash cable]
+    sku: UH008-TLA
+    amount: 165.00
+    unit: each
+    stability: stable
+    description: >-
+      The UniCONNECT+ handheld flashing interface. Required for customer
+      self-flashing; one cable is tied to one vehicle at a time.
+    conditions: >-
+      Sold outright, not rented. A replacement cable for a warranty failure is
+      not this fee — route warranty replacements to a human.
+
+  - id: remote_reset
+    label: Remote ECU/cable reset
+    aliases: [remote reset, reset remotely, remote unlock, remote session]
+    amount: 150.00
+    unit: per_session
+    stability: stable
+    description: >-
+      A scheduled remote session in which Unitronic resets a locked ECU or a
+      cable bound to a previous vehicle, without the customer shipping anything.
+    conditions: >-
+      Requires a stable internet connection at the vehicle and a booked slot.
+      Not every ECU state is recoverable remotely; confirm feasibility with a
+      human before taking payment.
+
+  - id: mail_in_reset
+    label: Mail-in ECU/cable reset
+    aliases: [mail in reset, send it in, ship it back, bench reset]
+    amount: 50.00
+    unit: per_unit
+    stability: stable
+    description: >-
+      The customer ships the ECU or cable to Unitronic for a bench reset. The
+      cheaper of the two reset paths and the fallback when a remote session
+      cannot recover the unit.
+    conditions: >-
+      Excludes shipping in both directions. Turnaround is quoted by the service
+      desk, not here.
+
+  - id: uniflex_software
+    label: UniFLEX flex-fuel software add-on
+    aliases: [uniflex, flex fuel software, e85 software, flex add on]
+    sku: SW-003
+    amount: 400.00
+    previous_amount: 500.00
+    unit: per_vehicle
+    stability: volatile
+    # Moved $500 -> $400 within the observation window. Quote it WITH the
+    # verified_on date, or confirm before committing.
+    changed_on: 2025-01-01
+    description: >-
+      Flex-fuel software add-on enabling ethanol-content-aware calibration.
+      Software only — the UniFLEX hardware kit and any bracket are separate
+      line items priced per platform.
+    conditions: >-
+      Requires supported hardware and a platform on which UniFLEX is released.
+      Check uniflex_supported via check_stage_availability before quoting.
+
+  - id: ecu_software_stage
+    label: ECU stage software
+    aliases: [stage 1 price, stage 2 price, tune price, software price]
+    amount: null
+    unit: per_vehicle
+    stability: quote_required
+    description: >-
+      Stage software pricing varies by platform, stage and dealer. There is no
+      single number and there never has been.
+    conditions: >-
+      Do not quote. Resolve the platform, confirm the stage is released, then
+      direct the customer to the product page or to a dealer for the price.
+
+  - id: tcu_software
+    label: TCU / DSG software
+    aliases: [dsg tune price, tcu tune price, transmission software]
+    amount: null
+    unit: per_vehicle
+    stability: quote_required
+    description: >-
+      DSG/TCU calibration pricing varies by platform and is frequently bundled
+      with ECU software.
+    conditions: Do not quote. Route to the product page or a dealer.
+
+  - id: stage_upgrade
+    label: Stage upgrade (credit toward a higher stage)
+    aliases: [upgrade to stage 2, upgrade price, difference to stage 3]
+    amount: null
+    unit: per_vehicle
+    stability: quote_required
+    description: >-
+      Upgrading from an owned stage to a higher one is priced as a difference,
+      not as a fresh purchase, and the credit depends on what was originally
+      paid.
+    conditions: >-
+      Do not compute the difference yourself. Confirm the owned stage with
+      get_my_tune_history, confirm the target stage is released, then hand the
+      pricing to a human or a dealer.
+
+  - id: dealer_pricing
+    label: Dealer / installer pricing
+    aliases: [dealer price, wholesale, installer pricing, trade price]
+    amount: null
+    unit: n_a
+    stability: never_disclose
+    description: >-
+      Dealer and installer pricing is confidential and differs per account.
+    conditions: >-
+      Never disclose to an end customer under any circumstances, including when
+      the caller says they are a dealer. Dealer identity is verified out of
+      band, not on the call — see AGENT_PLAN.md 9.3.
+
+  - id: shipping
+    label: Shipping and duties
+    aliases: [shipping cost, how much is shipping, duties, customs]
+    amount: null
+    unit: per_order
+    stability: quote_required
+    description: >-
+      Calculated at checkout from destination and weight. Cross-border duties
+      are the customer's responsibility.
+    conditions: Do not estimate. Point at checkout.

@@ -1,0 +1,647 @@
+# Emissions defeat-device lexicon -- the compliance surface, in data.
+#
+# AGENT_PLAN.md 9.1. This file is the whole gate. `guardrails/emissions.py`
+# compiles it and does nothing else: no model, no embedding, no LLM call. The
+# reason it lives in YAML rather than in Python is that the people who have to
+# sign it off do not read Python, and the thing they are signing off is this
+# list of words -- not a classifier's behaviour on a held-out set.
+#
+# WHY NOT `review.emissions_tampering_request`
+#   That flag is true on 268 of 38,563 calls and it fires on the *request*.
+#   The exposure is on the answer side: 432 knowledge units mention
+#   cat-delete / catless / de-cat, only 11 (2.5%) carry any refusal language,
+#   and 399 (92%) sit on calls the review pass never flagged -- they are
+#   written as neutral product or compatibility facts. A gate keyed on the
+#   review flag misses 92% of what the agent could say. So the same lexicon is
+#   applied twice: pre-retrieval against the customer's turn, and against
+#   candidate knowledge units before they can be quoted.
+#
+# WHY TWO TIERS
+#   `direct` terms are unambiguous on their own -- nobody says "catless
+#   downpipe" innocently. `subjects x actions` covers the far larger set of
+#   phrasings that are only a defeat request in combination: "catalytic
+#   converter" is a legitimate part and "remove" is a legitimate verb, and it
+#   is their co-occurrence inside a short window that is the request. Encoding
+#   the components separately is what keeps the French side tractable -- the
+#   subject list is nouns, which transcribe cleanly, and the action list
+#   absorbs the ASR damage.
+#
+# FRENCH IS NOT A TRANSLATION OF THE ENGLISH
+#   8.5% of the corpus is French (3,287 calls; 28 of the 268 flagged). Quebec
+#   French shop-speak borrows the English noun and inflects it, and the ASR
+#   then re-spells the borrowed verb as the nearest French word it knows. In
+#   the 28 flagged French calls, "delete" is transcribed as "delit", "delite",
+#   "d'elite", "deliter" and "delete" -- an ASR artefact, not a dialect, and
+#   the largest single source of French misses if you only translate. That is
+#   why `fr_delete_asr` exists and why its note is written the way it is.
+#
+# TUNING RULE
+#   Add to `direct` only when the phrase cannot occur benignly. Everything
+#   else goes in `subjects` or `actions`. If a term needs an escape hatch,
+#   write an `exemptions` entry with the sentence that motivated it rather
+#   than weakening the term -- a weakened term fails silently and an exemption
+#   is visible in review.
+
+schema_version: 1
+lexicon_version: "2026-08-06.1"
+
+# Consumed by emissions.py. When false, the module still blocks -- it fails
+# closed -- but stamps `compliance_signed_off: false` into every verdict and
+# into the escalation record, so an unreviewed lexicon is visible downstream
+# instead of being an undocumented assumption.
+needs_compliance_signoff: true
+compliance:
+  status: draft
+  reviewed_by: null
+  reviewed_at: null
+  jurisdictions:
+    - "CA federal - CEPA s.154/155 (defeat device supply)"
+    - "QC - Reglement sur les normes environnementales applicables aux vehicules lourds"
+    - "US EPA - CAA s.203(a)(3)(B) (aftermarket defeat device sale)"
+  note: >
+    Drafted from the 268 calls carrying review.emissions_tampering_request and
+    from the 432 knowledge units matching cat-delete phrasing. Not yet reviewed
+    by counsel. Nothing here is a legal determination -- it is the list of
+    phrasings on which the agent declines to retrieve and answers from a fixed
+    string. Over-refusal on this list is cheap; under-refusal is the incident.
+
+# Distance between a subject match and an action match, either order, for
+# tier 2 to fire when the two are NOT in the same sentence. Same-sentence
+# co-occurrence fires regardless of distance; this is the cross-sentence
+# fallback only.
+#
+# Measured on the 268 flagged calls and the 1,551-call deterministic control
+# set (unflagged reviewed calls where call_id %% 19 == 3):
+#     30   recall 223 (83.2%)   control-blocked  77 (5.0%)
+#     60   recall 229 (85.4%)   control-blocked  84 (5.4%)   <- chosen
+#    120   recall 232 (86.6%)   control-blocked  91 (5.9%)
+#    200   recall 236 (88.1%)   control-blocked 100 (6.4%)
+# Recall keeps climbing because a wide window eventually joins any two
+# sentences in a transcript. 60 is where the curve is still buying real
+# adjacency rather than accidental co-location.
+proximity_chars: 60
+
+# --------------------------------------------------------------------------
+# Tier 1 -- sufficient alone.
+# --------------------------------------------------------------------------
+direct:
+
+  - id: cat_delete
+    category: catalyst
+    lang: en
+    pattern: '\bcat(?:alytic)?[\s\-]?(?:converter[\s\-]?)?delete[sd]?\b'
+    note: >
+      The canonical phrasing and the single most common one in the corpus.
+      `cat delete`, `cat-delete`, `catalytic delete`, `catalytic converter
+      delete`. Deliberately does not require the word "converter" -- the trade
+      says "cat".
+    examples: ["cat delete", "catalytic converter delete", "cat-deleted"]
+
+  - id: catless
+    category: catalyst
+    lang: en
+    pattern: '\bcat[\s\-]?less\b'
+    note: >
+      Describes hardware already fitted, and the request that follows is
+      always for software to stop the car complaining about it. The negative
+      form `catted` is a different word and is explicitly a legitimate part;
+      the \b anchor keeps them apart.
+    examples: ["catless downpipe", "cat less test pipe"]
+
+  - id: decat
+    category: catalyst
+    lang: both
+    pattern: '\b(?:de[\s\-]?cat(?:ted|ting)?|d[eé][\s\-]?catalys(?:e|er|ation|é|e))\b'
+    note: >
+      `de-cat` is the European phrasing and appears in both languages;
+      `decatalyser` / `decatalysation` is the French one. Not folded into
+      cat_delete because the stem is different and a shared pattern would be
+      unreadable.
+    examples: ["de-cat pipe", "decatted", "decatalyse"]
+
+  - id: test_pipe
+    category: catalyst
+    lang: both
+    pattern: '\btest[\s\-]?pipes?\b'
+    note: >
+      A test pipe is a catalyst-shaped piece of straight tube. There is no
+      non-delete use of the term in this corpus.
+    examples: ["test pipe", "test-pipes"]
+
+  - id: dpf_delete
+    category: diesel_aftertreatment
+    lang: both
+    pattern: '\b(?:dpf|fap)\b[^.\n]{0,20}?\b(?:delete[sd]?|d[eé]l(?:it|ite|ete)[sé]?|off|remov(?:e|ed|al))\b'
+    note: >
+      DPF is the diesel particulate filter; FAP is its French name (filtre a
+      particules) and appears as an acronym in French calls. Windowed rather
+      than adjacency-only because "DPF and EGR delete" and "DPF is deleted"
+      both occur. The `delit|delite` alternation is the ASR artefact -- see
+      fr_delete_asr.
+    examples: ["DPF delete", "DPF removal", "FAP delete", "DPF d'elite"]
+
+  - id: def_scr_delete
+    category: diesel_aftertreatment
+    lang: en
+    pattern: '\b(?:def|scr|adblue|urea)\b[^.\n]{0,20}?\bdelete[sd]?\b'
+    note: >
+      Diesel exhaust fluid / selective catalytic reduction. Always paired with
+      a DPF delete in practice, but listed separately so the refusal can name
+      what was actually asked for.
+    examples: ["DEF delete", "AdBlue delete", "SCR delete"]
+
+  - id: egr_delete
+    category: egr
+    lang: both
+    pattern: '\begr\b[^.\n]{0,25}?\b(?:delete[sd]?|d[eé]l(?:it|ite|ete)[sé]?|block(?:ed|er)?|bypass(?:ed)?|off|disabl\w*|d[eé]sactiv\w*|cod(?:e|ed|er)[\s\-]?out|cancel\w*)\b'
+    note: >
+      Exhaust gas recirculation. The window is wider than DPF's because EGR
+      requests are phrased around the hardware being absent already ("the
+      engine came with no port for the EGR valve, can you code it out") --
+      that is the exact wording of a flagged French call.
+    examples: ["EGR delete", "EGR blocked off", "coder la valve EGR"]
+
+  - id: gpf_opf_delete
+    category: gasoline_particulate
+    lang: both
+    pattern: '\b(?:gpf|opf|ops)\b[^.\n]{0,20}?\b(?:delete[sd]?|d[eé]l(?:it|ite|ete)[sé]?|off|remov(?:e|ed|al))\b'
+    note: >
+      Gasoline / otto particulate filter. `OPS` is included because the ASR
+      renders spoken "O-P-F" as "OPS" in the French calls -- one flagged call
+      says "il n'a pas un OPS d'elite" and means OPF delete.
+    examples: ["OPF delete", "GPF delete", "OPS d'elite"]
+
+  - id: o2_spacer
+    category: readiness_defeat
+    lang: both
+    pattern: '\b(?:o2|02|oxygen|lambda|sonde)\b[^.\n]{0,25}?\b(?:spacers?|spaces|defoulers?|d[eé]fouleurs?|extenders?|simulators?|sim(?:ulateur)?s?|eliminators?|foulers?|entretoises?)\b|\b(?:spacers?|spaces|d[eé]fouleurs?)\b[^.\n]{0,25}?\b(?:o2|02|oxygen|lambda|sondes?)\b'
+    note: >
+      A spacer moves the downstream sensor out of the exhaust stream so the
+      catalyst-efficiency monitor stops failing. Physically a bung; legally a
+      defeat device. `02` (zero-two) is how the ASR writes it about half the
+      time, and `spaces` is how it writes "spacers" -- "what if I put spaces
+      on the oxygen sensors" is verbatim from the flagged set. Bidirectional
+      because the noun order flips in French and in "spacer on the O2".
+    examples: ["O2 spacer", "spaces on the oxygen sensors", "lambda simulator"]
+
+  - id: sai_delete
+    category: secondary_air
+    lang: both
+    pattern: '\b(?:sai|secondary[\s\-]air|air[\s\-]pump|combi[\s\-]?valve|pompe[\s\-]?[aà][\s\-]?air)\b[^.\n]{0,30}?\b(?:delete[sd]?|d[eé]l(?:it|ite|ete)[sé]?|remov\w*|disabl\w*|d[eé]sactiv\w*|cod(?:e|ed|ing|er)[\s\-]?out|bypass\w*|cancel\w*|elimin\w*)\b'
+    note: >
+      Secondary air injection. The highest-frequency single request in the
+      flagged set after cat delete, and the one most often asked in good
+      faith -- the pump has genuinely failed and the customer wants the light
+      off. It is still a monitored emissions system.
+    examples: ["SAI delete", "secondary air coded out", "combi valve delete"]
+
+  - id: emissions_delete_generic
+    category: generic
+    lang: en
+    pattern: '\bemission[s]?[\s\-]?(?:system[\s\-]?)?(?:delete[sd]?|remov(?:e|ed|al)|disabl\w*|defeat\w*)\b'
+    note: >
+      Catches the customer who names no component: "I want an emissions
+      delete tune". Anchored on the noun so "emissions testing" and
+      "emissions compliant" do not match.
+    examples: ["emissions delete", "emission system removal"]
+
+  - id: fr_antipollution_removal
+    category: generic
+    lang: fr
+    pattern: '\b(?:enlever|retirer|d[eé]sactiv\w*|effacer|canceller|d[eé]bran\w*|by-?pass\w*)\b[^.\n]{0,40}?\b(?:anti[\s\-]?pollution|syst[eè]me?\s+de\s+pollution|syst[eè]me?\s+antipollution|d[ée]pollution)\b'
+    note: >
+      "faire enlever mon systeme antipollution" is the plain-language French
+      request and appears verbatim in the flagged set. Also the mis-heard
+      "systeme de pollution", which is what two callers actually said.
+    examples: ["faire enlever le systeme antipollution", "enlever mon systeme de pollution"]
+
+  - id: fr_filtre_particules_delete
+    category: diesel_aftertreatment
+    lang: fr
+    pattern: '\bfiltre\s+[àa]\s+particules?\b[^.\n]{0,40}?\b(?:d[eé]l(?:it|ite|ete)[sé]?|delete[sd]?|enlev\w*|retir\w*|suppr\w*)\b|\b(?:d[eé]l(?:it|ite|ete)[sé]?|delete[sd]?|enlev\w*|retir\w*|suppr\w*)\b[^.\n]{0,40}?\bfiltre\s+[àa]\s+particules?\b'
+    note: >
+      Bidirectional because French puts the verb either side ("je fais un
+      delit sur le filtre a particules" / "enlever le filtre a particules").
+    examples: ["enlever le filtre a particules", "un delit sur le filtre a particules"]
+
+  - id: immo_delete
+    category: immobilizer
+    lang: both
+    pattern: '\b(?:immo(?:bilis?er|bilizer)?|imo|emo)\b[\s\-]?(?:off|delete[sd]?|d[eé]l(?:it|ite|ete)[sé]?|defeat|bypass\w*|disabl\w*)\b'
+    note: >
+      Not an emissions control -- it is the factory anti-theft interlock, and
+      removing it is what lets a stolen ECU run in another car. It sits in
+      this lexicon because it is the same shape of request from the same
+      callers and the same fixed refusal applies. `imo`/`emo` are ASR: two
+      flagged French calls say "un IMO Off" and "des Emo Delete".
+    examples: ["immo off", "IMO delete", "Emo Delete", "immobilizer bypass"]
+
+  - id: delete_as_a_product
+    category: generic
+    lang: en
+    pattern: '\bdelete\s+(?:\w+\s+){0,2}(?:kits?|files?|tunes?|maps?|software|packages?|options?|services?)\b|\bdeletes\b|\bdo(?:es)?\s+(?:you|they|he|she|it)\s+(?:guys\s+|folks\s+)?(?:do|offer|sell|have)\s+\w{0,12}\s*delet\w+'
+    note: >
+      "Delete" used as a noun, with the component elided because everyone on
+      the call already knows which one. Verbatim from the flagged set: "just
+      a delete kit", "does it have all the deletes too", "I was wondering if
+      you guys do deleting". Tier 2 cannot reach these -- there is no subject
+      in the sentence at all.
+    examples: ["a delete kit", "all the deletes", "do you guys do deleting"]
+
+  - id: fr_delit_as_a_service
+    category: generic
+    lang: fr
+    pattern: '\b(?:un|le|des|les|mon|ton|son|de)\s+d[eé]l(?:it|its|ite|ites|it[eé]|it[eé]s)\b|\bfaire\s+(?:un\s+)?d[eé]l\w*\b|\bfaire\s+(?:le\s+|la\s+)?d[eé]lit\w*\b'
+    note: >
+      The French mirror of delete_as_a_product, and the reason the French
+      recall number is not lower than it is. "je voudrais faire un delit
+      dessus", "tu connais-tu quelqu'un qui en fait, des delits", "c'est tout
+      delite" -- the object is the whole car and is never named, so there is
+      no subject for tier 2 to pair with. Requires a determiner or "faire" in
+      front so the ordinary French noun "delit" (a criminal offence) in a
+      sentence like "c'est un delit de rouler comme ca" does not fire.
+    examples: ["faire un delit dessus", "des delits", "un delit sur mon TDI"]
+
+  - id: cat_absent
+    category: catalyst
+    lang: both
+    pattern: '\b(?:no|without|sans|pas\s+de|aucun)\s+cat(?:alytic\s+converters?|alyseurs?|s|alysts?)?\b|\bcat\s+(?:is\s+)?(?:gutted|hollowed|punched\s+out|empty)\b|\bcatalyseurs?\s+(?:sont\s+)?vides?\b'
+    note: >
+      The delete stated as a fact about the car rather than as a request:
+      "what if I wanted to do no cat", "vous n'embarquez pas dans les
+      versions sans catalyseur", "les catalyseurs sont vides". No request
+      verb appears anywhere in the sentence, so tier 2 cannot see it, and
+      the request that follows is always for software to match.
+    examples: ["no cat", "sans catalyseur", "les catalyseurs sont vides"]
+
+  - id: rolling_coal
+    category: generic
+    lang: en
+    pattern: '\broll(?:ing)?[\s\-]?coal\b'
+    note: >
+      Deliberate over-fuelling for visible smoke. Rare in the corpus but
+      unambiguous, and its presence in a request changes the register of the
+      conversation entirely.
+    examples: ["rolling coal", "roll coal"]
+
+  - id: off_road_only
+    category: off_road_pretext
+    lang: both
+    pattern: '\b(?:off[\s\-]?road|race|track|competition|hors[\s\-]route|usage\s+piste)\b[^.\n]{0,20}?\b(?:only|uniquement|seulement)\b|\b(?:only|uniquement|seulement)\b[^.\n]{0,20}?\b(?:off[\s\-]?road|hors[\s\-]route|the\s+track|la\s+piste)\b|\bnon[\s\-]street[\s\-]?legal\b|\bnot\s+street[\s\-]?legal\b|\bnot\s+for\s+(?:street|road|highway)\s+use\b'
+    note: >
+      The pretext, not a category of request. "It's off-road only" is what a
+      caller says immediately before or after asking for a delete, and it is
+      the sentence that makes an agent think the refusal no longer applies.
+      It does not. Kept in `direct` precisely so it blocks on its own rather
+      than being available as a mitigating context.
+
+      Requires an explicit exclusivity word. An earlier version accepted
+      "off-road use" without "only" and fired on the dealer-programme call
+      that lists off-road use among a shop's services.
+
+      Marginal recall on the 268 is 0 and marginal control blocking is 1 --
+      every call that says "off-road only" also says what it wants deleted,
+      so something else catches it first.
+      It stays because the pretext is exactly what an adversarial or
+      well-coached caller uses when they have learned not to say "delete",
+      and ground truth assembled from ordinary calls cannot measure that.
+    examples: ["off road use only", "for off-road only", "non street legal application"]
+
+# --------------------------------------------------------------------------
+# Tier 2 -- subject x action inside `proximity_chars`.
+# --------------------------------------------------------------------------
+subjects:
+
+  - id: catalyst
+    category: catalyst
+    lang: both
+    pattern: '\b(?:cat(?:alytic)?\s*(?:converter|conv)?s?|catalyseurs?|catalyti?que?s?)\b'
+    note: >
+      Bare "cat" is included and is the reason tier 2 requires an action --
+      on its own it is a three-letter substring landmine, and every match
+      here was checked against the control sample for animal nouns.
+    examples: ["cat", "catalytic converter", "catalyseur"]
+
+  - id: dpf
+    category: diesel_aftertreatment
+    lang: both
+    pattern: '\b(?:dpf|fap|particulate\s+filters?|filtres?\s+[àa]\s+particules?)\b'
+    note: "Diesel particulate filter, both acronyms and both spelled-out forms."
+    examples: ["DPF", "particulate filter", "filtre a particules"]
+
+  - id: egr
+    category: egr
+    lang: both
+    pattern: '\begr\b|\bexhaust\s+gas\s+recirculation\b|\bvalve\s+egr\b'
+    note: "EGR by acronym or expansion."
+    examples: ["EGR", "valve EGR", "exhaust gas recirculation"]
+
+  - id: gpf_opf
+    category: gasoline_particulate
+    lang: both
+    pattern: '\b(?:gpf|opf|ops)\b'
+    note: >
+      `ops` is an ASR spelling of OPF and is safe here only because tier 2
+      requires a delete-shaped action next to it; it is not in `direct` alone
+      for that reason.
+    examples: ["GPF", "OPF", "OPS"]
+
+  - id: o2_sensor
+    category: readiness_defeat
+    lang: both
+    pattern: '\b(?:o2|02|oxygen|lambda|wideband|sonde\s+lambda|post[\s\-]?cat(?:alytic)?)\s*(?:sensors?|sondes?)?\b'
+    note: >
+      Downstream O2 is the sensor a catalyst-efficiency defeat targets.
+      "post-cat" alone is here because callers say "the post-cat reading".
+    examples: ["O2 sensor", "downstream oxygen sensor", "sonde lambda"]
+
+  - id: sai
+    category: secondary_air
+    lang: both
+    pattern: '\b(?:sai|secondary\s+\w+(?:\s+\w+)?|air\s+pump|combi\s*valve|pompe\s+[àa]\s+air|air\s+secondaire|injection\s+d''air)\b'
+    note: >
+      Secondary air injection and its pump. `secondary` plus one or two
+      following words rather than the literal phrase, because the ASR
+      mangles it constantly and every mangling is still this system:
+      "secondary error ingestion delete file", "secondary injection pump",
+      "secondary error delete", "the secondaries behind".
+
+      Ablation: restricting this to the literal "secondary air" drops recall
+      229 -> 227 on the 268 and leaves control blocking unchanged at 84/1551.
+      Dropping the subject entirely drops recall 229 -> 210, which makes it
+      the second most load-bearing entry in the file.
+    examples: ["SAI", "secondary air injection", "secondary error ingestion", "air pump"]
+
+  - id: def_scr
+    category: diesel_aftertreatment
+    lang: both
+    pattern: '\b(?:adblue|ad\s+blue|def|scr|urea|ur[eé]e|diesel\s+exhaust\s+fluid|agent\s+pump|syst[eè]me\s+d(?:''|e\s+)?ur[eé]e|syst[eè]me\s+dur[eé])\b'
+    note: >
+      Diesel exhaust fluid / selective catalytic reduction. Separate from the
+      `def_scr_delete` direct term because the request usually arrives as
+      "the AdBlue system, can you bypass it" -- a defeat verb rather than the
+      word "delete", which the direct term requires. `systeme dure` is the
+      ASR rendering of "systeme d'uree" and is verbatim from a flagged French
+      call ("comment ca fonctionnait pour enlever le systeme dure").
+    examples: ["AdBlue", "DEF system", "SCR", "systeme d'uree"]
+
+  - id: evap_pcv_n249
+    category: generic
+    lang: both
+    pattern: '\b(?:evap|pcv|n249|n80|n112|purge\s+valves?|charcoal\s+can(?:ister)?s?)\b'
+    note: >
+      Evaporative emissions and crankcase ventilation. VAG-specific solenoid
+      numbers are included because that is how this corpus refers to them --
+      a flagged French call lists "les EVAP, les emissions, le EGR, le PCT,
+      le N249" in one breath.
+    examples: ["EVAP", "PCV", "N249", "N80 valve"]
+
+  - id: emissions_generic
+    category: generic
+    lang: both
+    pattern: '\b(?:emissions?(?:\s+(?:system|equipment|control|gear))?|anti[\s\-]?pollutions?|d[ée]pollutions?|[eé]missions?|syst[eè]me\s+de\s+pollution)\b'
+    note: >
+      The generic noun. On its own it is neutral -- "will this pass
+      emissions" is a legitimate question -- which is exactly why it needs an
+      action next to it. The plural `antipollutions` matters: one flagged
+      French call is "y a-t-il moyen d'eliter les antipollutions sans
+      stager", and a pattern anchored on the singular misses it on the
+      trailing s. `admission` was tried here as an ASR variant of "emission"
+      and removed -- in French "admission" is the intake tract and it fired
+      on ordinary intake questions.
+    examples: ["emissions system", "antipollution", "les antipollutions"]
+
+  - id: fault_code
+    category: readiness_defeat
+    lang: both
+    pattern: '\b(?:catalyst\s+codes?|catalytic\s+codes?|lean\s+codes?|misfire\s+codes?|readiness\s+codes?|emissions?\s+codes?)\b'
+    pair_with: [delete_en, defeat_en, fr_delete_asr, fr_remove]
+    note: >
+      Narrowed hard. This entry started as every phrasing of "fault code"
+      with no pairing restriction; restoring that version raises control
+      blocking 84 -> 93 of 1,551 for zero recall change, and the 9 extra
+      refusals are people reading a DTC off a scan tool during ordinary
+      diagnosis -- "clear DTCs", "reading trouble codes", "trouble codes
+      found". Diagnosis is what the agent is for.
+
+      What is left contributes 0 marginal recall on the 268 and 0 marginal
+      control blocking -- every call it catches is caught by something else --
+      and 2 units on the answer-side screen. It is kept for the answer side
+      and for the phrasings the ground truth happens not to contain, not
+      because it is earning its place on the request side.
+    examples: ["catalyst code", "emissions codes", "lean code"]
+
+  - id: readiness_monitor
+    category: readiness_defeat
+    lang: both
+    pattern: '\b(?:readiness(?:\s+monitors?)?|monitors?\s+(?:not\s+)?ready|drive\s+cycles?|i/?m\s*240|smog\w*|emissions?\s+(?:test\w*|inspect\w*)|e[\s\-]?test|e[\s\-]?check|safety\s+inspect\w*|inspect(?:ion|ions|ed|ing)|admissions?(?!\s*d)|contr[oô]le\s+technique|sniffer)\b'
+    note: >
+      The inspection surface. Asking "will my tune pass" is legitimate and
+      common; asking to make it pass while the hardware is gone is not. Tier
+      2 draws that line by requiring a defeat-shaped action.
+
+      `inspect(?:ion|ions|ed|ing)` used to be written
+      `inspection\s+(?:test|obligatoire)?` -- a mandatory space before an
+      optional group, so it failed on sentence-final "...to pass New York
+      State inspection." Restoring that typo drops recall 229 -> 219 on the
+      268. Ten calls, from one space. This is why the file is measured rather
+      than reviewed by eye.
+
+      Ablation: dropping this subject entirely drops recall 229 -> 207 and
+      control blocking 84 -> 73. It is the single most load-bearing entry in
+      the lexicon and also the most expensive; the trade is 22 caught requests
+      for 11 over-refusals, and over-refusal here routes to a human rather
+      than answering wrongly.
+    examples: ["readiness monitors", "smog check", "emissions inspection", "controle technique"]
+
+  - id: dtc_emissions_codes
+    category: readiness_defeat
+    lang: both
+    pattern: '\bp0(?:4[0-9]{2}|1[34][0-9])\b|\b(?:check\s+)?engine\s+lights?\b|\bcheck\s+engine\b|\bcel\b|\bt[eé]moin\s+moteur\b'
+    pair_with: [delete_en, defeat_en, request_en, fr_delete_asr, fr_remove]
+    note: >
+      P04xx is the catalyst/EVAP/SAI/EGR monitor block -- P0420/21/22 alone
+      match 467 units. P013x/P014x are O2 sensor circuits. The check-engine
+      light is here because "make the light go away" is the same request with
+      the component elided, and it is how most SAI requests arrive.
+      P03xx (misfire) was removed: a misfire is a mechanical fault the agent
+      should be diagnosing, not an emissions monitor, and `MIL` was removed
+      because the ASR writes "mil" for "mile" constantly.
+    examples: ["P0420", "P0411", "check engine light", "CEL"]
+
+  - id: exhaust_hardware
+    category: catalyst
+    lang: both
+    pattern: '\b(?:downpipes?|down[\s\-]pipes?|mid[\s\-]?pipes?|straight[\s\-]?pipes?|str[ai]ight\s+pipe|resonators?|r[eé]sonateurs?|exhaust\s+systems?|exhausts?|[eé]chappements?)\b'
+    pair_with: [delete_en, defeat_en, fr_delete_asr, fr_remove]
+    note: >
+      Not a defeat device -- a catted downpipe is a legal part, Unitronic
+      sells them, and downpipe sales calls are a large fraction of the
+      corpus. Restricted to removal and defeat verbs for exactly that reason.
+
+      Ablation: removing this pair_with restriction changes recall not at all
+      (229 -> 229) and raises control blocking 84 -> 97 of 1,551. Every one of
+      those 13 is a downpipe sales or fitment call. A restriction that costs
+      zero recall and buys 13 non-refusals is the cheapest line in the file.
+      Bare `dp` and bare `exhaust` were considered separately -- `dp` collides
+      with too much and stays out; `exhaust`/`exhaust system` is in, because
+      "delete mon exhaust sur mon truck" and "delete exhaust system kit" are
+      both real and both need it.
+    examples: ["downpipe", "straight pipe", "mid-pipe"]
+
+actions:
+
+  - id: delete_en
+    lang: en
+    pattern: '\b(?:delete[sd]?|deleting|deletion|remov(?:e|ed|es|ing|al)|gut(?:ted|ting)?|hollow(?:ed)?[\s\-]?out|straight[\s\-]?pip(?:e|ed|ing)|eliminat\w*|strip(?:ped)?[\s\-]?out)\b'
+    note: "Physical or software removal. `gut` is specific to catalysts."
+    examples: ["delete", "gutted", "straight pipe it", "removal"]
+
+  - id: defeat_en
+    lang: en
+    pattern: '\b(?:disabl\w*|bypass\w*|defeat\w*|turn(?:ed|ing)?\s+(?:\w+\s+){0,3}off\b|shut(?:ting)?\s+(?:\w+\s+){0,3}off\b|switch(?:ed|ing)?\s+(?:\w+\s+){0,3}off\b|(?:cod|tun|program|programm|map|flash)(?:e|es|ed|ing|med|ming|ped|ping)?\s+(?:\w+\s+){0,3}out\b|coded[\s\-]?out|spoof\w*|fool\w*|trick\w*|cheat\w*|fake\w*|get\s+(?:it\s+|them\s+)?around|work\s+around|suppress\w*|mask\w*|hide|hidden|get(?:ting|s)?\s+rid\s+of|clear(?:ed|ing)?|block(?:ed)?\s+off|plug(?:ged)?\s+off|cap(?:ped)?\s+off|rip\s+(?:\w+\s+){0,3}out\b|shut\s+it\s+down)\b'
+    note: >
+      Software defeat rather than removal. `clear` is here because "clear the
+      P0420" and "delete the cat" are the same request separated by one
+      billing cycle. It is the highest-volume action in the flagged set.
+    examples: ["code it out", "bypass", "trick the monitor", "clear the code"]
+
+  - id: request_en
+    lang: en
+    pattern: '\b(?:tune\s+for|file\s+for|map\s+for|software\s+for|support\s+(?:for|the)|flash\s+(?:out|off))\b'
+    note: >
+      The polite form: "do you have a tune for a catless downpipe". No verb
+      of removal appears at all, so without this the entire dealer-side
+      phrasing is invisible to the gate.
+    examples: ["tune for", "file for", "do you support the"]
+
+  - id: evade_inspection_en
+    lang: en
+    pattern: '\b(?:pass(?:ing|es|ed)?|get\s+(?:it|him|her|them|the\s+\w+|my\s+\w+)?\s*(?:to\s+)?(?:pass|through|inspected|smogged|certified)|smog(?:ged|ging)\b|smog\s+it\b|slip\s+(?:it\s+)?(?:by|through)|squeak\s+(?:it\s+)?(?:by|through)|make\s+(?:it|them)\s+ready|force\s+readiness|set\s+(?:the\s+)?monitors?|detun\w*)\b'
+    note: >
+      The inspection surface, and the second-largest miss bucket after
+      "delete" as a bare noun. Verbatim from the flagged set: "we have to put
+      a different tune in it to get it to pass New York State inspection",
+      "I'm calling to see if you have an updated K04 file to pass readiness
+      in California smog", "trying to detune the car to get my car smogged in
+      California". Only reaches a verdict against the `readiness_monitor`
+      subject, so "will this part pass shipping inspection" is unaffected --
+      "pass" on its own is not a defeat verb and is not treated as one.
+
+      This deliberately also blocks the sympathetic version, where a customer
+      wants to flash back to stock so the car passes. That request is
+      legitimate and the agent still should not answer it from retrieval: the
+      corpus's answers to it are the delete-adjacent units, and the correct
+      response is a human who can see the account. The refusal offers exactly
+      that.
+    examples: ["get it to pass inspection", "pass readiness in California smog", "get my car smogged"]
+
+  - id: fr_delete_asr
+    lang: fr
+    pattern: '\b(?:d[eé]l(?:it|its|ite|ites|it[eé]|it[eé]s|[eé]t[eé]|ete|etes)|d''[eé]lite?s?|d''[eé]lit|[eé]liter|d[eé]liter|delete[sdr]?)\b'
+    note: >
+      THE FRENCH GATE. Quebec shop French borrows the English verb "delete"
+      and the ASR spells it back as the nearest French word: "delit" (an
+      offence), "d'elite" (elite), "delite", "deliter", "delete". Verbatim
+      from the flagged set: "j'ai fait le SAI d'elite", "il n'a pas un OPS
+      d'elite", "je voudrais faire un delit dessus", "c'est tout delite",
+      "je veux le faire deliter". Translating "delete" to "supprimer" and
+      stopping there misses every one of these. This entry alone is worth
+      more French recall than the rest of the French lexicon combined.
+    examples: ["SAI d'elite", "un delit dessus", "tout delite", "faire deliter"]
+
+  - id: fr_remove
+    lang: fr
+    pattern: '\b(?:enlev\w*|retir\w*|suppr\w*|d[eé]sactiv\w*|d[eé]bran\w*|d[eé]connect\w*|effac\w*|cancell?\w*|annul\w*|vid(?:e|er|[eé]|[eé]s)|coup(?:er|[eé])|contourn\w*|d[eé]jou\w*|masqu\w*|neutralis\w*|d[eé]sactiv\w*|d[eé]sactiver|bloqu\w*|by-?pass\w*)\b'
+    note: >
+      Native French removal and defeat verbs. `vide` covers "les catalyseurs
+      sont vides" -- the catalysts have been gutted, stated as a fact, which
+      is how the request is prefaced rather than made.
+    examples: ["enlever", "desactiver", "effacer le code", "les catalyseurs sont vides"]
+
+  - id: fr_request
+    lang: fr
+    pattern: '\b(?:programm\w*|prog\b|reprogramm\w*|tuner\b|tunez\b|flasher\b|flash[eé]e?s?\b|logiciel\s+pour|fichier\s+pour|map\s+pour|puce\b|chipp?er\b|faire\s+faire)\b'
+    note: >
+      "est-ce que tu peux prog les secondes derriere" -- prog the secondary
+      air behind. The request verb carries the whole meaning; the removal
+      verb is implied by the subject. Same role as request_en.
+
+      This pattern originally included bare `tune` and bare `flash`, which
+      are English words appearing in essentially every call in the corpus,
+      so a "French" action was firing on the whole English corpus.
+
+      Ablation: putting bare `tune`/`flash` back raises recall 229 -> 234 and
+      control blocking 84 -> 101 of 1,551. Taken at face value that is not a
+      terrible trade, and it is still wrong: the recall it buys is accidental
+      -- it comes from "tune" sitting near a component noun, not from anyone
+      requesting anything -- and it was measurably worse before the pair_with
+      restrictions landed, when it could reach `exhaust_hardware` and
+      `fault_code` as well. Only French-inflected forms belong here; the
+      English request verbs are `request_en`'s job.
+    examples: ["programmer", "prog", "faire chipper", "un logiciel pour"]
+
+# --------------------------------------------------------------------------
+# Exemptions -- suppress a tier-2 hit whose window is explained by a benign
+# phrase. Never applied to tier 1: a `direct` term has no benign reading, and
+# an exemption that could cancel one would be a bypass.
+# --------------------------------------------------------------------------
+exemptions:
+
+  - id: catted_downpipe
+    pattern: '\bcat(?:ted|alysed|alyzed)\b|\bhigh[\s\-]?flow\s+cat\b|\bsports?\s+cat\b|\bcat(?:alytic)?\s+converter\s+(?:replacement|repair|warranty)\b|\bnew\s+cat(?:alytic)?\b|\bOEM\s+cat\b'
+    note: >
+      A catted downpipe is the compliant product and the one the agent should
+      be steering toward. Without this, "we sell a catted downpipe, no delete
+      needed" refuses itself.
+    examples: ["catted downpipe", "high-flow cat", "sport cat"]
+
+  - id: restore_emissions
+    pattern: '\b(?:put|putting|restor\w*|reinstat\w*|re[\s\-]?install\w*|back\s+to\s+stock|return\s+to\s+stock|stock\s+file|remettre|r[eé]installer|remise\s+[àa]\s+neuf|revenir\s+au\s+stock)\b[^.\n]{0,40}?\b(?:emissions?|cat(?:alytic)?|egr|dpf|sai|anti[\s\-]?pollution)\b'
+    note: >
+      One flagged call is a customer asking to put the emissions systems
+      BACK after a third-party tuner deleted them. That is the outcome the
+      policy wants and refusing it is actively counterproductive. Narrow on
+      purpose: it requires an explicit restore verb near the component.
+    examples: ["put the EGR back in the computer", "restore the emissions systems", "remettre ca dans l'ordinateur"]
+
+  - id: compliance_question
+    pattern: '\b(?:is|are|will|would|does|do)\s+(?:it|this|that|the|your|my|a)\b(?:\s+\w+){0,3}\s+(?:still\s+)?(?:emissions?[\s\-]?)?(?:legal|compliant|street[\s\-]?legal|carb[\s\-]?legal|50[\s\-]?state)\b'
+    note: >
+      "Is the Stage 2 still emissions legal" is a question the agent should
+      answer, not refuse. Requires the interrogative frame so that "make it
+      street legal again" -- which is a different request -- is untouched.
+    examples: ["is this still emissions legal", "will it be CARB legal"]
+
+# --------------------------------------------------------------------------
+# The refusal. One fixed string per language, returned without retrieval. It
+# names no product, cites no unit and quotes no price, so there is nothing in
+# it that can be wrong later.
+# --------------------------------------------------------------------------
+refusals:
+  en: >
+    I'm not able to help with removing, disabling or defeating an emissions
+    control system, or with software that hides the fault codes for one --
+    that includes catalytic converter, DPF/GPF, EGR, secondary air and
+    readiness-monitor deletes, and it applies regardless of whether the
+    vehicle is used on the road. I also can't help with immobilizer removal.
+
+
+    What I can help with: emissions-compliant tuning, catted and high-flow
+    downpipes, diagnosing why a fault code has appeared, and restoring a
+    vehicle to a stock or compliant configuration. If you'd like, I can put
+    you through to someone on the team.
+  fr: >
+    Je ne peux pas aider a retirer, desactiver ou contourner un systeme
+    antipollution, ni fournir un logiciel qui masque les codes de defaut d'un
+    tel systeme -- cela comprend les deletes de catalyseur, de DPF/FAP/OPF,
+    d'EGR, d'injection d'air secondaire et de moniteurs de disponibilite, et
+    cela s'applique meme pour un usage hors route. Je ne peux pas non plus
+    aider pour le retrait d'immobilisateur.
+
+
+    Ce que je peux faire : la programmation conforme aux normes
+    antipollution, les downpipes avec catalyseur, le diagnostic d'un code de
+    defaut, et le retour d'un vehicule a une configuration d'origine ou
+    conforme. Si vous voulez, je peux vous transferer a un membre de
+    l'equipe.

@@ -1,0 +1,5072 @@
+[
+{
+"colloquial": "flash",
+"canonical": "ecu tune",
+"n": 619
+},
+{
+"colloquial": "cel",
+"canonical": "check engine light",
+"n": 365
+},
+{
+"colloquial": "transmission tune",
+"canonical": "tcu tune",
+"n": 302
+},
+{
+"colloquial": "chip",
+"canonical": "ecu tune",
+"n": 209
+},
+{
+"colloquial": "flash",
+"canonical": "install software",
+"n": 191
+},
+{
+"colloquial": "flash",
+"canonical": "ecu tune installation",
+"n": 185
+},
+{
+"colloquial": "tcu",
+"canonical": "transmission control unit",
+"n": 183
+},
+{
+"colloquial": "software",
+"canonical": "ecu tune",
+"n": 168
+},
+{
+"colloquial": "transmission tune",
+"canonical": "tcu software",
+"n": 153
+},
+{
+"colloquial": "cable",
+"canonical": "uniconnect+",
+"n": 149
+},
+{
+"colloquial": "tune",
+"canonical": "performance software",
+"n": 144
+},
+{
+"colloquial": "flex fuel",
+"canonical": "uniflex",
+"n": 113
+},
+{
+"colloquial": "dongle",
+"canonical": "uniconnect plus cable",
+"n": 98
+},
+{
+"colloquial": "tune",
+"canonical": "ecu software",
+"n": 96
+},
+{
+"colloquial": "box code",
+"canonical": "ecu id",
+"n": 91
+},
+{
+"colloquial": "ddms",
+"canonical": "dealer management system",
+"n": 90
+},
+{
+"colloquial": "otis",
+"canonical": "odis",
+"n": 89
+},
+{
+"colloquial": "cable",
+"canonical": "uniconnect plus",
+"n": 88
+},
+{
+"colloquial": "cable reset",
+"canonical": "remote cable reset",
+"n": 82
+},
+{
+"colloquial": "mpi",
+"canonical": "multi-port injection",
+"n": 79
+},
+{
+"colloquial": "transmission flash",
+"canonical": "tcu tune",
+"n": 75
+},
+{
+"colloquial": "engine tune",
+"canonical": "ecu tune",
+"n": 68
+},
+{
+"colloquial": "file",
+"canonical": "ecu tune",
+"n": 68
+},
+{
+"colloquial": "transmission software",
+"canonical": "tcu tune",
+"n": 67
+},
+{
+"colloquial": "dsg tune",
+"canonical": "tcu tune",
+"n": 65
+},
+{
+"colloquial": "ecu",
+"canonical": "engine control unit",
+"n": 58
+},
+{
+"colloquial": "vagcom",
+"canonical": "vcds",
+"n": 57
+},
+{
+"colloquial": "cat",
+"canonical": "catalytic converter",
+"n": 55
+},
+{
+"colloquial": "license transfer",
+"canonical": "ownership transfer",
+"n": 54
+},
+{
+"colloquial": "engine tune",
+"canonical": "ecu software",
+"n": 51
+},
+{
+"colloquial": "file",
+"canonical": "tune",
+"n": 51
+},
+{
+"colloquial": "dsg tune",
+"canonical": "tcu software",
+"n": 50
+},
+{
+"colloquial": "box code",
+"canonical": "ecu identifier",
+"n": 49
+},
+{
+"colloquial": "computer",
+"canonical": "ecu",
+"n": 48
+},
+{
+"colloquial": "uaf",
+"canonical": "unitronic advanced features",
+"n": 48
+},
+{
+"colloquial": "hpfp",
+"canonical": "high-pressure fuel pump",
+"n": 46
+},
+{
+"colloquial": "flashing",
+"canonical": "ecu tuning",
+"n": 43
+},
+{
+"colloquial": "flex",
+"canonical": "uniflex",
+"n": 43
+},
+{
+"colloquial": "tune",
+"canonical": "software",
+"n": 43
+},
+{
+"colloquial": "pops and bangs",
+"canonical": "crackles",
+"n": 42
+},
+{
+"colloquial": "pops and bangs",
+"canonical": "burble tune",
+"n": 41
+},
+{
+"colloquial": "smog",
+"canonical": "emissions testing",
+"n": 41
+},
+{
+"colloquial": "box code",
+"canonical": "ecu part number",
+"n": 40
+},
+{
+"colloquial": "software",
+"canonical": "tune",
+"n": 39
+},
+{
+"colloquial": "tcu tune",
+"canonical": "transmission control unit tune",
+"n": 39
+},
+{
+"colloquial": "immobilizer defeat",
+"canonical": "immobilizer delete",
+"n": 38
+},
+{
+"colloquial": "ddms",
+"canonical": "dealer diagnostic management system",
+"n": 37
+},
+{
+"colloquial": "flashing",
+"canonical": "ecu tuning process",
+"n": 37
+},
+{
+"colloquial": "engine flash",
+"canonical": "ecu tune",
+"n": 36
+},
+{
+"colloquial": "sai",
+"canonical": "secondary air injection",
+"n": 35
+},
+{
+"colloquial": "map",
+"canonical": "ecu tune",
+"n": 34
+},
+{
+"colloquial": "pops and bangs",
+"canonical": "crackle overrun",
+"n": 34
+},
+{
+"colloquial": "cable",
+"canonical": "uniconnect",
+"n": 33
+},
+{
+"colloquial": "hpfp",
+"canonical": "high pressure fuel pump",
+"n": 33
+},
+{
+"colloquial": "transfer the tune",
+"canonical": "license transfer",
+"n": 33
+},
+{
+"colloquial": "dsg",
+"canonical": "tcu",
+"n": 32
+},
+{
+"colloquial": "dsg file",
+"canonical": "tcu tune",
+"n": 31
+},
+{
+"colloquial": "flash back to stock",
+"canonical": "revert to factory tune",
+"n": 30
+},
+{
+"colloquial": "flashed",
+"canonical": "tuned",
+"n": 30
+},
+{
+"colloquial": "flashing",
+"canonical": "tuning",
+"n": 30
+},
+{
+"colloquial": "lpfp",
+"canonical": "low-pressure fuel pump",
+"n": 30
+},
+{
+"colloquial": "big turbo",
+"canonical": "stage 3",
+"n": 29
+},
+{
+"colloquial": "flash back",
+"canonical": "revert to stock",
+"n": 29
+},
+{
+"colloquial": "toune",
+"canonical": "tune",
+"n": 29
+},
+{
+"colloquial": "vacom",
+"canonical": "vcds",
+"n": 29
+},
+{
+"colloquial": "cats",
+"canonical": "catalytic converters",
+"n": 28
+},
+{
+"colloquial": "dongle",
+"canonical": "uniconnect cable",
+"n": 28
+},
+{
+"colloquial": "dsg software",
+"canonical": "tcu tune",
+"n": 28
+},
+{
+"colloquial": "dv",
+"canonical": "diverter valve",
+"n": 28
+},
+{
+"colloquial": "mech unit",
+"canonical": "mechatronic unit",
+"n": 28
+},
+{
+"colloquial": "char",
+"canonical": "vehicle",
+"n": 27
+},
+{
+"colloquial": "crackle",
+"canonical": "overrun",
+"n": 27
+},
+{
+"colloquial": "crackles",
+"canonical": "exhaust pops and bangs",
+"n": 26
+},
+{
+"colloquial": "crackles",
+"canonical": "burble tune",
+"n": 26
+},
+{
+"colloquial": "mec unit",
+"canonical": "mechatronic unit",
+"n": 26
+},
+{
+"colloquial": "tcu tune",
+"canonical": "transmission tune",
+"n": 26
+},
+{
+"colloquial": "transmission flash",
+"canonical": "tcu flash",
+"n": 26
+},
+{
+"colloquial": "uaf",
+"canonical": "advanced features",
+"n": 26
+},
+{
+"colloquial": "cable reset",
+"canonical": "uniconnect plus cable reset",
+"n": 25
+},
+{
+"colloquial": "chipper",
+"canonical": "ecu tune",
+"n": 25
+},
+{
+"colloquial": "dongle",
+"canonical": "tuning cable",
+"n": 25
+},
+{
+"colloquial": "files",
+"canonical": "ecu tune",
+"n": 25
+},
+{
+"colloquial": "flash back to stock",
+"canonical": "revert to factory software",
+"n": 25
+},
+{
+"colloquial": "lpfp",
+"canonical": "low pressure fuel pump",
+"n": 25
+},
+{
+"colloquial": "software number",
+"canonical": "ecu id",
+"n": 25
+},
+{
+"colloquial": "trans tune",
+"canonical": "tcu tune",
+"n": 25
+},
+{
+"colloquial": "cat-back",
+"canonical": "exhaust system",
+"n": 24
+},
+{
+"colloquial": "check engine light",
+"canonical": "cel",
+"n": 24
+},
+{
+"colloquial": "transmission software",
+"canonical": "tcu software",
+"n": 24
+},
+{
+"colloquial": "cable number",
+"canonical": "ucp number",
+"n": 23
+},
+{
+"colloquial": "map",
+"canonical": "tune file",
+"n": 23
+},
+{
+"colloquial": "software rights",
+"canonical": "license transfer",
+"n": 23
+},
+{
+"colloquial": "tcm",
+"canonical": "tcu",
+"n": 23
+},
+{
+"colloquial": "cloche",
+"canonical": "clutch",
+"n": 22
+},
+{
+"colloquial": "vatcom",
+"canonical": "vcds",
+"n": 22
+},
+{
+"colloquial": "engine software",
+"canonical": "ecu tune",
+"n": 21
+},
+{
+"colloquial": "reflash",
+"canonical": "ecu flash",
+"n": 21
+},
+{
+"colloquial": "brick",
+"canonical": "ecu failure",
+"n": 20
+},
+{
+"colloquial": "ecm",
+"canonical": "ecu",
+"n": 20
+},
+{
+"colloquial": "fichier",
+"canonical": "tune file",
+"n": 20
+},
+{
+"colloquial": "immo delete",
+"canonical": "immobilizer defeat",
+"n": 20
+},
+{
+"colloquial": "license transfer",
+"canonical": "software ownership transfer",
+"n": 20
+},
+{
+"colloquial": "reflash",
+"canonical": "ecu tune",
+"n": 20
+},
+{
+"colloquial": "dtc",
+"canonical": "diagnostic trouble code",
+"n": 19
+},
+{
+"colloquial": "flex file",
+"canonical": "uniflex software",
+"n": 19
+},
+{
+"colloquial": "locked transmission",
+"canonical": "locked tcu",
+"n": 19
+},
+{
+"colloquial": "ordi",
+"canonical": "ecu",
+"n": 19
+},
+{
+"colloquial": "tcu tune",
+"canonical": "tcu software",
+"n": 19
+},
+{
+"colloquial": "toon",
+"canonical": "tune",
+"n": 19
+},
+{
+"colloquial": "cap discharge",
+"canonical": "capacitor discharge",
+"n": 18
+},
+{
+"colloquial": "cat code",
+"canonical": "p0420",
+"n": 18
+},
+{
+"colloquial": "chips",
+"canonical": "ecu tune",
+"n": 18
+},
+{
+"colloquial": "dp",
+"canonical": "downpipe",
+"n": 18
+},
+{
+"colloquial": "flex file",
+"canonical": "uniflex",
+"n": 18
+},
+{
+"colloquial": "immo",
+"canonical": "immobilizer",
+"n": 18
+},
+{
+"colloquial": "limp mode",
+"canonical": "reduced power mode",
+"n": 18
+},
+{
+"colloquial": "map",
+"canonical": "tune",
+"n": 18
+},
+{
+"colloquial": "reflash",
+"canonical": "software installation",
+"n": 18
+},
+{
+"colloquial": "tcu",
+"canonical": "transmission control unit tune",
+"n": 18
+},
+{
+"colloquial": "transmission flash",
+"canonical": "tcu software",
+"n": 18
+},
+{
+"colloquial": "two-step",
+"canonical": "launch control",
+"n": 18
+},
+{
+"colloquial": "uniflex",
+"canonical": "flex fuel software add-on",
+"n": 18
+},
+{
+"colloquial": "bov",
+"canonical": "blow-off valve",
+"n": 17
+},
+{
+"colloquial": "crackles",
+"canonical": "overrun",
+"n": 17
+},
+{
+"colloquial": "dtcs",
+"canonical": "diagnostic trouble codes",
+"n": 17
+},
+{
+"colloquial": "flexfuel",
+"canonical": "uniflex",
+"n": 17
+},
+{
+"colloquial": "locked tcu",
+"canonical": "transmission control unit lock",
+"n": 17
+},
+{
+"colloquial": "ordinateur",
+"canonical": "ecu",
+"n": 17
+},
+{
+"colloquial": "switch and save",
+"canonical": "competitor discount",
+"n": 17
+},
+{
+"colloquial": "switch and save",
+"canonical": "competitor migration discount",
+"n": 17
+},
+{
+"colloquial": "chip",
+"canonical": "tune",
+"n": 16
+},
+{
+"colloquial": "cord",
+"canonical": "uniconnect plus cable",
+"n": 16
+},
+{
+"colloquial": "files",
+"canonical": "tuning software",
+"n": 16
+},
+{
+"colloquial": "smog",
+"canonical": "emissions",
+"n": 16
+},
+{
+"colloquial": "switch and save",
+"canonical": "competitor trade-in discount",
+"n": 16
+},
+{
+"colloquial": "tcu id",
+"canonical": "transmission control unit identifier",
+"n": 16
+},
+{
+"colloquial": "transmission side",
+"canonical": "tcu",
+"n": 16
+},
+{
+"colloquial": "transmission tune",
+"canonical": "dsg tune",
+"n": 16
+},
+{
+"colloquial": "tune transfer",
+"canonical": "license transfer",
+"n": 16
+},
+{
+"colloquial": "ucp",
+"canonical": "uniconnect plus",
+"n": 16
+},
+{
+"colloquial": "bench flash",
+"canonical": "ecu flashing",
+"n": 15
+},
+{
+"colloquial": "bricked",
+"canonical": "corrupt ecu",
+"n": 15
+},
+{
+"colloquial": "buy-in",
+"canonical": "dealer commitment",
+"n": 15
+},
+{
+"colloquial": "engine light",
+"canonical": "cel",
+"n": 15
+},
+{
+"colloquial": "flex file",
+"canonical": "uniflex tune",
+"n": 15
+},
+{
+"colloquial": "flex fuel kit",
+"canonical": "uniflex",
+"n": 15
+},
+{
+"colloquial": "fp",
+"canonical": "flash port",
+"n": 15
+},
+{
+"colloquial": "immobilizer delete",
+"canonical": "immobilizer defeat",
+"n": 15
+},
+{
+"colloquial": "programming",
+"canonical": "ecu tune",
+"n": 15
+},
+{
+"colloquial": "transmission",
+"canonical": "tcu",
+"n": 15
+},
+{
+"colloquial": "cable reset",
+"canonical": "license transfer",
+"n": 14
+},
+{
+"colloquial": "cable transfer",
+"canonical": "remote cable reset",
+"n": 14
+},
+{
+"colloquial": "dog bone",
+"canonical": "dog bone mount",
+"n": 14
+},
+{
+"colloquial": "license transfer",
+"canonical": "software license transfer",
+"n": 14
+},
+{
+"colloquial": "logiciel",
+"canonical": "software/tune",
+"n": 14
+},
+{
+"colloquial": "reset the cable",
+"canonical": "remote cable reset",
+"n": 14
+},
+{
+"colloquial": "tranny",
+"canonical": "transmission",
+"n": 14
+},
+{
+"colloquial": "trans tune",
+"canonical": "transmission tune",
+"n": 14
+},
+{
+"colloquial": "transmission tuning",
+"canonical": "tcu tune",
+"n": 14
+},
+{
+"colloquial": "uc plus",
+"canonical": "uniconnect plus",
+"n": 14
+},
+{
+"colloquial": "app",
+"canonical": "uniconnect plus",
+"n": 13
+},
+{
+"colloquial": "burbles",
+"canonical": "exhaust pops and bangs",
+"n": 13
+},
+{
+"colloquial": "cord",
+"canonical": "uniconnect cable",
+"n": 13
+},
+{
+"colloquial": "dog bone",
+"canonical": "pendulum mount",
+"n": 13
+},
+{
+"colloquial": "flex tune",
+"canonical": "uniflex",
+"n": 13
+},
+{
+"colloquial": "locked tcu",
+"canonical": "tcu lock",
+"n": 13
+},
+{
+"colloquial": "logiciel",
+"canonical": "software tune",
+"n": 13
+},
+{
+"colloquial": "performance software",
+"canonical": "ecu tune",
+"n": 13
+},
+{
+"colloquial": "stage 1 plus",
+"canonical": "stage 1+",
+"n": 13
+},
+{
+"colloquial": "stock block",
+"canonical": "stock engine",
+"n": 13
+},
+{
+"colloquial": "trans tune",
+"canonical": "tcu software",
+"n": 13
+},
+{
+"colloquial": "buy-in",
+"canonical": "dealer application fee",
+"n": 12
+},
+{
+"colloquial": "cable transfer",
+"canonical": "license transfer",
+"n": 12
+},
+{
+"colloquial": "engine side",
+"canonical": "ecu",
+"n": 12
+},
+{
+"colloquial": "flash it back",
+"canonical": "revert to stock",
+"n": 12
+},
+{
+"colloquial": "flush",
+"canonical": "flash",
+"n": 12
+},
+{
+"colloquial": "logiciel",
+"canonical": "tune",
+"n": 12
+},
+{
+"colloquial": "mech",
+"canonical": "mechatronic unit",
+"n": 12
+},
+{
+"colloquial": "stage 2 plus",
+"canonical": "stage 2+",
+"n": 12
+},
+{
+"colloquial": "tuner",
+"canonical": "ecu tune",
+"n": 12
+},
+{
+"colloquial": "ucp",
+"canonical": "uniconnect plus cable",
+"n": 12
+},
+{
+"colloquial": "bottom end",
+"canonical": "engine internals",
+"n": 11
+},
+{
+"colloquial": "built motor",
+"canonical": "built engine",
+"n": 11
+},
+{
+"colloquial": "chip",
+"canonical": "performance software",
+"n": 11
+},
+{
+"colloquial": "dog bone",
+"canonical": "engine mount",
+"n": 11
+},
+{
+"colloquial": "dsg flash",
+"canonical": "tcu tune",
+"n": 11
+},
+{
+"colloquial": "dump pipe",
+"canonical": "downpipe",
+"n": 11
+},
+{
+"colloquial": "ethanol sensor",
+"canonical": "ethanol content sensor",
+"n": 11
+},
+{
+"colloquial": "file",
+"canonical": "ecu software",
+"n": 11
+},
+{
+"colloquial": "files",
+"canonical": "ecu software",
+"n": 11
+},
+{
+"colloquial": "gearbox",
+"canonical": "transmission",
+"n": 11
+},
+{
+"colloquial": "mapping",
+"canonical": "ecu tune",
+"n": 11
+},
+{
+"colloquial": "mark 8",
+"canonical": "mk8",
+"n": 11
+},
+{
+"colloquial": "mobilizer",
+"canonical": "immobilizer",
+"n": 11
+},
+{
+"colloquial": "ownership transfer",
+"canonical": "license transfer",
+"n": 11
+},
+{
+"colloquial": "pcm",
+"canonical": "ecu",
+"n": 11
+},
+{
+"colloquial": "sfd",
+"canonical": "vehicle diagnostic protection",
+"n": 11
+},
+{
+"colloquial": "smogged",
+"canonical": "emissions testing",
+"n": 11
+},
+{
+"colloquial": "speed governor",
+"canonical": "speed limiter",
+"n": 11
+},
+{
+"colloquial": "transfer fee",
+"canonical": "license transfer",
+"n": 11
+},
+{
+"colloquial": "transferring the tune",
+"canonical": "license transfer",
+"n": 11
+},
+{
+"colloquial": "uniconnect cable",
+"canonical": "uniconnect plus cable",
+"n": 11
+},
+{
+"colloquial": "91 file",
+"canonical": "91 octane tune",
+"n": 10
+},
+{
+"colloquial": "93 file",
+"canonical": "93 octane tune",
+"n": 10
+},
+{
+"colloquial": "at-home flashing tool",
+"canonical": "uniconnect plus cable",
+"n": 10
+},
+{
+"colloquial": "at-home tuning",
+"canonical": "uniconnect plus",
+"n": 10
+},
+{
+"colloquial": "bricked",
+"canonical": "unresponsive ecu",
+"n": 10
+},
+{
+"colloquial": "cord",
+"canonical": "tuning cable",
+"n": 10
+},
+{
+"colloquial": "cruise control stock",
+"canonical": "cruise control stalk",
+"n": 10
+},
+{
+"colloquial": "dsg software",
+"canonical": "tcu software",
+"n": 10
+},
+{
+"colloquial": "engine software",
+"canonical": "ecu software",
+"n": 10
+},
+{
+"colloquial": "flash back",
+"canonical": "revert to stock software",
+"n": 10
+},
+{
+"colloquial": "flash tune",
+"canonical": "ecu tune",
+"n": 10
+},
+{
+"colloquial": "long coding",
+"canonical": "ecu configuration data",
+"n": 10
+},
+{
+"colloquial": "mk8",
+"canonical": "mark 8",
+"n": 10
+},
+{
+"colloquial": "mpi kit",
+"canonical": "multi-port injection kit",
+"n": 10
+},
+{
+"colloquial": "programmation",
+"canonical": "ecu tune",
+"n": 10
+},
+{
+"colloquial": "programming",
+"canonical": "flashing",
+"n": 10
+},
+{
+"colloquial": "rattle fix",
+"canonical": "wastegate rattle correction",
+"n": 10
+},
+{
+"colloquial": "rolling launch",
+"canonical": "rolling launch control",
+"n": 10
+},
+{
+"colloquial": "software",
+"canonical": "ecu/tcu tune",
+"n": 10
+},
+{
+"colloquial": "tcu unlock",
+"canonical": "transmission control unit unlock",
+"n": 10
+},
+{
+"colloquial": "tuning cable",
+"canonical": "uniconnect plus cable",
+"n": 10
+},
+{
+"colloquial": "uniflex",
+"canonical": "flex fuel software",
+"n": 10
+},
+{
+"colloquial": "battery tender",
+"canonical": "battery maintainer",
+"n": 9
+},
+{
+"colloquial": "big turbo",
+"canonical": "upgraded turbocharger",
+"n": 9
+},
+{
+"colloquial": "bolt-ons",
+"canonical": "hardware modifications",
+"n": 9
+},
+{
+"colloquial": "bougies",
+"canonical": "spark plugs",
+"n": 9
+},
+{
+"colloquial": "box",
+"canonical": "ecu",
+"n": 9
+},
+{
+"colloquial": "bricked",
+"canonical": "ecu failure",
+"n": 9
+},
+{
+"colloquial": "calibration",
+"canonical": "ecu tune",
+"n": 9
+},
+{
+"colloquial": "calibration",
+"canonical": "tune",
+"n": 9
+},
+{
+"colloquial": "catless",
+"canonical": "downpipe without catalytic converter",
+"n": 9
+},
+{
+"colloquial": "check engine",
+"canonical": "cel",
+"n": 9
+},
+{
+"colloquial": "clutch saver",
+"canonical": "low torque file",
+"n": 9
+},
+{
+"colloquial": "colder plugs",
+"canonical": "heat range spark plugs",
+"n": 9
+},
+{
+"colloquial": "crackle tune",
+"canonical": "burble tune",
+"n": 9
+},
+{
+"colloquial": "crackle tune",
+"canonical": "pops and bangs tune",
+"n": 9
+},
+{
+"colloquial": "ddms",
+"canonical": "unitronic dealer management system",
+"n": 9
+},
+{
+"colloquial": "dsg",
+"canonical": "tcu tune",
+"n": 9
+},
+{
+"colloquial": "engine side",
+"canonical": "ecu tune",
+"n": 9
+},
+{
+"colloquial": "feature box",
+"canonical": "uaf feature box",
+"n": 9
+},
+{
+"colloquial": "feature box",
+"canonical": "uaf",
+"n": 9
+},
+{
+"colloquial": "flex kit",
+"canonical": "uniflex",
+"n": 9
+},
+{
+"colloquial": "logs",
+"canonical": "data logging",
+"n": 9
+},
+{
+"colloquial": "long coding",
+"canonical": "ecu long coding",
+"n": 9
+},
+{
+"colloquial": "math housing",
+"canonical": "maf housing",
+"n": 9
+},
+{
+"colloquial": "pop and bang",
+"canonical": "burble tune",
+"n": 9
+},
+{
+"colloquial": "re-flash",
+"canonical": "software installation",
+"n": 9
+},
+{
+"colloquial": "remote session",
+"canonical": "screenconnect",
+"n": 9
+},
+{
+"colloquial": "reset the cable",
+"canonical": "license transfer",
+"n": 9
+},
+{
+"colloquial": "tcm",
+"canonical": "transmission control module",
+"n": 9
+},
+{
+"colloquial": "tcu",
+"canonical": "dsg tune",
+"n": 9
+},
+{
+"colloquial": "thune",
+"canonical": "tune",
+"n": 9
+},
+{
+"colloquial": "totaled",
+"canonical": "total loss",
+"n": 9
+},
+{
+"colloquial": "tourne",
+"canonical": "tune",
+"n": 9
+},
+{
+"colloquial": "tranny tune",
+"canonical": "tcu tune",
+"n": 9
+},
+{
+"colloquial": "tuning",
+"canonical": "ecu tune",
+"n": 9
+},
+{
+"colloquial": "uaf",
+"canonical": "user adjustable features",
+"n": 9
+},
+{
+"colloquial": "uniconnect cable",
+"canonical": "uniconnect+",
+"n": 9
+},
+{
+"colloquial": "vag number",
+"canonical": "ecu id",
+"n": 9
+},
+{
+"colloquial": "bcds",
+"canonical": "vcds",
+"n": 8
+},
+{
+"colloquial": "brick",
+"canonical": "permanent ecu failure",
+"n": 8
+},
+{
+"colloquial": "chip2 website",
+"canonical": "ddms",
+"n": 8
+},
+{
+"colloquial": "codes",
+"canonical": "dtcs",
+"n": 8
+},
+{
+"colloquial": "core exchange",
+"canonical": "ecu core exchange",
+"n": 8
+},
+{
+"colloquial": "detune",
+"canonical": "revert to stock software",
+"n": 8
+},
+{
+"colloquial": "facelift",
+"canonical": "b9.5",
+"n": 8
+},
+{
+"colloquial": "feature box",
+"canonical": "advanced features module",
+"n": 8
+},
+{
+"colloquial": "flash back to stock",
+"canonical": "revert to stock tune",
+"n": 8
+},
+{
+"colloquial": "flash the car",
+"canonical": "install software",
+"n": 8
+},
+{
+"colloquial": "flasher",
+"canonical": "flash/tune",
+"n": 8
+},
+{
+"colloquial": "flashing cable",
+"canonical": "uniconnect plus cable",
+"n": 8
+},
+{
+"colloquial": "immo delete",
+"canonical": "immobilizer delete",
+"n": 8
+},
+{
+"colloquial": "lint mode",
+"canonical": "limp mode",
+"n": 8
+},
+{
+"colloquial": "locked tcu",
+"canonical": "locked transmission control unit",
+"n": 8
+},
+{
+"colloquial": "maf",
+"canonical": "mass air flow sensor",
+"n": 8
+},
+{
+"colloquial": "ob11",
+"canonical": "obdeleven",
+"n": 8
+},
+{
+"colloquial": "other dp",
+"canonical": "non-unitronic downpipe",
+"n": 8
+},
+{
+"colloquial": "pops",
+"canonical": "crackles",
+"n": 8
+},
+{
+"colloquial": "rattle fix",
+"canonical": "wastegate rattle fix",
+"n": 8
+},
+{
+"colloquial": "readiness monitors",
+"canonical": "emissions readiness",
+"n": 8
+},
+{
+"colloquial": "revision",
+"canonical": "ecu software version",
+"n": 8
+},
+{
+"colloquial": "software transfer",
+"canonical": "license transfer",
+"n": 8
+},
+{
+"colloquial": "tcu id",
+"canonical": "transmission control unit identification",
+"n": 8
+},
+{
+"colloquial": "tcu number",
+"canonical": "tcu id",
+"n": 8
+},
+{
+"colloquial": "transfer ownership",
+"canonical": "license transfer",
+"n": 8
+},
+{
+"colloquial": "transmission unlock",
+"canonical": "tcu unlock",
+"n": 8
+},
+{
+"colloquial": "uni downpipe",
+"canonical": "unitronic downpipe",
+"n": 8
+},
+{
+"colloquial": "uni e85 manager",
+"canonical": "uniflex app",
+"n": 8
+},
+{
+"colloquial": "uniconnect",
+"canonical": "uniconnect+",
+"n": 8
+},
+{
+"colloquial": "vacom",
+"canonical": "vag-com",
+"n": 8
+},
+{
+"colloquial": "water meth",
+"canonical": "water-methanol injection",
+"n": 8
+},
+{
+"colloquial": "app",
+"canonical": "uniconnect software",
+"n": 7
+},
+{
+"colloquial": "back to stock",
+"canonical": "revert to factory software",
+"n": 7
+},
+{
+"colloquial": "bench flash",
+"canonical": "ecu removal and flashing",
+"n": 7
+},
+{
+"colloquial": "bench flash",
+"canonical": "ecu flashing service",
+"n": 7
+},
+{
+"colloquial": "big turbo file",
+"canonical": "stage 3 tune",
+"n": 7
+},
+{
+"colloquial": "codes",
+"canonical": "dtc",
+"n": 7
+},
+{
+"colloquial": "colder plug",
+"canonical": "heat range spark plug",
+"n": 7
+},
+{
+"colloquial": "core exchange",
+"canonical": "ecu core return",
+"n": 7
+},
+{
+"colloquial": "dms",
+"canonical": "dealer management system",
+"n": 7
+},
+{
+"colloquial": "engine flash",
+"canonical": "ecu flash",
+"n": 7
+},
+{
+"colloquial": "flashed",
+"canonical": "ecu tune",
+"n": 7
+},
+{
+"colloquial": "fp",
+"canonical": "flashport",
+"n": 7
+},
+{
+"colloquial": "gbx file",
+"canonical": "tcu tune",
+"n": 7
+},
+{
+"colloquial": "gearbox tune",
+"canonical": "tcu tune",
+"n": 7
+},
+{
+"colloquial": "ie",
+"canonical": "integrated engineering",
+"n": 7
+},
+{
+"colloquial": "immo defeat",
+"canonical": "immobilizer defeat",
+"n": 7
+},
+{
+"colloquial": "lc",
+"canonical": "launch control",
+"n": 7
+},
+{
+"colloquial": "long code",
+"canonical": "long coding",
+"n": 7
+},
+{
+"colloquial": "mathless",
+"canonical": "mafless",
+"n": 7
+},
+{
+"colloquial": "mechatronic",
+"canonical": "tcu",
+"n": 7
+},
+{
+"colloquial": "ots",
+"canonical": "off-the-shelf",
+"n": 7
+},
+{
+"colloquial": "pcu",
+"canonical": "tcu",
+"n": 7
+},
+{
+"colloquial": "pops",
+"canonical": "crackle overrun",
+"n": 7
+},
+{
+"colloquial": "port injectors",
+"canonical": "mpi upgrade kit",
+"n": 7
+},
+{
+"colloquial": "programmation",
+"canonical": "tune",
+"n": 7
+},
+{
+"colloquial": "reprogram",
+"canonical": "ecu tune",
+"n": 7
+},
+{
+"colloquial": "rma",
+"canonical": "return merchandise authorization",
+"n": 7
+},
+{
+"colloquial": "stage two",
+"canonical": "stage 2 tune",
+"n": 7
+},
+{
+"colloquial": "stock file",
+"canonical": "factory tune",
+"n": 7
+},
+{
+"colloquial": "tco",
+"canonical": "tcu",
+"n": 7
+},
+{
+"colloquial": "tcu file",
+"canonical": "transmission control unit tune",
+"n": 7
+},
+{
+"colloquial": "tcu flash",
+"canonical": "transmission control unit tuning",
+"n": 7
+},
+{
+"colloquial": "tcu upgrade",
+"canonical": "transmission control unit tune",
+"n": 7
+},
+{
+"colloquial": "tourner",
+"canonical": "tune",
+"n": 7
+},
+{
+"colloquial": "trans",
+"canonical": "transmission",
+"n": 7
+},
+{
+"colloquial": "transfer the license",
+"canonical": "license transfer",
+"n": 7
+},
+{
+"colloquial": "transmission file",
+"canonical": "tcu tune",
+"n": 7
+},
+{
+"colloquial": "transmission file",
+"canonical": "tcu software",
+"n": 7
+},
+{
+"colloquial": "transmission side",
+"canonical": "tcu tune",
+"n": 7
+},
+{
+"colloquial": "tube",
+"canonical": "tune",
+"n": 7
+},
+{
+"colloquial": "tuner",
+"canonical": "uniconnect plus cable",
+"n": 7
+},
+{
+"colloquial": "unipro",
+"canonical": "unipro+",
+"n": 7
+},
+{
+"colloquial": "vag-com",
+"canonical": "vcds",
+"n": 7
+},
+{
+"colloquial": "verbal tune",
+"canonical": "burble tune",
+"n": 7
+},
+{
+"colloquial": "verbals",
+"canonical": "burbles",
+"n": 7
+},
+{
+"colloquial": "viacom",
+"canonical": "vcds",
+"n": 7
+},
+{
+"colloquial": "whp",
+"canonical": "wheel horsepower",
+"n": 7
+},
+{
+"colloquial": "2 plus",
+"canonical": "stage 2+",
+"n": 6
+},
+{
+"colloquial": "app",
+"canonical": "uniconnect plus application",
+"n": 6
+},
+{
+"colloquial": "bench recovery",
+"canonical": "ecu recovery",
+"n": 6
+},
+{
+"colloquial": "boot",
+"canonical": "coupler",
+"n": 6
+},
+{
+"colloquial": "burbles",
+"canonical": "crackles",
+"n": 6
+},
+{
+"colloquial": "burbles",
+"canonical": "overrun",
+"n": 6
+},
+{
+"colloquial": "cable number",
+"canonical": "uniconnect id",
+"n": 6
+},
+{
+"colloquial": "cable number",
+"canonical": "uniconnect plus serial number",
+"n": 6
+},
+{
+"colloquial": "cadre",
+"canonical": "cable",
+"n": 6
+},
+{
+"colloquial": "ccu",
+"canonical": "tcu",
+"n": 6
+},
+{
+"colloquial": "cooler",
+"canonical": "intercooler",
+"n": 6
+},
+{
+"colloquial": "core exchange",
+"canonical": "ecu replacement program",
+"n": 6
+},
+{
+"colloquial": "crackle",
+"canonical": "exhaust overrun",
+"n": 6
+},
+{
+"colloquial": "crackle",
+"canonical": "burble tune",
+"n": 6
+},
+{
+"colloquial": "cu",
+"canonical": "ecu",
+"n": 6
+},
+{
+"colloquial": "dealer portal",
+"canonical": "ddms",
+"n": 6
+},
+{
+"colloquial": "dsg tune",
+"canonical": "tcu flash",
+"n": 6
+},
+{
+"colloquial": "dv adapter",
+"canonical": "diverter valve adapter",
+"n": 6
+},
+{
+"colloquial": "ecu tune",
+"canonical": "engine control unit tune",
+"n": 6
+},
+{
+"colloquial": "ethanol",
+"canonical": "e85",
+"n": 6
+},
+{
+"colloquial": "ethanol sensor",
+"canonical": "uniflex hardware kit",
+"n": 6
+},
+{
+"colloquial": "flaps",
+"canonical": "exhaust valves",
+"n": 6
+},
+{
+"colloquial": "flash over",
+"canonical": "overwrite tune",
+"n": 6
+},
+{
+"colloquial": "flasher",
+"canonical": "flash/install tune",
+"n": 6
+},
+{
+"colloquial": "flex fuel tune",
+"canonical": "uniflex",
+"n": 6
+},
+{
+"colloquial": "icu",
+"canonical": "ecu",
+"n": 6
+},
+{
+"colloquial": "imrc",
+"canonical": "intake manifold runner control",
+"n": 6
+},
+{
+"colloquial": "lfb",
+"canonical": "left foot braking",
+"n": 6
+},
+{
+"colloquial": "lit mode",
+"canonical": "limp mode",
+"n": 6
+},
+{
+"colloquial": "locked",
+"canonical": "sfd lock",
+"n": 6
+},
+{
+"colloquial": "long code",
+"canonical": "ecu long coding",
+"n": 6
+},
+{
+"colloquial": "long coding",
+"canonical": "ecu coding",
+"n": 6
+},
+{
+"colloquial": "maf",
+"canonical": "mass airflow sensor",
+"n": 6
+},
+{
+"colloquial": "map sensor",
+"canonical": "manifold absolute pressure sensor",
+"n": 6
+},
+{
+"colloquial": "math sensor",
+"canonical": "maf sensor",
+"n": 6
+},
+{
+"colloquial": "mk7",
+"canonical": "mark 7",
+"n": 6
+},
+{
+"colloquial": "odis",
+"canonical": "offboard diagnostic information system",
+"n": 6
+},
+{
+"colloquial": "older cable",
+"canonical": "unipro cable",
+"n": 6
+},
+{
+"colloquial": "piggyback",
+"canonical": "external tuning module",
+"n": 6
+},
+{
+"colloquial": "plug",
+"canonical": "uniconnect plus cable",
+"n": 6
+},
+{
+"colloquial": "pounds",
+"canonical": "psi",
+"n": 6
+},
+{
+"colloquial": "program",
+"canonical": "ecu tune",
+"n": 6
+},
+{
+"colloquial": "programmation",
+"canonical": "tuning",
+"n": 6
+},
+{
+"colloquial": "put it in my name",
+"canonical": "license transfer",
+"n": 6
+},
+{
+"colloquial": "re-flash",
+"canonical": "reprogram",
+"n": 6
+},
+{
+"colloquial": "rostec",
+"canonical": "ross-tech",
+"n": 6
+},
+{
+"colloquial": "row",
+"canonical": "rest of world",
+"n": 6
+},
+{
+"colloquial": "smog check",
+"canonical": "emissions testing",
+"n": 6
+},
+{
+"colloquial": "smog test",
+"canonical": "emissions testing",
+"n": 6
+},
+{
+"colloquial": "software files",
+"canonical": "ecu tune",
+"n": 6
+},
+{
+"colloquial": "software rights",
+"canonical": "license",
+"n": 6
+},
+{
+"colloquial": "software upgrade",
+"canonical": "ecu tune",
+"n": 6
+},
+{
+"colloquial": "splash",
+"canonical": "flash",
+"n": 6
+},
+{
+"colloquial": "ssd",
+"canonical": "sfd",
+"n": 6
+},
+{
+"colloquial": "stage one plus",
+"canonical": "stage 1+",
+"n": 6
+},
+{
+"colloquial": "stock file",
+"canonical": "factory ecu map",
+"n": 6
+},
+{
+"colloquial": "stock file",
+"canonical": "factory software",
+"n": 6
+},
+{
+"colloquial": "tcu team",
+"canonical": "tcu tune",
+"n": 6
+},
+{
+"colloquial": "tcu upgrade",
+"canonical": "tcu tune",
+"n": 6
+},
+{
+"colloquial": "transfer fee",
+"canonical": "license transfer fee",
+"n": 6
+},
+{
+"colloquial": "transfert de licence",
+"canonical": "license transfer",
+"n": 6
+},
+{
+"colloquial": "trickle charger",
+"canonical": "battery maintainer",
+"n": 6
+},
+{
+"colloquial": "tunes",
+"canonical": "ecu software",
+"n": 6
+},
+{
+"colloquial": "uas",
+"canonical": "uaf",
+"n": 6
+},
+{
+"colloquial": "uconnect",
+"canonical": "uniconnect plus",
+"n": 6
+},
+{
+"colloquial": "unicable",
+"canonical": "uniconnect plus cable",
+"n": 6
+},
+{
+"colloquial": "uniflex",
+"canonical": "flex fuel tune",
+"n": 6
+},
+{
+"colloquial": "unlock cable",
+"canonical": "cable reset",
+"n": 6
+},
+{
+"colloquial": "untune",
+"canonical": "revert to stock",
+"n": 6
+},
+{
+"colloquial": "vatcom",
+"canonical": "vag-com",
+"n": 6
+},
+{
+"colloquial": "vcs",
+"canonical": "vcds",
+"n": 6
+},
+{
+"colloquial": "wipe the cable",
+"canonical": "remote cable reset",
+"n": 6
+},
+{
+"colloquial": "8.5",
+"canonical": "mk8.5",
+"n": 5
+},
+{
+"colloquial": "acc",
+"canonical": "adaptive cruise control",
+"n": 5
+},
+{
+"colloquial": "bin",
+"canonical": "vin",
+"n": 5
+},
+{
+"colloquial": "bolt-ons",
+"canonical": "supporting hardware modifications",
+"n": 5
+},
+{
+"colloquial": "bolts",
+"canonical": "hardware kit",
+"n": 5
+},
+{
+"colloquial": "brick",
+"canonical": "corrupt ecu",
+"n": 5
+},
+{
+"colloquial": "burble tune",
+"canonical": "crackle tune",
+"n": 5
+},
+{
+"colloquial": "cal-only",
+"canonical": "calibration-only file",
+"n": 5
+},
+{
+"colloquial": "carbon intake",
+"canonical": "carbon fiber intake system",
+"n": 5
+},
+{
+"colloquial": "catback",
+"canonical": "cat-back exhaust",
+"n": 5
+},
+{
+"colloquial": "catless",
+"canonical": "aftermarket downpipe",
+"n": 5
+},
+{
+"colloquial": "catless",
+"canonical": "catalyst-free downpipe",
+"n": 5
+},
+{
+"colloquial": "catted",
+"canonical": "catalytic converter",
+"n": 5
+},
+{
+"colloquial": "catted downpipe",
+"canonical": "catalytic converter downpipe",
+"n": 5
+},
+{
+"colloquial": "ccu",
+"canonical": "ecu",
+"n": 5
+},
+{
+"colloquial": "ceiling ring",
+"canonical": "sealing ring",
+"n": 5
+},
+{
+"colloquial": "chipped",
+"canonical": "tuned",
+"n": 5
+},
+{
+"colloquial": "chipper",
+"canonical": "tune",
+"n": 5
+},
+{
+"colloquial": "clutch saver",
+"canonical": "limited torque file",
+"n": 5
+},
+{
+"colloquial": "clutch saver",
+"canonical": "low torque tune",
+"n": 5
+},
+{
+"colloquial": "crackle file",
+"canonical": "burble tune",
+"n": 5
+},
+{
+"colloquial": "customs fees",
+"canonical": "tariffs",
+"n": 5
+},
+{
+"colloquial": "dcu",
+"canonical": "tcu",
+"n": 5
+},
+{
+"colloquial": "detune",
+"canonical": "return to stock",
+"n": 5
+},
+{
+"colloquial": "dsg flash",
+"canonical": "tcu flash",
+"n": 5
+},
+{
+"colloquial": "dtc",
+"canonical": "diagnostic trouble codes",
+"n": 5
+},
+{
+"colloquial": "dv relocation",
+"canonical": "diverter valve relocation kit",
+"n": 5
+},
+{
+"colloquial": "engine flash",
+"canonical": "ecu software",
+"n": 5
+},
+{
+"colloquial": "engine side",
+"canonical": "ecu software",
+"n": 5
+},
+{
+"colloquial": "epc light",
+"canonical": "electronic power control light",
+"n": 5
+},
+{
+"colloquial": "ethanol file",
+"canonical": "e85 tune",
+"n": 5
+},
+{
+"colloquial": "ethanol sensor",
+"canonical": "uniflex",
+"n": 5
+},
+{
+"colloquial": "file burn error",
+"canonical": "error 1026",
+"n": 5
+},
+{
+"colloquial": "flap delete",
+"canonical": "intake manifold runner flap delete",
+"n": 5
+},
+{
+"colloquial": "flash back",
+"canonical": "return to stock",
+"n": 5
+},
+{
+"colloquial": "flash down",
+"canonical": "revert to stock software",
+"n": 5
+},
+{
+"colloquial": "flash file",
+"canonical": "ecu tune",
+"n": 5
+},
+{
+"colloquial": "flash it back to stock",
+"canonical": "revert to stock tune",
+"n": 5
+},
+{
+"colloquial": "flash the transmission",
+"canonical": "tcu tune",
+"n": 5
+},
+{
+"colloquial": "flashing cable",
+"canonical": "uniconnect plus",
+"n": 5
+},
+{
+"colloquial": "flashing tool",
+"canonical": "uniconnect plus cable",
+"n": 5
+},
+{
+"colloquial": "flex",
+"canonical": "flexfuel",
+"n": 5
+},
+{
+"colloquial": "flex feel",
+"canonical": "uniflex",
+"n": 5
+},
+{
+"colloquial": "flex files",
+"canonical": "uniflex",
+"n": 5
+},
+{
+"colloquial": "flex fuel",
+"canonical": "e85 tune",
+"n": 5
+},
+{
+"colloquial": "flex fuel tune",
+"canonical": "uniflex software",
+"n": 5
+},
+{
+"colloquial": "flex tune",
+"canonical": "uniflex software",
+"n": 5
+},
+{
+"colloquial": "flex tune",
+"canonical": "flex fuel tune",
+"n": 5
+},
+{
+"colloquial": "fmic",
+"canonical": "front mount intercooler",
+"n": 5
+},
+{
+"colloquial": "franken-turbo",
+"canonical": "hybrid turbo",
+"n": 5
+},
+{
+"colloquial": "full e",
+"canonical": "e85",
+"n": 5
+},
+{
+"colloquial": "gbx file",
+"canonical": "transmission tune",
+"n": 5
+},
+{
+"colloquial": "heat soak",
+"canonical": "intake air temperature increase",
+"n": 5
+},
+{
+"colloquial": "immobilizer defeat",
+"canonical": "immobilizer removal",
+"n": 5
+},
+{
+"colloquial": "imo",
+"canonical": "immobilizer",
+"n": 5
+},
+{
+"colloquial": "inlet elbow",
+"canonical": "turbo inlet",
+"n": 5
+},
+{
+"colloquial": "locked transmission",
+"canonical": "tcu lock",
+"n": 5
+},
+{
+"colloquial": "logger",
+"canonical": "data logging",
+"n": 5
+},
+{
+"colloquial": "logiciel de transmission",
+"canonical": "tcu tune",
+"n": 5
+},
+{
+"colloquial": "low torque file",
+"canonical": "gbx file",
+"n": 5
+},
+{
+"colloquial": "mapping",
+"canonical": "tuning",
+"n": 5
+},
+{
+"colloquial": "maps",
+"canonical": "tune files",
+"n": 5
+},
+{
+"colloquial": "mark viii",
+"canonical": "mk8",
+"n": 5
+},
+{
+"colloquial": "meth",
+"canonical": "methanol injection",
+"n": 5
+},
+{
+"colloquial": "mpi kit",
+"canonical": "upgraded injectors",
+"n": 5
+},
+{
+"colloquial": "no lift shift",
+"canonical": "nls",
+"n": 5
+},
+{
+"colloquial": "obd11",
+"canonical": "obdeleven",
+"n": 5
+},
+{
+"colloquial": "off-the-shelf",
+"canonical": "ots tuning",
+"n": 5
+},
+{
+"colloquial": "one plus",
+"canonical": "stage 1+",
+"n": 5
+},
+{
+"colloquial": "other dp",
+"canonical": "aftermarket downpipe",
+"n": 5
+},
+{
+"colloquial": "other dp",
+"canonical": "other downpipe",
+"n": 5
+},
+{
+"colloquial": "otis scan tool",
+"canonical": "odis scan tool",
+"n": 5
+},
+{
+"colloquial": "performance software",
+"canonical": "tune",
+"n": 5
+},
+{
+"colloquial": "phase 2",
+"canonical": "stage 2",
+"n": 5
+},
+{
+"colloquial": "pipe",
+"canonical": "downpipe",
+"n": 5
+},
+{
+"colloquial": "pop and bang",
+"canonical": "crackle tune",
+"n": 5
+},
+{
+"colloquial": "pops",
+"canonical": "crackle tune",
+"n": 5
+},
+{
+"colloquial": "port injection",
+"canonical": "mpi",
+"n": 5
+},
+{
+"colloquial": "program",
+"canonical": "flash",
+"n": 5
+},
+{
+"colloquial": "pump gas",
+"canonical": "93 octane",
+"n": 5
+},
+{
+"colloquial": "re-flash",
+"canonical": "ecu tune",
+"n": 5
+},
+{
+"colloquial": "remote reset",
+"canonical": "remote cable reset",
+"n": 5
+},
+{
+"colloquial": "remote session",
+"canonical": "remote cable reset",
+"n": 5
+},
+{
+"colloquial": "reprogrammation",
+"canonical": "tuning",
+"n": 5
+},
+{
+"colloquial": "revision",
+"canonical": "software version",
+"n": 5
+},
+{
+"colloquial": "sai delete",
+"canonical": "secondary air injection delete",
+"n": 5
+},
+{
+"colloquial": "screws",
+"canonical": "hardware kit",
+"n": 5
+},
+{
+"colloquial": "sfd2",
+"canonical": "sfd lock",
+"n": 5
+},
+{
+"colloquial": "slashed",
+"canonical": "flashed",
+"n": 5
+},
+{
+"colloquial": "smog",
+"canonical": "emissions compliance",
+"n": 5
+},
+{
+"colloquial": "soft limiter",
+"canonical": "rev limiter",
+"n": 5
+},
+{
+"colloquial": "static file",
+"canonical": "non-flex tune",
+"n": 5
+},
+{
+"colloquial": "stock",
+"canonical": "factory software",
+"n": 5
+},
+{
+"colloquial": "stock",
+"canonical": "oem",
+"n": 5
+},
+{
+"colloquial": "take ownership",
+"canonical": "license transfer",
+"n": 5
+},
+{
+"colloquial": "tcu flash",
+"canonical": "tcu tune",
+"n": 5
+},
+{
+"colloquial": "tcu flash",
+"canonical": "transmission control unit tune",
+"n": 5
+},
+{
+"colloquial": "tcu software",
+"canonical": "tcu tune",
+"n": 5
+},
+{
+"colloquial": "tcu tube",
+"canonical": "tcu tune",
+"n": 5
+},
+{
+"colloquial": "tender",
+"canonical": "battery maintainer",
+"n": 5
+},
+{
+"colloquial": "test pipe",
+"canonical": "downpipe",
+"n": 5
+},
+{
+"colloquial": "tone",
+"canonical": "tune",
+"n": 5
+},
+{
+"colloquial": "toune",
+"canonical": "ecu tune",
+"n": 5
+},
+{
+"colloquial": "trans",
+"canonical": "tcu",
+"n": 5
+},
+{
+"colloquial": "transfer of ownership",
+"canonical": "license transfer",
+"n": 5
+},
+{
+"colloquial": "transmission calibration",
+"canonical": "tcu tune",
+"n": 5
+},
+{
+"colloquial": "transmission computer",
+"canonical": "tcu",
+"n": 5
+},
+{
+"colloquial": "transmission software",
+"canonical": "tcu",
+"n": 5
+},
+{
+"colloquial": "transmission tuned",
+"canonical": "tcu tune",
+"n": 5
+},
+{
+"colloquial": "transmission tuning",
+"canonical": "tcu software",
+"n": 5
+},
+{
+"colloquial": "tunes",
+"canonical": "performance software",
+"n": 5
+},
+{
+"colloquial": "tunes",
+"canonical": "ecu tune",
+"n": 5
+},
+{
+"colloquial": "tuning cable",
+"canonical": "uniconnect+",
+"n": 5
+},
+{
+"colloquial": "uaf app",
+"canonical": "uaf control app",
+"n": 5
+},
+{
+"colloquial": "unicable",
+"canonical": "uniconnect plus",
+"n": 5
+},
+{
+"colloquial": "uniconnect cable",
+"canonical": "uniconnect plus",
+"n": 5
+},
+{
+"colloquial": "uniflex box",
+"canonical": "uniflex module",
+"n": 5
+},
+{
+"colloquial": "unipro",
+"canonical": "unitronic programming software",
+"n": 5
+},
+{
+"colloquial": "unlocked tcu",
+"canonical": "tcu hardware",
+"n": 5
+},
+{
+"colloquial": "vicom",
+"canonical": "vcds",
+"n": 5
+},
+{
+"colloquial": "virtual cockpit",
+"canonical": "digital instrument cluster",
+"n": 5
+},
+{
+"colloquial": "1+",
+"canonical": "stage 1 plus",
+"n": 4
+},
+{
+"colloquial": "7.5",
+"canonical": "mk7.5",
+"n": 4
+},
+{
+"colloquial": "91 tune",
+"canonical": "91 octane calibration",
+"n": 4
+},
+{
+"colloquial": "atmospheric patch",
+"canonical": "high altitude tune",
+"n": 4
+},
+{
+"colloquial": "bolt-ons",
+"canonical": "hardware upgrades",
+"n": 4
+},
+{
+"colloquial": "box",
+"canonical": "tcu",
+"n": 4
+},
+{
+"colloquial": "boxcode",
+"canonical": "ecu identifier",
+"n": 4
+},
+{
+"colloquial": "bt",
+"canonical": "big turbo",
+"n": 4
+},
+{
+"colloquial": "built block",
+"canonical": "built engine",
+"n": 4
+},
+{
+"colloquial": "built engine",
+"canonical": "engine internals upgrade",
+"n": 4
+},
+{
+"colloquial": "built motor",
+"canonical": "engine internals upgrade",
+"n": 4
+},
+{
+"colloquial": "built motor file",
+"canonical": "built engine tune",
+"n": 4
+},
+{
+"colloquial": "burble tune",
+"canonical": "exhaust pops and bangs",
+"n": 4
+},
+{
+"colloquial": "buy-in",
+"canonical": "monetary commitment",
+"n": 4
+},
+{
+"colloquial": "cadre",
+"canonical": "uniconnect+ cable",
+"n": 4
+},
+{
+"colloquial": "cal only",
+"canonical": "calibration only file",
+"n": 4
+},
+{
+"colloquial": "cal only",
+"canonical": "calibration only",
+"n": 4
+},
+{
+"colloquial": "cat efficiency code",
+"canonical": "p0420",
+"n": 4
+},
+{
+"colloquial": "ccu tune",
+"canonical": "tcu tune",
+"n": 4
+},
+{
+"colloquial": "charge pipe",
+"canonical": "charge pipe kit",
+"n": 4
+},
+{
+"colloquial": "check engine light",
+"canonical": "dtc",
+"n": 4
+},
+{
+"colloquial": "chipper",
+"canonical": "tuning",
+"n": 4
+},
+{
+"colloquial": "code out",
+"canonical": "cel suppression",
+"n": 4
+},
+{
+"colloquial": "combo",
+"canonical": "ecu and tcu bundle",
+"n": 4
+},
+{
+"colloquial": "combo discount",
+"canonical": "ecu and tcu bundle pricing",
+"n": 4
+},
+{
+"colloquial": "connector",
+"canonical": "uniconnect plus cable",
+"n": 4
+},
+{
+"colloquial": "crackle tune",
+"canonical": "pops and bangs",
+"n": 4
+},
+{
+"colloquial": "crackles and pops",
+"canonical": "burble tune",
+"n": 4
+},
+{
+"colloquial": "crank",
+"canonical": "engine horsepower",
+"n": 4
+},
+{
+"colloquial": "dash",
+"canonical": "instrument cluster",
+"n": 4
+},
+{
+"colloquial": "dealer cable",
+"canonical": "unipro plus",
+"n": 4
+},
+{
+"colloquial": "deq",
+"canonical": "emissions testing",
+"n": 4
+},
+{
+"colloquial": "dme",
+"canonical": "ecu",
+"n": 4
+},
+{
+"colloquial": "dom pipe",
+"canonical": "downpipe",
+"n": 4
+},
+{
+"colloquial": "don de pipe",
+"canonical": "downpipe",
+"n": 4
+},
+{
+"colloquial": "dpcs",
+"canonical": "dtcs",
+"n": 4
+},
+{
+"colloquial": "dsg",
+"canonical": "transmission tune",
+"n": 4
+},
+{
+"colloquial": "dsg file",
+"canonical": "tcu software",
+"n": 4
+},
+{
+"colloquial": "dsg unlock",
+"canonical": "tcu unlock",
+"n": 4
+},
+{
+"colloquial": "dv relocation kit",
+"canonical": "diverter valve relocation kit",
+"n": 4
+},
+{
+"colloquial": "engine tune",
+"canonical": "ecu calibration",
+"n": 4
+},
+{
+"colloquial": "ethanol kit",
+"canonical": "uniflex",
+"n": 4
+},
+{
+"colloquial": "ethanol tune",
+"canonical": "uniflex",
+"n": 4
+},
+{
+"colloquial": "falling flat on its face",
+"canonical": "heat soak",
+"n": 4
+},
+{
+"colloquial": "fil",
+"canonical": "uniconnect cable",
+"n": 4
+},
+{
+"colloquial": "flash at home",
+"canonical": "uniconnect plus",
+"n": 4
+},
+{
+"colloquial": "flash down",
+"canonical": "downgrade software version",
+"n": 4
+},
+{
+"colloquial": "flash over",
+"canonical": "overwrite software",
+"n": 4
+},
+{
+"colloquial": "flash the car",
+"canonical": "install tune",
+"n": 4
+},
+{
+"colloquial": "flash the car",
+"canonical": "install ecu software",
+"n": 4
+},
+{
+"colloquial": "flash the card",
+"canonical": "flash the ecu",
+"n": 4
+},
+{
+"colloquial": "flash to stock",
+"canonical": "revert to factory tune",
+"n": 4
+},
+{
+"colloquial": "flash tune",
+"canonical": "performance software",
+"n": 4
+},
+{
+"colloquial": "flashback",
+"canonical": "revert to stock software",
+"n": 4
+},
+{
+"colloquial": "flashback to stock",
+"canonical": "revert to stock software",
+"n": 4
+},
+{
+"colloquial": "flashed",
+"canonical": "installed tune",
+"n": 4
+},
+{
+"colloquial": "flasher",
+"canonical": "flash/install software",
+"n": 4
+},
+{
+"colloquial": "flex files",
+"canonical": "uniflex software",
+"n": 4
+},
+{
+"colloquial": "flushed",
+"canonical": "flashed",
+"n": 4
+},
+{
+"colloquial": "forces",
+"canonical": "horsepower",
+"n": 4
+},
+{
+"colloquial": "front mount",
+"canonical": "intercooler",
+"n": 4
+},
+{
+"colloquial": "full frame",
+"canonical": "full frame turbo",
+"n": 4
+},
+{
+"colloquial": "gaz",
+"canonical": "fuel",
+"n": 4
+},
+{
+"colloquial": "gearbox files",
+"canonical": "gbx files",
+"n": 4
+},
+{
+"colloquial": "governor",
+"canonical": "speed limiter",
+"n": 4
+},
+{
+"colloquial": "green files",
+"canonical": "dynamic files",
+"n": 4
+},
+{
+"colloquial": "heat soak",
+"canonical": "intercooler efficiency",
+"n": 4
+},
+{
+"colloquial": "horses",
+"canonical": "horsepower",
+"n": 4
+},
+{
+"colloquial": "immo off",
+"canonical": "immobilizer defeat",
+"n": 4
+},
+{
+"colloquial": "immobilizer defeat",
+"canonical": "immo delete",
+"n": 4
+},
+{
+"colloquial": "injectors",
+"canonical": "mpi upgrade kit",
+"n": 4
+},
+{
+"colloquial": "inlet pipe",
+"canonical": "turbo inlet elbow",
+"n": 4
+},
+{
+"colloquial": "is38 swap",
+"canonical": "turbocharger upgrade",
+"n": 4
+},
+{
+"colloquial": "ko4",
+"canonical": "k04",
+"n": 4
+},
+{
+"colloquial": "lip mode",
+"canonical": "limp mode",
+"n": 4
+},
+{
+"colloquial": "locked",
+"canonical": "tuning protected",
+"n": 4
+},
+{
+"colloquial": "locked ecu",
+"canonical": "tuning protected",
+"n": 4
+},
+{
+"colloquial": "locked transmission",
+"canonical": "tuning protected tcu",
+"n": 4
+},
+{
+"colloquial": "log",
+"canonical": "data logging",
+"n": 4
+},
+{
+"colloquial": "mac",
+"canonical": "macos",
+"n": 4
+},
+{
+"colloquial": "maintainer",
+"canonical": "battery charger",
+"n": 4
+},
+{
+"colloquial": "map sensors",
+"canonical": "manifold absolute pressure sensors",
+"n": 4
+},
+{
+"colloquial": "mec unit",
+"canonical": "tcu",
+"n": 4
+},
+{
+"colloquial": "megatronic",
+"canonical": "mechatronic",
+"n": 4
+},
+{
+"colloquial": "megatronic",
+"canonical": "tcu",
+"n": 4
+},
+{
+"colloquial": "mk8",
+"canonical": "mark viii",
+"n": 4
+},
+{
+"colloquial": "monitors",
+"canonical": "emissions readiness",
+"n": 4
+},
+{
+"colloquial": "motor tune",
+"canonical": "ecu tune",
+"n": 4
+},
+{
+"colloquial": "mpi",
+"canonical": "port injection",
+"n": 4
+},
+{
+"colloquial": "mpi",
+"canonical": "port injectors",
+"n": 4
+},
+{
+"colloquial": "no lift shift",
+"canonical": "no-lift shift",
+"n": 4
+},
+{
+"colloquial": "off-the-shelf",
+"canonical": "ots calibration",
+"n": 4
+},
+{
+"colloquial": "old cable",
+"canonical": "unipro cable",
+"n": 4
+},
+{
+"colloquial": "oneplus",
+"canonical": "stage 1+",
+"n": 4
+},
+{
+"colloquial": "overrun",
+"canonical": "crackles",
+"n": 4
+},
+{
+"colloquial": "pcu",
+"canonical": "ecu",
+"n": 4
+},
+{
+"colloquial": "performance chip",
+"canonical": "performance software",
+"n": 4
+},
+{
+"colloquial": "plug",
+"canonical": "tuning cable",
+"n": 4
+},
+{
+"colloquial": "plug-in",
+"canonical": "uniconnect plus cable",
+"n": 4
+},
+{
+"colloquial": "port injectors",
+"canonical": "mpi",
+"n": 4
+},
+{
+"colloquial": "port injectors",
+"canonical": "mpi injectors",
+"n": 4
+},
+{
+"colloquial": "poulie",
+"canonical": "pulley",
+"n": 4
+},
+{
+"colloquial": "power gauge",
+"canonical": "instrument cluster display",
+"n": 4
+},
+{
+"colloquial": "program",
+"canonical": "tune",
+"n": 4
+},
+{
+"colloquial": "programmer",
+"canonical": "uniconnect plus cable",
+"n": 4
+},
+{
+"colloquial": "rattlefix",
+"canonical": "wastegate rattle fix",
+"n": 4
+},
+{
+"colloquial": "readiness monitors",
+"canonical": "emissions testing",
+"n": 4
+},
+{
+"colloquial": "readiness monitors",
+"canonical": "obd-ii emissions readiness",
+"n": 4
+},
+{
+"colloquial": "reducer",
+"canonical": "exhaust adapter",
+"n": 4
+},
+{
+"colloquial": "relearn",
+"canonical": "adaptation",
+"n": 4
+},
+{
+"colloquial": "remap",
+"canonical": "ecu tune",
+"n": 4
+},
+{
+"colloquial": "remote reset",
+"canonical": "cable reset",
+"n": 4
+},
+{
+"colloquial": "reprogrammation",
+"canonical": "ecu tune",
+"n": 4
+},
+{
+"colloquial": "reprogramming",
+"canonical": "flashing",
+"n": 4
+},
+{
+"colloquial": "reset the cable",
+"canonical": "uniconnect plus cable reset",
+"n": 4
+},
+{
+"colloquial": "rolling anti-lag",
+"canonical": "advanced features",
+"n": 4
+},
+{
+"colloquial": "rolling anti-lag",
+"canonical": "rolling launch control",
+"n": 4
+},
+{
+"colloquial": "runner flap delete",
+"canonical": "intake manifold runner flap delete",
+"n": 4
+},
+{
+"colloquial": "runner flaps",
+"canonical": "intake manifold runner flaps",
+"n": 4
+},
+{
+"colloquial": "scan tool",
+"canonical": "obd-ii diagnostic tool",
+"n": 4
+},
+{
+"colloquial": "sfv2",
+"canonical": "sfd2",
+"n": 4
+},
+{
+"colloquial": "soft limiter",
+"canonical": "neutral rev limiter",
+"n": 4
+},
+{
+"colloquial": "software rights",
+"canonical": "tune license",
+"n": 4
+},
+{
+"colloquial": "software version",
+"canonical": "ecu revision number",
+"n": 4
+},
+{
+"colloquial": "speed limiter",
+"canonical": "speed governor",
+"n": 4
+},
+{
+"colloquial": "stage 1 plus",
+"canonical": "stage 1+ tune",
+"n": 4
+},
+{
+"colloquial": "stage 1.5",
+"canonical": "stage 1+",
+"n": 4
+},
+{
+"colloquial": "static file",
+"canonical": "fixed fuel map",
+"n": 4
+},
+{
+"colloquial": "stick shift",
+"canonical": "manual transmission",
+"n": 4
+},
+{
+"colloquial": "stock block",
+"canonical": "factory engine internals",
+"n": 4
+},
+{
+"colloquial": "stock block",
+"canonical": "unmodified engine internals",
+"n": 4
+},
+{
+"colloquial": "tcu lock",
+"canonical": "transmission control unit lock",
+"n": 4
+},
+{
+"colloquial": "tcu number",
+"canonical": "tcu id and revision number",
+"n": 4
+},
+{
+"colloquial": "tcu software",
+"canonical": "transmission control unit tune",
+"n": 4
+},
+{
+"colloquial": "test pipes",
+"canonical": "catless downpipes",
+"n": 4
+},
+{
+"colloquial": "tool",
+"canonical": "uniconnect plus cable",
+"n": 4
+},
+{
+"colloquial": "tour",
+"canonical": "tune",
+"n": 4
+},
+{
+"colloquial": "tranny",
+"canonical": "tcu",
+"n": 4
+},
+{
+"colloquial": "tranny",
+"canonical": "transmission/tcu",
+"n": 4
+},
+{
+"colloquial": "transfer the software",
+"canonical": "license transfer",
+"n": 4
+},
+{
+"colloquial": "transmission side",
+"canonical": "tcu software",
+"n": 4
+},
+{
+"colloquial": "transmission upgrade",
+"canonical": "tcu tune",
+"n": 4
+},
+{
+"colloquial": "tum",
+"canonical": "tune",
+"n": 4
+},
+{
+"colloquial": "tuned",
+"canonical": "ecu tune",
+"n": 4
+},
+{
+"colloquial": "tuning cable",
+"canonical": "uniconnect cable",
+"n": 4
+},
+{
+"colloquial": "turbo inlet",
+"canonical": "turbo inlet elbow",
+"n": 4
+},
+{
+"colloquial": "uaf box",
+"canonical": "uaf feature box",
+"n": 4
+},
+{
+"colloquial": "uaf box",
+"canonical": "unitronic advanced features box",
+"n": 4
+},
+{
+"colloquial": "uconnect",
+"canonical": "uniconnect",
+"n": 4
+},
+{
+"colloquial": "underboost",
+"canonical": "p0299",
+"n": 4
+},
+{
+"colloquial": "uniconnect agent",
+"canonical": "uniconnect software",
+"n": 4
+},
+{
+"colloquial": "uniconnect app",
+"canonical": "uniconnect plus application",
+"n": 4
+},
+{
+"colloquial": "unipro",
+"canonical": "uniproplus",
+"n": 4
+},
+{
+"colloquial": "unlock cable",
+"canonical": "remote cable reset",
+"n": 4
+},
+{
+"colloquial": "vacom",
+"canonical": "vag-com/vcds",
+"n": 4
+},
+{
+"colloquial": "valves",
+"canonical": "exhaust flaps",
+"n": 4
+},
+{
+"colloquial": "vcds",
+"canonical": "vag-com diagnostic system",
+"n": 4
+},
+{
+"colloquial": "vss",
+"canonical": "vehicle speed sensor",
+"n": 4
+},
+{
+"colloquial": "wot",
+"canonical": "wide open throttle",
+"n": 4
+},
+{
+"colloquial": "2fa",
+"canonical": "two-factor authentication",
+"n": 3
+},
+{
+"colloquial": "4-back",
+"canonical": "cat-back",
+"n": 3
+},
+{
+"colloquial": "8.5",
+"canonical": "8y.2",
+"n": 3
+},
+{
+"colloquial": "91 gas",
+"canonical": "91 octane fuel",
+"n": 3
+},
+{
+"colloquial": "accessory mode",
+"canonical": "ignition on",
+"n": 3
+},
+{
+"colloquial": "admissions",
+"canonical": "emissions testing",
+"n": 3
+},
+{
+"colloquial": "advanced features",
+"canonical": "uaf",
+"n": 3
+},
+{
+"colloquial": "at-home flashing",
+"canonical": "uniconnect plus",
+"n": 3
+},
+{
+"colloquial": "bacom",
+"canonical": "vcds",
+"n": 3
+},
+{
+"colloquial": "bag number",
+"canonical": "ecu id",
+"n": 3
+},
+{
+"colloquial": "battery maintainer",
+"canonical": "battery charger",
+"n": 3
+},
+{
+"colloquial": "bench harness",
+"canonical": "dsg bench harness",
+"n": 3
+},
+{
+"colloquial": "bench unlock",
+"canonical": "ecu unlock",
+"n": 3
+},
+{
+"colloquial": "bench unlock",
+"canonical": "tcu unlocking",
+"n": 3
+},
+{
+"colloquial": "bench unlock",
+"canonical": "ecu unlocking",
+"n": 3
+},
+{
+"colloquial": "bhp",
+"canonical": "brake horsepower",
+"n": 3
+},
+{
+"colloquial": "big turbo tune",
+"canonical": "stage 3 tune",
+"n": 3
+},
+{
+"colloquial": "black box",
+"canonical": "uniflex module",
+"n": 3
+},
+{
+"colloquial": "boats",
+"canonical": "bolts",
+"n": 3
+},
+{
+"colloquial": "bogging",
+"canonical": "power loss",
+"n": 3
+},
+{
+"colloquial": "boost",
+"canonical": "turbocharger pressure",
+"n": 3
+},
+{
+"colloquial": "box",
+"canonical": "uniflex module",
+"n": 3
+},
+{
+"colloquial": "box number",
+"canonical": "ecu id",
+"n": 3
+},
+{
+"colloquial": "braquette",
+"canonical": "bracket",
+"n": 3
+},
+{
+"colloquial": "breather filter",
+"canonical": "sai filter",
+"n": 3
+},
+{
+"colloquial": "breeder filter",
+"canonical": "breather filter",
+"n": 3
+},
+{
+"colloquial": "built engine",
+"canonical": "internally reinforced engine",
+"n": 3
+},
+{
+"colloquial": "built motor",
+"canonical": "internally reinforced engine",
+"n": 3
+},
+{
+"colloquial": "burble",
+"canonical": "overrun",
+"n": 3
+},
+{
+"colloquial": "burble",
+"canonical": "exhaust crackle",
+"n": 3
+},
+{
+"colloquial": "burble",
+"canonical": "crackle overrun",
+"n": 3
+},
+{
+"colloquial": "burble tune",
+"canonical": "crackle file",
+"n": 3
+},
+{
+"colloquial": "cabback",
+"canonical": "cat-back exhaust",
+"n": 3
+},
+{
+"colloquial": "cable driver",
+"canonical": "uniconnect plus driver",
+"n": 3
+},
+{
+"colloquial": "cable transfer",
+"canonical": "cable reset",
+"n": 3
+},
+{
+"colloquial": "cable unlock",
+"canonical": "cable reset",
+"n": 3
+},
+{
+"colloquial": "cal only",
+"canonical": "calibration only flash",
+"n": 3
+},
+{
+"colloquial": "cal-only",
+"canonical": "calibration-only flash",
+"n": 3
+},
+{
+"colloquial": "calibration",
+"canonical": "tune file",
+"n": 3
+},
+{
+"colloquial": "carb",
+"canonical": "california air resources board",
+"n": 3
+},
+{
+"colloquial": "cat bag",
+"canonical": "cat-back exhaust",
+"n": 3
+},
+{
+"colloquial": "cat box",
+"canonical": "cat-back exhaust",
+"n": 3
+},
+{
+"colloquial": "cat delete",
+"canonical": "catalytic converter removal",
+"n": 3
+},
+{
+"colloquial": "catalyst code",
+"canonical": "p0420",
+"n": 3
+},
+{
+"colloquial": "catback",
+"canonical": "cat-back exhaust system",
+"n": 3
+},
+{
+"colloquial": "catted downpipe",
+"canonical": "catalyst downpipe",
+"n": 3
+},
+{
+"colloquial": "chip2",
+"canonical": "ddms",
+"n": 3
+},
+{
+"colloquial": "chip2 page",
+"canonical": "ddms",
+"n": 3
+},
+{
+"colloquial": "chipped",
+"canonical": "ecu tune",
+"n": 3
+},
+{
+"colloquial": "christmas tree",
+"canonical": "dashboard warning lights",
+"n": 3
+},
+{
+"colloquial": "clamping pressure",
+"canonical": "clutch pressure",
+"n": 3
+},
+{
+"colloquial": "clapping pressure",
+"canonical": "clamping pressure",
+"n": 3
+},
+{
+"colloquial": "clear codes",
+"canonical": "clear dtcs",
+"n": 3
+},
+{
+"colloquial": "cloches",
+"canonical": "clutches",
+"n": 3
+},
+{
+"colloquial": "clone",
+"canonical": "ecu cloning",
+"n": 3
+},
+{
+"colloquial": "cluster",
+"canonical": "instrument cluster/dashboard",
+"n": 3
+},
+{
+"colloquial": "cob",
+"canonical": "cobb tuning",
+"n": 3
+},
+{
+"colloquial": "cod",
+"canonical": "cylinder on demand",
+"n": 3
+},
+{
+"colloquial": "code out",
+"canonical": "software disable",
+"n": 3
+},
+{
+"colloquial": "coils",
+"canonical": "coil packs",
+"n": 3
+},
+{
+"colloquial": "cold air intake",
+"canonical": "intake system",
+"n": 3
+},
+{
+"colloquial": "colder plugs",
+"canonical": "spark plug heat range",
+"n": 3
+},
+{
+"colloquial": "connect cable",
+"canonical": "uniconnect plus cable",
+"n": 3
+},
+{
+"colloquial": "contact",
+"canonical": "ignition",
+"n": 3
+},
+{
+"colloquial": "corn",
+"canonical": "ethanol",
+"n": 3
+},
+{
+"colloquial": "crackle file",
+"canonical": "pop and bang tune",
+"n": 3
+},
+{
+"colloquial": "crackle overrun",
+"canonical": "burble tune",
+"n": 3
+},
+{
+"colloquial": "crank hp",
+"canonical": "brake horsepower",
+"n": 3
+},
+{
+"colloquial": "credits",
+"canonical": "ddms wallet balance",
+"n": 3
+},
+{
+"colloquial": "custom tune",
+"canonical": "custom mapping",
+"n": 3
+},
+{
+"colloquial": "cycle the ignition",
+"canonical": "power cycle",
+"n": 3
+},
+{
+"colloquial": "ddms wallet",
+"canonical": "dealer management system credit account",
+"n": 3
+},
+{
+"colloquial": "dealer cable",
+"canonical": "unipro plus cable",
+"n": 3
+},
+{
+"colloquial": "dealer portal",
+"canonical": "chip2.unitronic.ca",
+"n": 3
+},
+{
+"colloquial": "defeated",
+"canonical": "immobilizer defeat",
+"n": 3
+},
+{
+"colloquial": "detune",
+"canonical": "revert to stock",
+"n": 3
+},
+{
+"colloquial": "dino",
+"canonical": "dyno",
+"n": 3
+},
+{
+"colloquial": "do-it-yourself cable",
+"canonical": "uniconnect plus cable",
+"n": 3
+},
+{
+"colloquial": "dock",
+"canonical": "air duct",
+"n": 3
+},
+{
+"colloquial": "down pop",
+"canonical": "downpipe",
+"n": 3
+},
+{
+"colloquial": "downtime",
+"canonical": "downpipe",
+"n": 3
+},
+{
+"colloquial": "dpf delete",
+"canonical": "diesel particulate filter removal",
+"n": 3
+},
+{
+"colloquial": "dsg tool",
+"canonical": "tcu software",
+"n": 3
+},
+{
+"colloquial": "e-check",
+"canonical": "emissions testing",
+"n": 3
+},
+{
+"colloquial": "e85 app",
+"canonical": "uni e85 manager app",
+"n": 3
+},
+{
+"colloquial": "ecu software",
+"canonical": "ecu tune",
+"n": 3
+},
+{
+"colloquial": "ecu team",
+"canonical": "ecu tune",
+"n": 3
+},
+{
+"colloquial": "ecu tune",
+"canonical": "ecu software",
+"n": 3
+},
+{
+"colloquial": "ecu tune",
+"canonical": "engine control unit software",
+"n": 3
+},
+{
+"colloquial": "elbow",
+"canonical": "turbo inlet",
+"n": 3
+},
+{
+"colloquial": "emissions",
+"canonical": "smog test",
+"n": 3
+},
+{
+"colloquial": "engine software",
+"canonical": "ecu",
+"n": 3
+},
+{
+"colloquial": "engine upgrade",
+"canonical": "ecu tune",
+"n": 3
+},
+{
+"colloquial": "ethanol app",
+"canonical": "uni e85 manager app",
+"n": 3
+},
+{
+"colloquial": "etu",
+"canonical": "ecu",
+"n": 3
+},
+{
+"colloquial": "facelift",
+"canonical": "8y.2",
+"n": 3
+},
+{
+"colloquial": "fichier stock",
+"canonical": "stock tune",
+"n": 3
+},
+{
+"colloquial": "fichier stock",
+"canonical": "stock file",
+"n": 3
+},
+{
+"colloquial": "fil",
+"canonical": "cable",
+"n": 3
+},
+{
+"colloquial": "flap delete",
+"canonical": "runner flap delete",
+"n": 3
+},
+{
+"colloquial": "flash cable",
+"canonical": "uniconnect plus cable",
+"n": 3
+},
+{
+"colloquial": "flash down",
+"canonical": "downgrade tune",
+"n": 3
+},
+{
+"colloquial": "flash it back",
+"canonical": "revert to stock tune",
+"n": 3
+},
+{
+"colloquial": "flash it back",
+"canonical": "revert to stock software",
+"n": 3
+},
+{
+"colloquial": "flash it back to stock",
+"canonical": "revert to factory tune",
+"n": 3
+},
+{
+"colloquial": "flash it back to stock",
+"canonical": "revert to stock ecu software",
+"n": 3
+},
+{
+"colloquial": "flash report",
+"canonical": "tuning confirmation email",
+"n": 3
+},
+{
+"colloquial": "flash to stock",
+"canonical": "revert to factory software",
+"n": 3
+},
+{
+"colloquial": "flashback",
+"canonical": "revert to stock tune",
+"n": 3
+},
+{
+"colloquial": "flashback to stock",
+"canonical": "revert to factory tune",
+"n": 3
+},
+{
+"colloquial": "flashed back to stock",
+"canonical": "reverted to factory software",
+"n": 3
+},
+{
+"colloquial": "flashes",
+"canonical": "ecu tunes",
+"n": 3
+},
+{
+"colloquial": "flashing cable",
+"canonical": "uniconnect+",
+"n": 3
+},
+{
+"colloquial": "flashing software",
+"canonical": "uniconnect plus",
+"n": 3
+},
+{
+"colloquial": "flex",
+"canonical": "uniflex software",
+"n": 3
+},
+{
+"colloquial": "flex files",
+"canonical": "flex fuel software",
+"n": 3
+},
+{
+"colloquial": "flex fuel",
+"canonical": "ethanol tune",
+"n": 3
+},
+{
+"colloquial": "flex fuel kit",
+"canonical": "uniflex hardware kit",
+"n": 3
+},
+{
+"colloquial": "flex kit",
+"canonical": "uniflex hardware kit",
+"n": 3
+},
+{
+"colloquial": "flex module",
+"canonical": "uniflex hardware kit",
+"n": 3
+},
+{
+"colloquial": "force",
+"canonical": "torque",
+"n": 3
+},
+{
+"colloquial": "four bars",
+"canonical": "4-bar map sensors",
+"n": 3
+},
+{
+"colloquial": "fp file",
+"canonical": "flashport compatible file",
+"n": 3
+},
+{
+"colloquial": "full bolt on",
+"canonical": "stage 2 hardware",
+"n": 3
+},
+{
+"colloquial": "full bolt-on",
+"canonical": "fbo",
+"n": 3
+},
+{
+"colloquial": "full torque",
+"canonical": "high torque file",
+"n": 3
+},
+{
+"colloquial": "full torque",
+"canonical": "high torque",
+"n": 3
+},
+{
+"colloquial": "full torque file",
+"canonical": "high torque ecu tune",
+"n": 3
+},
+{
+"colloquial": "gas",
+"canonical": "fuel",
+"n": 3
+},
+{
+"colloquial": "gas",
+"canonical": "fuel octane",
+"n": 3
+},
+{
+"colloquial": "gbx",
+"canonical": "tcu tune",
+"n": 3
+},
+{
+"colloquial": "gbx file",
+"canonical": "torque vectoring ecu file",
+"n": 3
+},
+{
+"colloquial": "gbx files",
+"canonical": "torque vectoring files",
+"n": 3
+},
+{
+"colloquial": "gcu",
+"canonical": "tcu",
+"n": 3
+},
+{
+"colloquial": "gear display",
+"canonical": "tcu tune verification",
+"n": 3
+},
+{
+"colloquial": "gear display",
+"canonical": "gear indicator",
+"n": 3
+},
+{
+"colloquial": "gearbox",
+"canonical": "tcu",
+"n": 3
+},
+{
+"colloquial": "handheld",
+"canonical": "uniconnect plus cable",
+"n": 3
+},
+{
+"colloquial": "hardware kit",
+"canonical": "installation hardware",
+"n": 3
+},
+{
+"colloquial": "hot swap",
+"canonical": "ecu replacement",
+"n": 3
+},
+{
+"colloquial": "immo off",
+"canonical": "immobilizer removal",
+"n": 3
+},
+{
+"colloquial": "immobilize",
+"canonical": "immobilizer defeat",
+"n": 3
+},
+{
+"colloquial": "imo delete",
+"canonical": "immobilizer delete",
+"n": 3
+},
+{
+"colloquial": "intercouleur",
+"canonical": "intercooler",
+"n": 3
+},
+{
+"colloquial": "issue",
+"canonical": "ecu",
+"n": 3
+},
+{
+"colloquial": "ko4",
+"canonical": "k04 turbocharger",
+"n": 3
+},
+{
+"colloquial": "launch control",
+"canonical": "launch control rpm",
+"n": 3
+},
+{
+"colloquial": "license switch",
+"canonical": "license transfer",
+"n": 3
+},
+{
+"colloquial": "limb mode",
+"canonical": "limp mode",
+"n": 3
+},
+{
+"colloquial": "limp mode",
+"canonical": "epc light",
+"n": 3
+},
+{
+"colloquial": "livres de force",
+"canonical": "lb-ft of torque",
+"n": 3
+},
+{
+"colloquial": "lock tcu",
+"canonical": "locked tcu",
+"n": 3
+},
+{
+"colloquial": "locked",
+"canonical": "tcu lock",
+"n": 3
+},
+{
+"colloquial": "locked bootloader",
+"canonical": "tcu lock",
+"n": 3
+},
+{
+"colloquial": "locked bootloader",
+"canonical": "locked tcu",
+"n": 3
+},
+{
+"colloquial": "locked ecu",
+"canonical": "sfd lock",
+"n": 3
+},
+{
+"colloquial": "locked pcu",
+"canonical": "locked tcu",
+"n": 3
+},
+{
+"colloquial": "logging",
+"canonical": "unilogger",
+"n": 3
+},
+{
+"colloquial": "logging",
+"canonical": "data logger",
+"n": 3
+},
+{
+"colloquial": "long coating",
+"canonical": "long coding",
+"n": 3
+},
+{
+"colloquial": "low pressure fuel pump",
+"canonical": "lpfp",
+"n": 3
+},
+{
+"colloquial": "low torque file",
+"canonical": "limited torque file",
+"n": 3
+},
+{
+"colloquial": "lunch control",
+"canonical": "launch control",
+"n": 3
+},
+{
+"colloquial": "lymph mode",
+"canonical": "limp mode",
+"n": 3
+},
+{
+"colloquial": "mac",
+"canonical": "mechatronic unit",
+"n": 3
+},
+{
+"colloquial": "map center",
+"canonical": "map sensor",
+"n": 3
+},
+{
+"colloquial": "map housing",
+"canonical": "maf housing",
+"n": 3
+},
+{
+"colloquial": "mapping",
+"canonical": "tune",
+"n": 3
+},
+{
+"colloquial": "maps",
+"canonical": "tuning files",
+"n": 3
+},
+{
+"colloquial": "mark 8",
+"canonical": "mark viii",
+"n": 3
+},
+{
+"colloquial": "mark a",
+"canonical": "mk8",
+"n": 3
+},
+{
+"colloquial": "mark vii",
+"canonical": "mk7",
+"n": 3
+},
+{
+"colloquial": "mec swap",
+"canonical": "tcu hardware unlock",
+"n": 3
+},
+{
+"colloquial": "mec unit",
+"canonical": "mechatronics unit",
+"n": 3
+},
+{
+"colloquial": "mech swap",
+"canonical": "mechatronic unit replacement",
+"n": 3
+},
+{
+"colloquial": "mechatronic swap",
+"canonical": "tcu hardware upgrade",
+"n": 3
+},
+{
+"colloquial": "mechatronic swap",
+"canonical": "tcu hardware replacement",
+"n": 3
+},
+{
+"colloquial": "mechatronic unit",
+"canonical": "tcu",
+"n": 3
+},
+{
+"colloquial": "meth",
+"canonical": "water-methanol injection",
+"n": 3
+},
+{
+"colloquial": "mpi kit",
+"canonical": "mpi upgrade kit",
+"n": 3
+},
+{
+"colloquial": "no start",
+"canonical": "crank no start",
+"n": 3
+},
+{
+"colloquial": "non-flex file",
+"canonical": "standard tune",
+"n": 3
+},
+{
+"colloquial": "o2 sensor",
+"canonical": "oxygen sensor",
+"n": 3
+},
+{
+"colloquial": "off the shelf",
+"canonical": "standardized software",
+"n": 3
+},
+{
+"colloquial": "off-the-shelf",
+"canonical": "ots tune",
+"n": 3
+},
+{
+"colloquial": "ordinateur de bord",
+"canonical": "ecu",
+"n": 3
+},
+{
+"colloquial": "ota",
+"canonical": "over-the-air update",
+"n": 3
+},
+{
+"colloquial": "other downpipe",
+"canonical": "aftermarket downpipe",
+"n": 3
+},
+{
+"colloquial": "ots",
+"canonical": "off-the-shelf tuning",
+"n": 3
+},
+{
+"colloquial": "overrun",
+"canonical": "pops and bangs",
+"n": 3
+},
+{
+"colloquial": "pcb",
+"canonical": "pcv",
+"n": 3
+},
+{
+"colloquial": "plasher",
+"canonical": "flash",
+"n": 3
+},
+{
+"colloquial": "plus cable",
+"canonical": "uniconnect plus cable",
+"n": 3
+},
+{
+"colloquial": "plus one",
+"canonical": "stage 1+",
+"n": 3
+},
+{
+"colloquial": "pmax",
+"canonical": "garrett powermax turbocharger",
+"n": 3
+},
+{
+"colloquial": "pmax",
+"canonical": "powermax turbo",
+"n": 3
+},
+{
+"colloquial": "pnb",
+"canonical": "pop and bang",
+"n": 3
+},
+{
+"colloquial": "po",
+"canonical": "purchase order",
+"n": 3
+},
+{
+"colloquial": "pop and bang",
+"canonical": "crackle",
+"n": 3
+},
+{
+"colloquial": "pop tune",
+"canonical": "crackle file",
+"n": 3
+},
+{
+"colloquial": "pops and crackles",
+"canonical": "burble tune",
+"n": 3
+},
+{
+"colloquial": "pops and crackles",
+"canonical": "crackle overrun",
+"n": 3
+},
+{
+"colloquial": "pops and crackles",
+"canonical": "overrun",
+"n": 3
+},
+{
+"colloquial": "programme",
+"canonical": "tune",
+"n": 3
+},
+{
+"colloquial": "pull",
+"canonical": "acceleration run",
+"n": 3
+},
+{
+"colloquial": "pull the trigger",
+"canonical": "purchase",
+"n": 3
+},
+{
+"colloquial": "pump gas",
+"canonical": "octane",
+"n": 3
+},
+{
+"colloquial": "race gas",
+"canonical": "high octane fuel",
+"n": 3
+},
+{
+"colloquial": "rain tray",
+"canonical": "cowl area",
+"n": 3
+},
+{
+"colloquial": "re-plash",
+"canonical": "re-flash",
+"n": 3
+},
+{
+"colloquial": "red line",
+"canonical": "rev limiter",
+"n": 3
+},
+{
+"colloquial": "red line",
+"canonical": "rpm limit",
+"n": 3
+},
+{
+"colloquial": "reflacher",
+"canonical": "reflash",
+"n": 3
+},
+{
+"colloquial": "regular gas",
+"canonical": "87 octane",
+"n": 3
+},
+{
+"colloquial": "reman",
+"canonical": "remanufactured",
+"n": 3
+},
+{
+"colloquial": "remote reset",
+"canonical": "license transfer",
+"n": 3
+},
+{
+"colloquial": "remote support",
+"canonical": "screenconnect",
+"n": 3
+},
+{
+"colloquial": "reprogrammation",
+"canonical": "tune",
+"n": 3
+},
+{
+"colloquial": "reprogramming the cable",
+"canonical": "remote cable reset",
+"n": 3
+},
+{
+"colloquial": "res delete",
+"canonical": "resonator delete",
+"n": 3
+},
+{
+"colloquial": "retune",
+"canonical": "reflash",
+"n": 3
+},
+{
+"colloquial": "rev hang",
+"canonical": "rpm hang",
+"n": 3
+},
+{
+"colloquial": "revision change",
+"canonical": "ecu software version update",
+"n": 3
+},
+{
+"colloquial": "revision change",
+"canonical": "ecu software update",
+"n": 3
+},
+{
+"colloquial": "runner delete",
+"canonical": "intake manifold runner delete",
+"n": 3
+},
+{
+"colloquial": "runner flap delete",
+"canonical": "intake manifold modification",
+"n": 3
+},
+{
+"colloquial": "runners",
+"canonical": "intake manifold runner flaps",
+"n": 3
+},
+{
+"colloquial": "safe mode",
+"canonical": "limp mode",
+"n": 3
+},
+{
+"colloquial": "sai off",
+"canonical": "secondary air injection delete",
+"n": 3
+},
+{
+"colloquial": "scan tool",
+"canonical": "diagnostic tool",
+"n": 3
+},
+{
+"colloquial": "scan tool",
+"canonical": "vcds/obd11",
+"n": 3
+},
+{
+"colloquial": "scu",
+"canonical": "ecu",
+"n": 3
+},
+{
+"colloquial": "sfd",
+"canonical": "secure flash driver",
+"n": 3
+},
+{
+"colloquial": "sfd lock",
+"canonical": "sfd protection",
+"n": 3
+},
+{
+"colloquial": "slashing",
+"canonical": "flashing",
+"n": 3
+},
+{
+"colloquial": "smog test",
+"canonical": "emissions test",
+"n": 3
+},
+{
+"colloquial": "sn mismatch",
+"canonical": "serial number mismatch",
+"n": 3
+},
+{
+"colloquial": "software number",
+"canonical": "ecu revision number",
+"n": 3
+},
+{
+"colloquial": "software number",
+"canonical": "tcu id",
+"n": 3
+},
+{
+"colloquial": "software stage",
+"canonical": "ecu tune",
+"n": 3
+},
+{
+"colloquial": "software version",
+"canonical": "ecu revision",
+"n": 3
+},
+{
+"colloquial": "stage file",
+"canonical": "ecu tune",
+"n": 3
+},
+{
+"colloquial": "stage one",
+"canonical": "stage 1 tune",
+"n": 3
+},
+{
+"colloquial": "stage one",
+"canonical": "stage 1",
+"n": 3
+},
+{
+"colloquial": "start stop",
+"canonical": "auto start-stop memory",
+"n": 3
+},
+{
+"colloquial": "start-stop memory",
+"canonical": "auto start-stop memory",
+"n": 3
+},
+{
+"colloquial": "stock",
+"canonical": "factory calibration",
+"n": 3
+},
+{
+"colloquial": "stock car",
+"canonical": "unmodified vehicle",
+"n": 3
+},
+{
+"colloquial": "stock original",
+"canonical": "factory tune",
+"n": 3
+},
+{
+"colloquial": "stock original",
+"canonical": "factory ecu map",
+"n": 3
+},
+{
+"colloquial": "stock original",
+"canonical": "stock file",
+"n": 3
+},
+{
+"colloquial": "stock original two",
+"canonical": "stock original 2 file",
+"n": 3
+},
+{
+"colloquial": "stock tune",
+"canonical": "factory ecu software",
+"n": 3
+},
+{
+"colloquial": "stop-start",
+"canonical": "auto start-stop system",
+"n": 3
+},
+{
+"colloquial": "straight pipe",
+"canonical": "exhaust modification",
+"n": 3
+},
+{
+"colloquial": "supercharger belt",
+"canonical": "serpentine belt",
+"n": 3
+},
+{
+"colloquial": "table",
+"canonical": "uniconnect plus cable",
+"n": 3
+},
+{
+"colloquial": "tcu box",
+"canonical": "transmission control unit",
+"n": 3
+},
+{
+"colloquial": "tcu file",
+"canonical": "tcu tune",
+"n": 3
+},
+{
+"colloquial": "tcu software",
+"canonical": "transmission tune",
+"n": 3
+},
+{
+"colloquial": "tcu swap",
+"canonical": "transmission control unit hardware replacement",
+"n": 3
+},
+{
+"colloquial": "tcu thing",
+"canonical": "tcu tune",
+"n": 3
+},
+{
+"colloquial": "tin",
+"canonical": "tune",
+"n": 3
+},
+{
+"colloquial": "tool",
+"canonical": "tune",
+"n": 3
+},
+{
+"colloquial": "tranny tune",
+"canonical": "tcu software",
+"n": 3
+},
+{
+"colloquial": "tranny tune",
+"canonical": "transmission tune",
+"n": 3
+},
+{
+"colloquial": "trans",
+"canonical": "tcu tune",
+"n": 3
+},
+{
+"colloquial": "trans flash",
+"canonical": "tcu tune",
+"n": 3
+},
+{
+"colloquial": "trans flash",
+"canonical": "tcu flash",
+"n": 3
+},
+{
+"colloquial": "trans software",
+"canonical": "tcu tune",
+"n": 3
+},
+{
+"colloquial": "trans tuned",
+"canonical": "tcu tune",
+"n": 3
+},
+{
+"colloquial": "transfer the tune",
+"canonical": "software license transfer",
+"n": 3
+},
+{
+"colloquial": "transmission module",
+"canonical": "tcu",
+"n": 3
+},
+{
+"colloquial": "transmission one",
+"canonical": "tcu software",
+"n": 3
+},
+{
+"colloquial": "transmission one",
+"canonical": "tcu tune",
+"n": 3
+},
+{
+"colloquial": "transmission unit",
+"canonical": "tcu",
+"n": 3
+},
+{
+"colloquial": "transmission unlock",
+"canonical": "tcu tune",
+"n": 3
+},
+{
+"colloquial": "transmission upgrade",
+"canonical": "tcu software",
+"n": 3
+},
+{
+"colloquial": "trouble codes",
+"canonical": "dtc",
+"n": 3
+},
+{
+"colloquial": "ttu",
+"canonical": "tcu tune",
+"n": 3
+},
+{
+"colloquial": "tuner",
+"canonical": "tuning software",
+"n": 3
+},
+{
+"colloquial": "tuning software",
+"canonical": "unipro plus",
+"n": 3
+},
+{
+"colloquial": "tuning software",
+"canonical": "performance software",
+"n": 3
+},
+{
+"colloquial": "tuper",
+"canonical": "tune",
+"n": 3
+},
+{
+"colloquial": "tupper",
+"canonical": "tune",
+"n": 3
+},
+{
+"colloquial": "turbo back",
+"canonical": "turbo-back exhaust",
+"n": 3
+},
+{
+"colloquial": "turbo inlet",
+"canonical": "turbo inlet pipe",
+"n": 3
+},
+{
+"colloquial": "two step",
+"canonical": "launch control",
+"n": 3
+},
+{
+"colloquial": "uaf app",
+"canonical": "unitronic advanced features app",
+"n": 3
+},
+{
+"colloquial": "uaf app",
+"canonical": "uni e85 manager app",
+"n": 3
+},
+{
+"colloquial": "uaf box",
+"canonical": "uaf control box",
+"n": 3
+},
+{
+"colloquial": "ucp cable",
+"canonical": "uniconnect plus cable",
+"n": 3
+},
+{
+"colloquial": "ufa",
+"canonical": "uaf",
+"n": 3
+},
+{
+"colloquial": "uni",
+"canonical": "unitronic",
+"n": 3
+},
+{
+"colloquial": "uni cable",
+"canonical": "uniconnect cable",
+"n": 3
+},
+{
+"colloquial": "uni downpipe file",
+"canonical": "unitronic-specific downpipe calibration",
+"n": 3
+},
+{
+"colloquial": "uni dp",
+"canonical": "unitronic downpipe",
+"n": 3
+},
+{
+"colloquial": "uni e85 app",
+"canonical": "uni e85 manager application",
+"n": 3
+},
+{
+"colloquial": "uni injectors",
+"canonical": "unitronic injectors",
+"n": 3
+},
+{
+"colloquial": "unicable",
+"canonical": "uniconnect+",
+"n": 3
+},
+{
+"colloquial": "uniconnect app",
+"canonical": "uniconnect software",
+"n": 3
+},
+{
+"colloquial": "uniconnect plus",
+"canonical": "uniconnect+",
+"n": 3
+},
+{
+"colloquial": "uniflex file",
+"canonical": "uniflex software",
+"n": 3
+},
+{
+"colloquial": "uniflex file",
+"canonical": "uniflex software add-on",
+"n": 3
+},
+{
+"colloquial": "unique connect",
+"canonical": "uniconnect plus",
+"n": 3
+},
+{
+"colloquial": "unlock",
+"canonical": "ecu unlocking",
+"n": 3
+},
+{
+"colloquial": "unlock cable",
+"canonical": "uniconnect plus cable reset",
+"n": 3
+},
+{
+"colloquial": "unlock the cable",
+"canonical": "cable reset",
+"n": 3
+},
+{
+"colloquial": "unlock tool",
+"canonical": "tcu unlock harness",
+"n": 3
+},
+{
+"colloquial": "unlock tool",
+"canonical": "dsg bench harness",
+"n": 3
+},
+{
+"colloquial": "unlocked tcu",
+"canonical": "tcu hardware upgrade",
+"n": 3
+},
+{
+"colloquial": "unlocking",
+"canonical": "ecu unlock",
+"n": 3
+},
+{
+"colloquial": "unlocking the cable",
+"canonical": "remote cable reset",
+"n": 3
+},
+{
+"colloquial": "updi agent",
+"canonical": "uniconnect plus agent",
+"n": 3
+},
+{
+"colloquial": "vatcom",
+"canonical": "vag-com/vcds",
+"n": 3
+},
+{
+"colloquial": "verbal tune",
+"canonical": "crackle tune",
+"n": 3
+},
+{
+"colloquial": "vidcom",
+"canonical": "vcds",
+"n": 3
+},
+{
+"colloquial": "vidcon",
+"canonical": "vcds",
+"n": 3
+},
+{
+"colloquial": "wallet",
+"canonical": "ddms credits",
+"n": 3
+},
+{
+"colloquial": "wipe the cable",
+"canonical": "cable reset",
+"n": 3
+},
+{
+"colloquial": "wire",
+"canonical": "tuning cable",
+"n": 3
+},
+{
+"colloquial": "wire",
+"canonical": "uniconnect plus cable",
+"n": 3
+}
+]

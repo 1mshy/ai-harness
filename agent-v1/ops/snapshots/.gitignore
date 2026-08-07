@@ -1,0 +1,7 @@
+# Qdrant snapshots are tens to hundreds of MB and contain the very payloads
+# this repo is trying to get out of circulation. They belong on the operator's
+# disk, never in git history -- see the 2026-05 git-history purge referenced in
+# AGENT_PLAN.md 3.1. Manifests are small and safe, but they name collections
+# and point counts, so they are ignored too.
+*
+!.gitignore
