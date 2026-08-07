@@ -12,7 +12,10 @@ convention:
 
 from __future__ import annotations
 
+import json
 import os
+import threading
+import urllib.request
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -157,7 +160,6 @@ def collection_for(alias: str, generation: str) -> str:
 
 # --- Reasoner LLM ------------------------------------------------------------
 LLM_URL = os.environ.get("OPENAI_URL", "http://10.150.0.30:1234/v1")
-LLM_MODEL = os.environ.get("OPENAI_MODEL", "nvidia/Gemma-4-31B-IT-NVFP4")
 LLM_API_KEY = os.environ.get("OPENAI_API_KEY", "not-needed")
 LLM_TIMEOUT = int(os.environ.get("LLM_TIMEOUT", "120"))
 LLM_MAX_CONCURRENCY = int(os.environ.get("LLM_MAX_CONCURRENCY", "8"))
@@ -170,6 +172,77 @@ LLM_MAX_CONCURRENCY = int(os.environ.get("LLM_MAX_CONCURRENCY", "8"))
 # content) is real and is why structured extraction still uses free-form JSON
 # plus code-side validation -- see clients/llm.py.
 LLM_NATIVE_TOOL_CALLING = os.environ.get("LLM_NATIVE_TOOLS", "1") not in ("0", "false")
+
+# The box does not hold a model still. Measured 2026-08-07: the endpoint moved
+# from Gemma-4-31B to Nemotron-3-Super-120B inside ten minutes, and a pinned
+# OPENAI_MODEL turns every reasoner call into a 404 -- which surfaces as a
+# healthy /health next to an agent that answers "I'm having trouble reaching my
+# knowledge systems" on every turn. So the model is *discovered* by default and
+# pinned only when someone pins it on purpose.
+#
+# Resolution order: OPENAI_MODEL -> first id from GET {LLM_URL}/models ->
+# LLM_MODEL_FALLBACK. Discovery is lazy (nothing imports config to make a
+# network call) and cached, so the cost is one request per process.
+LLM_MODEL_FALLBACK = os.environ.get("LLM_MODEL_FALLBACK", "nvidia/Gemma-4-31B-IT-NVFP4")
+LLM_MODEL_DISCOVERY_TIMEOUT = float(os.environ.get("LLM_MODEL_DISCOVERY_TIMEOUT", "5"))
+
+_model_lock = threading.Lock()
+_model_cache: str | None = None
+
+
+def discover_llm_model(base_url: str | None = None, timeout: float | None = None) -> str | None:
+    """First model id the endpoint serves, or None if it cannot be asked.
+
+    Deliberately returns None rather than raising: an unreachable endpoint at
+    import time must not stop the process from booting. The caller falls back
+    to the pinned literal and the reasoner fails later, loudly, at the point
+    where it actually matters.
+    """
+    url = (base_url or LLM_URL).rstrip("/") + "/models"
+    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {LLM_API_KEY}"})
+    try:
+        with urllib.request.urlopen(req, timeout=timeout or LLM_MODEL_DISCOVERY_TIMEOUT) as resp:
+            payload = json.loads(resp.read().decode("utf-8"))
+    except Exception:  # noqa: BLE001 - urllib, socket, JSON and key errors alike
+        return None
+    for entry in payload.get("data") or []:
+        model_id = (entry or {}).get("id")
+        if model_id:
+            return str(model_id)
+    return None
+
+
+def resolve_llm_model(refresh: bool = False) -> str:
+    """The model id to send. Cached; pass refresh=True after a 404."""
+    global _model_cache
+    pinned = os.environ.get("OPENAI_MODEL")
+    if pinned:
+        return pinned
+    with _model_lock:
+        if _model_cache is None or refresh:
+            _model_cache = discover_llm_model() or LLM_MODEL_FALLBACK
+        return _model_cache
+
+
+_settings_cache: "Settings | None" = None
+
+
+def __getattr__(name: str):
+    """Keep ``config.LLM_MODEL`` and ``config.SETTINGS`` working lazily.
+
+    Both would otherwise resolve the model at import, which would put a network
+    call in the path of every ``import agentv1.config`` -- including the test
+    suite, which has no business talking to the reasoner.
+    """
+    global _settings_cache
+    if name == "LLM_MODEL":
+        return resolve_llm_model()
+    if name == "SETTINGS":
+        if _settings_cache is None:
+            _settings_cache = Settings()
+        return _settings_cache
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
 
 # --- Agent runtime -----------------------------------------------------------
 AGENT_HOST = os.environ.get("AGENT_HOST", "127.0.0.1")
@@ -205,7 +278,7 @@ class Settings:
     kb_version: int = KB_VERSION
     merge_version: int = MERGE_VERSION
     index_version: int = INDEX_VERSION
-    llm_model: str = LLM_MODEL
+    llm_model: str = field(default_factory=resolve_llm_model)
     aliases: tuple = field(default_factory=lambda: tuple(NEW_ALIASES))
 
     def as_dict(self) -> dict:
@@ -220,5 +293,3 @@ class Settings:
             "llm_model": self.llm_model,
         }
 
-
-SETTINGS = Settings()

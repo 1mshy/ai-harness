@@ -313,3 +313,52 @@ def test_the_opaque_id_exemption_cannot_be_used_to_smuggle_pii():
     assert not pii.scan_egress(
         {"unit_id": "[Coles, Zoe]_124-8012307610_20250603202223(152).wav"}
     ).clean
+
+
+# --- reasoner model discovery ------------------------------------------------
+# The endpoint changed the model it serves mid-session on 2026-08-07 and every
+# reasoner call started 404ing behind a still-healthy /health. Discovery is the
+# fix, so its resolution order is now an invariant rather than a convenience.
+
+@pytest.fixture
+def _uncached_model(monkeypatch):
+    monkeypatch.setattr(config, "_model_cache", None)
+    monkeypatch.delenv("OPENAI_MODEL", raising=False)
+    return monkeypatch
+
+
+def test_explicit_pin_beats_discovery(_uncached_model):
+    """Someone who pins a model on purpose is not overruled by the endpoint."""
+    _uncached_model.setenv("OPENAI_MODEL", "pinned/model")
+    _uncached_model.setattr(
+        config, "discover_llm_model",
+        lambda *a, **k: pytest.fail("discovery ran despite an explicit pin"),
+    )
+    assert config.resolve_llm_model() == "pinned/model"
+    assert config.LLM_MODEL == "pinned/model"
+
+
+def test_unpinned_follows_the_endpoint(_uncached_model):
+    _uncached_model.setattr(config, "discover_llm_model", lambda *a, **k: "served/model")
+    assert config.resolve_llm_model() == "served/model"
+
+
+def test_unreachable_endpoint_falls_back_instead_of_raising(_uncached_model):
+    """Import-time resolution must never be able to stop the process booting."""
+    _uncached_model.setattr(config, "discover_llm_model", lambda *a, **k: None)
+    _uncached_model.setattr(config, "LLM_MODEL_FALLBACK", "fallback/model")
+    assert config.resolve_llm_model() == "fallback/model"
+
+
+def test_discovery_swallows_connection_errors():
+    """Port 9 on loopback refuses immediately -- no external network in tests."""
+    assert config.discover_llm_model("http://127.0.0.1:9/v1", timeout=1) is None
+
+
+def test_refresh_rereads_a_changed_endpoint(_uncached_model):
+    served = ["first/model"]
+    _uncached_model.setattr(config, "discover_llm_model", lambda *a, **k: served[0])
+    assert config.resolve_llm_model() == "first/model"
+    served[0] = "second/model"
+    assert config.resolve_llm_model() == "first/model"          # cached
+    assert config.resolve_llm_model(refresh=True) == "second/model"
